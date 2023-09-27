@@ -1,83 +1,133 @@
 import axios from 'axios'
-import { MessageBox, Message } from 'element-ui'
+import { Message } from 'element-ui'
 import store from '@/store'
-import { getToken } from '@/utils/auth'
+import { getToken, setToken, isLoginOrRefreshTokenRequest } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
-  // withCredentials: true, // send cookies when cross-domain requests
-  timeout: 5000 // request timeout
+  // withCredentials: true, // 当跨域请求时发送cookie
+  timeout: 5000 // 请求超时
 })
 
-// request interceptor
+// 请求拦截器
 service.interceptors.request.use(
   config => {
-    // do something before request is sent
-
-    if (store.getters.token) {
-      // let each request carry token
-      // ['X-Token'] is a custom headers key
-      // please modify it according to the actual situation
-      config.headers['X-Token'] = getToken()
+    // 在发送请求之前做些什么
+    if (!isLoginOrRefreshTokenRequest(config)) {
+      if (store.getters.token) {
+        config.headers['Authorization'] = 'Bearer ' + getToken()
+      }
     }
     return config
   },
   error => {
-    // do something with request error
+    // 做一些请求错误
     console.log(error) // for debug
     return Promise.reject(error)
   }
 )
 
-// response interceptor
+async function refreshToken(refresh_token) {
+  // 向服务器发送刷新 Token 的请求
+  return service.post('/api/accounts/refresh/', { 'refresh': refresh_token }).then((res) => {
+    return res
+  })
+}
+// 换取token并重试
+async function refreshAuthorizationToken(refresh_token, response) {
+  try {
+    const { data } = await refreshToken(refresh_token)
+    console.log('data1: ', data)
+    if (!data.code) {
+      const token = data.token
+      setToken('Token', token)
+      response.config.headers.Authorization = `${token}`
+      requests.forEach(cb => cb(token))
+      requests = []
+      return service(response.config)
+    } else {
+      return Promise.reject(new Error('Error'))
+    }
+  } catch (error) {
+    return Promise.reject(error)
+  } finally {
+    isRefreshing = false
+  }
+}
+
+// 是否正在刷新的标记
+let isRefreshing = false
+// 重试队列
+let requests = []
+
+// 响应拦截器
 service.interceptors.response.use(
-  /**
-   * If you want to get http information such as headers or status
-   * Please return  response => response
+  /* *
+  * 如果你想获得http信息，如标题或状态
+  * 请返回response => response
   */
 
-  /**
-   * Determine the request status by custom code
-   * Here is just an example
-   * You can also judge the status by HTTP Status Code
-   */
+  /* *
+  * 通过自定义代码确定请求状态
+    这里只是一个例子
+  * 也可以通过HTTP状态码来判断状态
+  */
   response => {
     const res = response.data
-
-    // if the custom code is not 20000, it is judged as an error.
-    if (res.code !== 20000) {
-      Message({
-        message: res.message || 'Error',
-        type: 'error',
-        duration: 5 * 1000
-      })
-
-      // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
-        // to re-login
-        MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
-          confirmButtonText: 'Re-Login',
-          cancelButtonText: 'Cancel',
-          type: 'warning'
-        }).then(() => {
-          store.dispatch('user/resetToken').then(() => {
-            location.reload()
+    if (res.code === 400001 && !isLoginOrRefreshTokenRequest(response.config)) {
+      const refresh_token = getToken('RefreshToken')
+      if (refresh_token) {
+        if (!isRefreshing) {
+          isRefreshing = true
+          return refreshAuthorizationToken(refresh_token, response).catch(e => {
+            Message({ message: '令牌无效或已过期', type: 'error', duration: 5 * 1000 })
           })
-        })
+        } else {
+          return new Promise(resolve => {
+            requests.push(token => {
+              response.config.headers.Authorization = `${token}`
+              resolve(service(response.config))
+            })
+          })
+        }
+      } else {
+        Message({ message: '刷新令牌未找到', type: 'error', duration: 5 * 1000 })
       }
-      return Promise.reject(new Error(res.message || 'Error'))
-    } else {
-      return res
     }
+    return response
   },
   error => {
-    console.log('err' + error) // for debug
-    Message({
-      message: error.message,
-      type: 'error',
-      duration: 5 * 1000
-    })
+    Message({ message: error.message, type: 'error', duration: 5 * 1000 })
+    if (error.response.status === 400) {
+      Message({ message: 'Bad Request', type: 'error', duration: 5 * 1000 })
+      // router.push({ path: '/400' }); // 跳转到自定义的 400 页面
+    } else if (error.response.status === 401) {
+      const refresh_token = getToken('RefreshToken')
+      if (refresh_token) {
+        if (!isRefreshing) {
+          isRefreshing = true
+          return refreshAuthorizationToken(refresh_token, error.response).catch(e => {
+            Message({ message: '令牌无效或已过期', type: 'error', duration: 5 * 1000 })
+          })
+        } else {
+          return new Promise(resolve => {
+            requests.push(token => {
+              error.response.config.headers.Authorization = `${token}`
+              resolve(service(error.response.config))
+            })
+          })
+        }
+      } else {
+        Message({ message: '刷新令牌未找到', type: 'error', duration: 5 * 1000 })
+      }
+    } else if (error.response.status === 404) {
+      Message({ message: 'Not Found', type: 'error', duration: 5 * 1000 })
+      // router.replace({ path: '/404' }) // 跳转到自定义的 404 页面
+    } else if (error.response.status === 500) {
+      Message({ message: '服务器错误, 系统繁忙', type: 'error', duration: 5 * 1000 })
+      // router.replace({ path: '/500' }) // 跳转到自定义的 500 页面
+    }
     return Promise.reject(error)
   }
 )

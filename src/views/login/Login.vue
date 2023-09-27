@@ -103,28 +103,18 @@ export default {
           this.$store.dispatch('user/login', this.loginForm)
             .then(() => {
               this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+              // 延迟 1 秒显示欢迎信息
+              setTimeout(() => {
+                this.$notification.success({
+                  message: '欢迎',
+                  description: `${timeFix()}，欢迎回来`
+                })
+              }, 1000)
               return false
             })
             .catch(() => {
               return false
             })
-          // that.axios.post('/api/accounts/login/', params).then(({ data }) => {
-          //   if (data.code === 0) {
-          //     that.$store.commit('login', data.data)
-          //     // generaMenu()
-          //     // that.$message.success('登录成功')
-          //     that.$router.push({ path: '/' })
-          //     // 延迟 1 秒显示欢迎信息
-          //     setTimeout(() => {
-          //       this.$notification.success({
-          //         message: '欢迎',
-          //         description: `${timeFix()}，欢迎回来`
-          //       })
-          //     }, 1000)
-          //   } else {
-          //     that.$message.error(data.codemsg)
-          //   }
-          // })
         } else {
           return false
         }

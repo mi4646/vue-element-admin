@@ -73,17 +73,17 @@ export const constantRoutes = [
     meta: { title: '仪表盘', icon: 'dashboard', affix: true },
     children: [
       {
-        path: 'dashboard',
+        path: '/dashboard',
         component: () => import('@/views/dashboard/index'),
         name: 'Dashboard',
         meta: { title: '工作台', icon: 'dashboard', affix: true }
-      },
-      {
-        path: 'dashboard',
-        component: () => import('@/views/dashboard/index'),
-        name: 'Dashboard',
-        meta: { title: '分析页', icon: 'dashboard', affix: true }
       }
+      // {
+      //   path: 'dashboard',
+      //   component: () => import('@/views/dashboard/index'),
+      //   name: 'Dashboard',
+      //   meta: { title: '分析页', icon: 'dashboard', affix: true }
+      // }
     ]
   },
 

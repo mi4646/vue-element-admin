@@ -1,15 +1,24 @@
 import Cookies from 'js-cookie'
 
-const TokenKey = 'Admin-Token'
-
-export function getToken() {
-  return Cookies.get(TokenKey)
+export function getToken(key = 'Token') {
+  return Cookies.get(key)
 }
 
-export function setToken(token) {
-  return Cookies.set(TokenKey, token)
+export function setToken(key, value) {
+  return Cookies.set(key, value)
 }
 
+// 清除所有cookie
 export function removeToken() {
-  return Cookies.remove(TokenKey)
+  const cookies = Cookies.get()
+  for (const cookie in cookies) {
+    Cookies.remove(cookie)
+  }
+}
+
+// 判断当前请求是否为登录接口或刷新 Token 接口
+export function isLoginOrRefreshTokenRequest(config) {
+  const LOGIN_URL = '/api/accounts/login/'
+  const REFRESH_TOKEN_URL = '/api/accounts/refresh/'
+  return config.url.includes(LOGIN_URL) || config.url.includes(REFRESH_TOKEN_URL)
 }
