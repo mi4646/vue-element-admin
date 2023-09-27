@@ -356,7 +356,7 @@ export function removeClass(ele, cls) {
   }
 }
 
-import { Solar, Lunar, HolidayUtil } from 'lunar-javascript'
+import { Solar, Lunar } from 'lunar-javascript'
 
 // 获取一周前日期列表
 export function generateLastWeekDates() {
@@ -411,7 +411,7 @@ export function parseData(response) {
   try {
     const jsonData = JSON.parse(data)
     // 判断是否存在"data"属性
-    if (!jsonData.hasOwnProperty('data')) {
+    if (!Object.prototype.hasOwnProperty.call(jsonData, 'data')) {
       console.error('"data"字段不存在')
       return ''
     }

@@ -81,7 +81,6 @@
 
 <script>
 import { timeFix } from '@/utils/index.js'
-// import { generaMenu } from '@/assets/js/menu'
 
 export default {
   data: function() {

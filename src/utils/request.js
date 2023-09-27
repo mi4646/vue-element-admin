@@ -38,7 +38,6 @@ async function refreshToken(refresh_token) {
 async function refreshAuthorizationToken(refresh_token, response) {
   try {
     const { data } = await refreshToken(refresh_token)
-    console.log('data1: ', data)
     if (!data.code) {
       const token = data.token
       setToken('Token', token)
@@ -98,7 +97,6 @@ service.interceptors.response.use(
     return response
   },
   error => {
-    Message({ message: error.message, type: 'error', duration: 5 * 1000 })
     if (error.response.status === 400) {
       Message({ message: 'Bad Request', type: 'error', duration: 5 * 1000 })
       // router.push({ path: '/400' }); // 跳转到自定义的 400 页面
@@ -127,6 +125,8 @@ service.interceptors.response.use(
     } else if (error.response.status === 500) {
       Message({ message: '服务器错误, 系统繁忙', type: 'error', duration: 5 * 1000 })
       // router.replace({ path: '/500' }) // 跳转到自定义的 500 页面
+    } else {
+      Message({ message: error.message, type: 'error', duration: 5 * 1000 })
     }
     return Promise.reject(error)
   }

@@ -40,7 +40,7 @@ const actions = {
         setToken('RefreshToken', data.refresh_token)
         resolve()
       }).catch(error => {
-        console.log(error, '3333333333333333333')
+        console.log(error)
         reject(error)
       })
     })
