@@ -1,5 +1,5 @@
 <template>
-  <page-header-wrapper :breadcrumb="false">
+  <page-header-wrapper :breadcrumb="false" :i18n-render="i18nRender">
     <template v-slot:content>
       <WorkbenchHeader />
     </template>
@@ -195,6 +195,8 @@ export default {
     setTimeout(() => { this.loading = false }, 1500)
   },
   methods: {
+    // 国际化函数的实现
+    i18nRender() {}
     // getActivity () {
     //   this.$http.get('/workplace/activity').then(res => {
     //     this.activities = res.result

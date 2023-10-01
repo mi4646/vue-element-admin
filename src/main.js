@@ -31,6 +31,7 @@ if (process.env.NODE_ENV === 'production') {
   const { mockXHR } = require('../mock')
   mockXHR()
 }
+
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 import ProLayout, { PageHeaderWrapper } from '@ant-design-vue/pro-layout'

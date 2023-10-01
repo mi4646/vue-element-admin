@@ -3,14 +3,14 @@
     <div class="avatar">
       <a-avatar
         size="large"
-        :src="user.avatar"
+        :src="avatar"
       />
     </div>
     <div class="content">
       <div class="content-title">
-        {{ timeFix }}, {{ user.username }},
+        {{ timeFix }}, {{ name }},
         <span class="welcome-text">
-          {{ user.welcome }} &nbsp;
+          {{ welcome }} &nbsp;
         </span>
       </div>
       <span class="heart-sentence">
@@ -49,16 +49,17 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { timeFix, welcome, parseData, getDayInfo } from '@/utils/index.js'
 
 export default {
 
   data() {
     return {
+      welcome: '',
       showIframe: false,
-      weatherUrl: '',
+      weatherUrl: '//i.tianqi.com/index.php?c=code&id=12&icon=1&num=3&site=5',
       timeFix: timeFix(),
-      user: {},
       current: {},
       dayInfo: '',
       heartSentence: '',
@@ -68,7 +69,11 @@ export default {
     }
   },
   computed: {
-    userInfo() { return this.$store.state.userInfo }
+    ...mapGetters([
+      'name',
+      'avatar',
+      'roles'
+    ])
   },
   mounted() {
     this.showIframe = true
@@ -77,14 +82,14 @@ export default {
     // 日期、节日、节气
     // https://6tail.cn/calendar/api.html
     this.dayInfo = getDayInfo()
-    this.getIPAddress()
+    // this.getIPAddress()
   },
   created() {
     // this.getWeatherInfo();
-    this.getChickenSoup()
+    // this.getChickenSoup()
     setTimeout(() => { this.loading = false }, 1500)
-    this.user = this.userInfo
-    this.user.welcome = welcome()
+    // this.user = this.userInfo
+    this.welcome = welcome()
   },
   methods: {
     getWeatherInfo() {
@@ -109,15 +114,15 @@ export default {
       }).catch(error => {
         console.log(error)
       })
+    },
+    getIPAddress() {
+      this.axios.get('https://ip.nf/me.json').then(response => {
+        const data = response.data
+        this.weatherUrl = '//i.tianqi.com/index.php?c=code&id=12&icon=1&num=3&site=5' + '&py=' + data.ip.city
+      }).catch(error => {
+        console.log(error)
+      })
     }
-    // getIPAddress() {
-    //   this.axios.get('https://ip.nf/me.json').then(response => {
-    //     const data = response.data
-    //     this.weatherUrl = '//i.tianqi.com/index.php?c=code&id=12&icon=1&num=3&site=5' + '&py=' + data.ip.city
-    //   }).catch(error => {
-    //     this.weatherUrl = '//i.tianqi.com/index.php?c=code&id=12&icon=1&num=3&site=5'
-    //   })
-    // }
   }
 }
 </script>

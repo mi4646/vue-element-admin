@@ -37,7 +37,7 @@ async function refreshToken(refresh_token) {
 // 换取token并重试
 async function refreshAuthorizationToken(refresh_token, response) {
   try {
-    const { data } = await refreshToken(refresh_token)
+    const data = await refreshToken(refresh_token)
     if (!data.code) {
       const token = data.token
       setToken('Token', token)
@@ -74,27 +74,31 @@ service.interceptors.response.use(
   */
   response => {
     const res = response.data
-    if (res.code === 400001 && !isLoginOrRefreshTokenRequest(response.config)) {
-      const refresh_token = getToken('RefreshToken')
-      if (refresh_token) {
-        if (!isRefreshing) {
-          isRefreshing = true
-          return refreshAuthorizationToken(refresh_token, response).catch(e => {
-            Message({ message: '令牌无效或已过期', type: 'error', duration: 5 * 1000 })
-          })
-        } else {
-          return new Promise(resolve => {
-            requests.push(token => {
-              response.config.headers.Authorization = `${token}`
-              resolve(service(response.config))
+    if (res.code !== 0) {
+      if (res.code === 400001 && !isLoginOrRefreshTokenRequest(response.config)) {
+        const refresh_token = getToken('RefreshToken')
+        if (refresh_token) {
+          if (!isRefreshing) {
+            isRefreshing = true
+            return refreshAuthorizationToken(refresh_token, response).catch(e => {
+              Message({ message: '令牌无效或已过期1', type: 'error', duration: 5 * 1000 })
             })
-          })
+          } else {
+            return new Promise(resolve => {
+              requests.push(token => {
+                response.config.headers.Authorization = `${token}`
+                resolve(service(response.config))
+              })
+            })
+          }
+        } else {
+          Message({ message: '刷新令牌未找到', type: 'error', duration: 5 * 1000 })
         }
-      } else {
-        Message({ message: '刷新令牌未找到', type: 'error', duration: 5 * 1000 })
       }
+      return response
+    } else {
+      return res
     }
-    return response
   },
   error => {
     if (error.response.status === 400) {

@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import { getProject } from '@/api/workbench'
+
 export default {
   data() {
     return {
@@ -56,13 +58,10 @@ export default {
   },
   methods: {
     getProjects() {
-      this.axios.get('/api/accounts/workbench/vue-project/').then(({ data }) => {
-        this.projects = data.data
-      }).catch(error => {
-        this.$notify.error({
-          title: '失败',
-          message: error
-        })
+      getProject().then(response => {
+        this.projects = response.data
+      }).catch(err => {
+        this.$notify.error({ title: '失败', message: err })
       })
     }
   }
