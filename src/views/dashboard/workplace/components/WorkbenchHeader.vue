@@ -51,6 +51,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { timeFix, welcome, parseData, getDayInfo } from '@/utils/index.js'
+import { getJiTang, getDiZHI } from '@/api/workbench'
 
 export default {
 
@@ -82,45 +83,44 @@ export default {
     // 日期、节日、节气
     // https://6tail.cn/calendar/api.html
     this.dayInfo = getDayInfo()
-    // this.getIPAddress()
+    this.getIPAddress()
   },
   created() {
     // this.getWeatherInfo();
-    // this.getChickenSoup()
+    this.getChickenSoup()
     setTimeout(() => { this.loading = false }, 1500)
-    // this.user = this.userInfo
     this.welcome = welcome()
   },
   methods: {
-    getWeatherInfo() {
-      this.axios.get('/api/accounts/workbench/weather/').then(({ data }) => {
-        if (data.code) {
-          this.current = data.current
-        }
-      }).catch(error => {
-        this.$notify.error({
-          title: '失败',
-          message: error
-        })
-      })
-    },
+    // getWeatherInfo() {
+    //   this.axios.get('/api/accounts/workbench/weather/').then(({ data }) => {
+    //     if (data.code) {
+    //       this.current = data.current
+    //     }
+    //   }).catch(error => {
+    //     this.$notify.error({
+    //       title: '失败',
+    //       message: error
+    //     })
+    //   })
+    // },
     // 根据三方接口获取鸡汤
     getChickenSoup() {
-      this.axios.get('jt').then(response => {
+      getJiTang().then(response => {
         const jiTang = parseData(response)
         if (jiTang) {
           this.heartSentence = jiTang
         }
-      }).catch(error => {
-        console.log(error)
+      }).catch(err => {
+        this.$notify.error({ title: '失败', message: err })
       })
     },
     getIPAddress() {
-      this.axios.get('https://ip.nf/me.json').then(response => {
+      getDiZHI().then(response => {
         const data = response.data
         this.weatherUrl = '//i.tianqi.com/index.php?c=code&id=12&icon=1&num=3&site=5' + '&py=' + data.ip.city
-      }).catch(error => {
-        console.log(error)
+      }).catch(err => {
+        this.$notify.error({ title: '失败', message: err })
       })
     }
   }

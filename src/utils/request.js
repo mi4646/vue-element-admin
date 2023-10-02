@@ -10,6 +10,18 @@ const service = axios.create({
   timeout: 5000 // 请求超时
 })
 
+export const service_ip = axios.create({
+  baseURL: 'https://ip.nf/me.json',
+  // withCredentials: true, // 当跨域请求时发送cookie
+  timeout: 5000 // 请求超时
+})
+
+export const service_jt = axios.create({
+
+  baseURL: process.env.VUE_APP_JT_API, // url = base url + request url
+  timeout: 5000 // 请求超时
+})
+
 // 请求拦截器
 service.interceptors.request.use(
   config => {
@@ -30,7 +42,7 @@ service.interceptors.request.use(
 
 async function refreshToken(refresh_token) {
   // 向服务器发送刷新 Token 的请求
-  return service.post('/api/accounts/refresh/', { 'refresh': refresh_token }).then((res) => {
+  return service.post('/accounts/refresh/', { 'refresh': refresh_token }).then((res) => {
     return res
   })
 }
@@ -44,6 +56,10 @@ async function refreshAuthorizationToken(refresh_token, response) {
       response.config.headers.Authorization = `${token}`
       requests.forEach(cb => cb(token))
       requests = []
+      // 判断 url 中是否包含 /api，如果包含则去掉
+      if (response.config.url.includes('/api')) {
+        response.config.url = response.config.url.replace('/api', '')
+      }
       return service(response.config)
     } else {
       return Promise.reject(new Error('Error'))
