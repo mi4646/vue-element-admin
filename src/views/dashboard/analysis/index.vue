@@ -1,11 +1,24 @@
 <template>
   <div class="dashboard-editor-container">
+    <!-- 右上角GitHub图标 -->
     <github-corner class="github-corner" />
 
+    <!-- 顶部4个卡片 -->
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
 
-    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <line-chart :chart-data="lineChartData" />
+    <!-- 折线图 -->
+    <el-row style="background:#fff;padding:16px 16px 16px 16px;margin-bottom:32px;">
+      <a-card
+        style="width: 100%"
+        :tab-list="tabListNoTitle"
+        :active-tab-key="noTitleKey"
+        @tabChange="key => onTabChange(key, 'noTitleKey')"
+      >
+        <p v-if="noTitleKey === 'tab1'">
+          <line-chart :chart-data="lineChartData" />
+        </p>
+        <p v-else>project content</p>
+      </a-card>
     </el-row>
 
     <el-row :gutter="32">
@@ -85,7 +98,19 @@ export default {
   },
   data() {
     return {
-      lineChartData: lineChartData.newVisitis
+      lineChartData: lineChartData.newVisitis,
+      tabListNoTitle: [
+        {
+          key: 'tab1',
+          tab: '流量趋势'
+        },
+        {
+          key: 'tab2',
+          tab: '访问量'
+        }
+      ],
+      noTitleKey: 'tab1'
+
     }
   },
   created() {
@@ -104,6 +129,10 @@ export default {
         .catch(() => {
           return false
         })
+    },
+    // 切换卡片
+    onTabChange(value) {
+      this.noTitleKey = value
     }
   }
 }
