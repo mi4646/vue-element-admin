@@ -88,9 +88,22 @@ export default {
       lineChartData: lineChartData.newVisitis
     }
   },
+  created() {
+    this.getAnalyzes()
+  },
   methods: {
     handleSetLineChartData(type) {
       this.lineChartData = lineChartData[type]
+    },
+    // 获取数据
+    getAnalyzes() {
+      this.$store.dispatch('dashboard/getAnalyzes')
+        .then(() => {
+          return false
+        })
+        .catch(() => {
+          return false
+        })
     }
   }
 }

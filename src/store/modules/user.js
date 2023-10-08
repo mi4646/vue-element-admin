@@ -7,7 +7,8 @@ const state = {
   name: '',
   avatar: '',
   introduction: '',
-  roles: []
+  roles: [],
+  userData: {}
 }
 
 const mutations = {
@@ -25,6 +26,9 @@ const mutations = {
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
+  },
+  SET_USER: (state, data) => {
+    state.userData = data
   }
 }
 
@@ -63,6 +67,7 @@ const actions = {
           reject('getInfo: roles必须是非空数组!')
         }
 
+        commit('SET_USER', data)
         commit('SET_ROLES', roles)
         commit('SET_NAME', username)
         commit('SET_AVATAR', avatar)
@@ -80,6 +85,7 @@ const actions = {
       logout(state.token).then(() => {
         commit('SET_TOKEN', '')
         commit('SET_ROLES', [])
+        commit('SET_USER', {})
         removeToken()
         resetRouter()
 

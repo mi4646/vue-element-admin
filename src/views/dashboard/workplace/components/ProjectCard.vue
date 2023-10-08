@@ -3,11 +3,11 @@
     class="project-list"
     v-bind="$attrs"
     style="margin-bottom: 24px;"
-    :bordered="false"
+    :bordered="bordered"
     title="Vue后台管理系统项目"
     :body-style="{ padding: 0 }"
   >
-    <a slot="extra">全部项目</a>
+    <a slot="extra">更多</a>
     <div>
       <a-card-grid v-for="(item, i) in projects" :key="i" class="project-card-grid">
         <a-card :bordered="false" :body-style="{ padding: 0 }">
@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { getProject } from '@/api/workbench'
+import { getProject } from '@/api/dashboard'
 
 export default {
   data() {

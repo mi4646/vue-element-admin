@@ -15,17 +15,6 @@
       </div>
       <span class="heart-sentence">
         <div>{{ heartSentence }}</div>
-        <!-- <div class="tags">
-          <span style="font-size: 12px; display: flex;"> <a-tag
-              color="#87d068"
-              style="height: 20px;"
-            >宜</a-tag>{{suited}}</span>
-          <span style="font-size: 12px; display: flex;"> <a-tag
-              color="#F45"
-              style="height: 20px;"
-            >忌</a-tag>
-            {{unsuited}}</span>
-        </div> -->
       </span>
     </div>
 
@@ -50,23 +39,22 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { getJiTang, getDiZhi } from '@/api/dashboard'
 import { timeFix, welcome, parseData, getDayInfo } from '@/utils/index.js'
-import { getJiTang, getDiZHI } from '@/api/workbench'
 
 export default {
 
   data() {
     return {
-      welcome: '',
-      showIframe: false,
-      weatherUrl: '//i.tianqi.com/index.php?c=code&id=12&icon=1&num=3&site=5',
-      timeFix: timeFix(),
       current: {},
       dayInfo: '',
-      heartSentence: '',
+      welcome: '',
       suited: '无',
-      unsuited: '无'
-
+      unsuited: '无',
+      weatherUrl: '',
+      heartSentence: '',
+      showIframe: false,
+      timeFix: timeFix()
     }
   },
   computed: {
@@ -86,24 +74,11 @@ export default {
     this.getIPAddress()
   },
   created() {
-    // this.getWeatherInfo();
     this.getChickenSoup()
-    setTimeout(() => { this.loading = false }, 1500)
     this.welcome = welcome()
+    setTimeout(() => { this.loading = false }, 1500)
   },
   methods: {
-    // getWeatherInfo() {
-    //   this.axios.get('/api/accounts/workbench/weather/').then(({ data }) => {
-    //     if (data.code) {
-    //       this.current = data.current
-    //     }
-    //   }).catch(error => {
-    //     this.$notify.error({
-    //       title: '失败',
-    //       message: error
-    //     })
-    //   })
-    // },
     // 根据三方接口获取鸡汤
     getChickenSoup() {
       getJiTang().then(response => {
@@ -116,11 +91,12 @@ export default {
       })
     },
     getIPAddress() {
-      getDiZHI().then(response => {
+      getDiZhi().then(response => {
         const data = response.data
         this.weatherUrl = '//i.tianqi.com/index.php?c=code&id=12&icon=1&num=3&site=5' + '&py=' + data.ip.city
       }).catch(err => {
-        this.$notify.error({ title: '失败', message: err })
+        console.log(err)
+        this.weatherUrl = '//i.tianqi.com/index.php?c=code&id=12&icon=1&num=3&site=5'
       })
     }
   }

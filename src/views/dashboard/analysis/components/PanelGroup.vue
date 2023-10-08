@@ -7,9 +7,9 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            New Visits
+            访问量
           </div>
-          <count-to :start-val="0" :end-val="102400" :duration="2600" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="processedAnalyzesData.accessCount" :duration="2600" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -20,9 +20,9 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Messages
+            用户量
           </div>
-          <count-to :start-val="0" :end-val="81212" :duration="3000" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="processedAnalyzesData.userCount" :duration="3000" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -33,9 +33,9 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Purchases
+            文章量
           </div>
-          <count-to :start-val="0" :end-val="9280" :duration="3200" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="processedAnalyzesData.articleCount" :duration="3200" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -46,9 +46,9 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Shoppings
+            留言量
           </div>
-          <count-to :start-val="0" :end-val="13600" :duration="3600" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="processedAnalyzesData.commentCount" :duration="3600" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -56,11 +56,31 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+/*
+  CountTo 使用 https://blog.csdn.net/u014678583/article/details/121787779
+*/
 import CountTo from 'vue-count-to'
 
 export default {
   components: {
     CountTo
+  },
+  computed: {
+    ...mapGetters([
+      'analyzesData'
+    ]),
+    processedAnalyzesData() {
+      // 对数据进行加工处理
+      const { user_count, access_count, comment_count, article_count } = this.analyzesData
+      const newData = {
+        accessCount: access_count || 0,
+        commentCount: comment_count || 0,
+        userCount: user_count || 0,
+        articleCount: article_count || 0
+      }
+      return newData
+    }
   },
   methods: {
     handleSetLineChartData(type) {

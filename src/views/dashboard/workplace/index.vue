@@ -15,14 +15,16 @@
         >
           <ProjectCard
             :loading="loading"
+            :bordered="true"
             class="enter-y"
           />
 
           <a-card
             :loading="loading"
+            :bordered="true"
             title="动态"
-            :bordered="false"
           >
+            <a slot="extra">更多</a>
             <a-list>
               <a-list-item
                 v-for="(item, index) in activities"
@@ -57,9 +59,10 @@
           :xs="24"
         >
           <a-card
+            :loading="loading"
             title="快速开始 / 便捷导航"
             style="margin-bottom: 24px"
-            :bordered="false"
+            :bordered="true"
             :body-style="{ padding: 0 }"
           >
             <a slot="extra">更多</a>
@@ -89,27 +92,34 @@
             </a-card-grid>
           </a-card>
 
-          <!-- <a-card title="XX 指数" style="margin-bottom: 24px" :loading="radarLoading" :bordered="false"
-            :body-style="{ padding: 0 }">
-            <div style="min-height: 400px;">
-              <radar :data="radarData" />
-            </div>
-          </a-card> -->
-
           <a-card
             class="!my-4 enter-y"
             :loading="loading"
+            title="XX 指数"
+            style="margin-bottom: 24px"
+            :body-style="{ padding: 0 }"
           >
-            <img
-              class="mx-auto xl:h-50 h-30"
-              src="@/assets/svg/illustration.svg"
-            >
+            <div style="min-height: 200px;">
+              <img
+                class="mx-auto xl:h-50 h-30"
+                src="@/assets/svg/illustration.svg"
+              >
+            </div>
           </a-card>
 
-          <!-- <a-card :loading="loading" title="团队" :bordered="false">
+          <a-card
+            :loading="loading"
+            title="友链"
+            :bordered="true"
+            style="margin-bottom: 24px;
+            /* min-height: 400px; */
+            "
+          >
+            <a slot="extra">更多</a>
+            <!-- <img class="image-container"> -->
             <div class="members">
               <a-row>
-                <a-col :span="12" v-for="(item, index) in teams" :key="index">
+                <a-col v-for="(item, index) in teams" :key="index" :span="12">
                   <a>
                     <a-avatar size="small" :src="item.avatar" />
                     <span class="member">{{ item.name }}</span>
@@ -117,7 +127,7 @@
                 </a-col>
               </a-row>
             </div>
-          </a-card> -->
+          </a-card>
         </a-col>
       </a-row>
     </div>
@@ -149,8 +159,111 @@ export default {
       user: {},
       loading: true,
       radarLoading: true,
-      activities: [],
-      teams: [],
+      activities: [{
+        id: 1,
+        user: {
+          nickname: '@name',
+          avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png'
+        },
+        project: {
+          name: '白鹭酱油开发组',
+          action: '更新',
+          event: '番组计划'
+        },
+        time: '2018-08-23 14:47:00'
+      },
+      {
+        id: 1,
+        user: {
+          nickname: '蓝莓酱',
+          avatar: 'https://gw.alipayobjects.com/zos/rmsportal/jZUIxmJycoymBprLOUbT.png'
+        },
+        project: {
+          name: '白鹭酱油开发组',
+          action: '更新',
+          event: '番组计划'
+        },
+        time: '2018-08-23 09:35:37'
+      },
+      {
+        id: 1,
+        user: {
+          nickname: '@name',
+          avatar: '@image(64x64)'
+        },
+        project: {
+          name: '白鹭酱油开发组',
+          action: '创建',
+          event: '番组计划'
+        },
+        time: '2017-05-27 00:00:00'
+      },
+      {
+        id: 1,
+        user: {
+          nickname: '曲丽丽',
+          avatar: '@image(64x64)'
+        },
+        project: {
+          name: '高逼格设计天团',
+          action: '更新',
+          event: '六月迭代'
+        },
+        time: '2018-08-23 14:47:00'
+      },
+      {
+        id: 1,
+        user: {
+          nickname: '@name',
+          avatar: '@image(64x64)'
+        },
+        project: {
+          name: '高逼格设计天团',
+          action: 'created',
+          event: '六月迭代'
+        },
+        time: '2018-08-23 14:47:00'
+      },
+      {
+        id: 1,
+        user: {
+          nickname: '曲丽丽',
+          avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png'
+        },
+        project: {
+          name: '高逼格设计天团',
+          action: 'created',
+          event: '六月迭代'
+        },
+        time: '2018-08-23 14:47:00'
+      }
+      ],
+      teams: [{
+        id: 1,
+        name: '科学搬砖组',
+        avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png'
+      },
+      {
+        id: 2,
+        name: '程序员日常',
+        avatar: 'https://gw.alipayobjects.com/zos/rmsportal/cnrhVkzwxjPwAaCfPbdc.png'
+      },
+      {
+        id: 1,
+        name: '设计天团',
+        avatar: 'https://gw.alipayobjects.com/zos/rmsportal/gaOngJwsRYRaVAuXXcmB.png'
+      },
+      {
+        id: 1,
+        name: '中二少女团',
+        avatar: 'https://gw.alipayobjects.com/zos/rmsportal/ubnKSIfAJTxIgXOKlciN.png'
+      },
+      {
+        id: 1,
+        name: '骗你学计算机',
+        avatar: 'https://gw.alipayobjects.com/zos/rmsportal/WhxKECPNujWoWEFNdnJE.png'
+      }
+      ],
       radarData: [],
       navItems: [
         {
@@ -319,4 +432,14 @@ export default {
       display: none;
     }
   }
+
+.image-container {
+  width: 100%;
+  height: 0;
+  padding-bottom: 60%;
+  background-image: url('../../../assets/svg/Business.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
 </style>
