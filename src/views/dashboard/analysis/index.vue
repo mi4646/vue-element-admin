@@ -9,15 +9,20 @@
     <!-- 折线图 -->
     <el-row style="background:#fff;padding:16px 16px 16px 16px;margin-bottom:32px;">
       <a-card
-        style="width: 100%"
+        style="width: 100%; min-height: 480px;"
         :tab-list="tabListNoTitle"
         :active-tab-key="noTitleKey"
         @tabChange="key => onTabChange(key, 'noTitleKey')"
       >
-        <p v-if="noTitleKey === 'tab1'">
-          <line-chart :chart-data="lineChartData" />
+        <!-- 流量趋势图 -->
+        <p v-if="noTitleKey === 'tab2'">
+          <!-- <line-chart :chart-data="lineChartData" /> -->
+          <bar-chart-2 />
         </p>
-        <p v-else>project content</p>
+        <p v-else>
+          <!-- 访问量折线图  -->
+          <line-chart-2 />
+        </p>
       </a-card>
     </el-row>
 
@@ -56,10 +61,12 @@
 <script>
 import GithubCorner from '@/components/GithubCorner'
 import PanelGroup from './components/PanelGroup'
-import LineChart from './components/LineChart'
+// import LineChart from './components/LineChart'
+import LineChart2 from './components/LineChart2'
 import RaddarChart from './components/RaddarChart'
 import PieChart from './components/PieChart'
 import BarChart from './components/BarChart'
+import BarChart2 from './components/BarChart2'
 import TransactionTable from './components/TransactionTable'
 import TodoList from './components/TodoList'
 import BoxCard from './components/BoxCard'
@@ -88,13 +95,15 @@ export default {
   components: {
     GithubCorner,
     PanelGroup,
-    LineChart,
+    // LineChart,
     RaddarChart,
     PieChart,
     BarChart,
     TransactionTable,
     TodoList,
-    BoxCard
+    BoxCard,
+    LineChart2,
+    BarChart2
   },
   data() {
     return {

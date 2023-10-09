@@ -10,7 +10,7 @@
     <a slot="extra">更多</a>
     <div>
       <a-card-grid v-for="(item, i) in projects" :key="i" class="project-card-grid">
-        <a-card :bordered="false" :body-style="{ padding: 0 }">
+        <a-card :bordered="bordered" :body-style="{ padding: 0 }">
           <a-card-meta>
             <div slot="title" class="card-title">
               <a-avatar size="small" :src="item.cover" />

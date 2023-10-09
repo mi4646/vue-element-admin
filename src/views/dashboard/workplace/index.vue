@@ -14,8 +14,8 @@
           :xs="24"
         >
           <ProjectCard
+            bordered="true"
             :loading="loading"
-            :bordered="true"
             class="enter-y"
           />
 

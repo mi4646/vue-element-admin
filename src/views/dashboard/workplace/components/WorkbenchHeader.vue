@@ -1,40 +1,45 @@
 <template>
-  <div class="page-header-content">
-    <div class="avatar">
-      <a-avatar
-        size="large"
-        :src="avatar"
-      />
-    </div>
-    <div class="content">
-      <div class="content-title">
-        {{ timeFix }}, {{ name }},
-        <span class="welcome-text">
-          {{ welcome }} &nbsp;
+  <a-card
+    :bordered="bordered"
+  >
+    <div class="page-header-content">
+
+      <div class="avatar">
+        <a-avatar
+          size="large"
+          :src="avatar"
+        />
+      </div>
+      <div class="content">
+        <div class="content-title">
+          {{ timeFix }}, {{ name }},
+          <span class="welcome-text">
+            {{ welcome }} &nbsp;
+          </span>
+        </div>
+        <span class="heart-sentence">
+          <div>{{ heartSentence }}</div>
         </span>
       </div>
-      <span class="heart-sentence">
-        <div>{{ heartSentence }}</div>
-      </span>
+      <div class="extra-content">
+        <a-row class="content">
+          <p>{{ dayInfo }}</p>
+          <div class="weather">
+            <iframe
+              :v-if="showIframe"
+              width="100%"
+              scrolling="no"
+              height="60"
+              frameborder="0"
+              allowtransparency="true"
+              :src="weatherUrl"
+            />
+          </div>
+        </a-row>
+      </div>
     </div>
 
-    <div class="extra-content">
-      <a-row class="content">
-        <p>{{ dayInfo }}</p>
-        <div class="weather">
-          <iframe
-            :v-if="showIframe"
-            width="100%"
-            scrolling="no"
-            height="60"
-            frameborder="0"
-            allowtransparency="true"
-            :src="weatherUrl"
-          />
-        </div>
-      </a-row>
-    </div>
-  </div>
+  </a-card>
 </template>
 
 <script>
