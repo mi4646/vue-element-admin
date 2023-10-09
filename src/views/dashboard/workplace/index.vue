@@ -14,14 +14,13 @@
           :xs="24"
         >
           <ProjectCard
-            bordered="true"
             :loading="loading"
             class="enter-y"
           />
 
           <a-card
             :loading="loading"
-            :bordered="true"
+            :bordered="bordered"
             title="动态"
           >
             <a slot="extra">更多</a>
@@ -62,7 +61,7 @@
             :loading="loading"
             title="快速开始 / 便捷导航"
             style="margin-bottom: 24px"
-            :bordered="true"
+            :bordered="bordered"
             :body-style="{ padding: 0 }"
           >
             <a slot="extra">更多</a>
@@ -110,7 +109,7 @@
           <a-card
             :loading="loading"
             title="友链"
-            :bordered="true"
+            :bordered="bordered"
             style="margin-bottom: 24px;
             /* min-height: 400px; */
             "
@@ -155,9 +154,10 @@ export default {
   },
   data() {
     return {
-      avatar: '',
       user: {},
+      avatar: '',
       loading: true,
+      bordered: false,
       radarLoading: true,
       activities: [{
         id: 1,
@@ -341,7 +341,7 @@ export default {
 
 <style lang="less" scoped>
   @import './Workplace.less';
-
+  @body-background:#FF5733; // 修改页面背景色
   .project-list {
     .card-title {
       font-size: 0;

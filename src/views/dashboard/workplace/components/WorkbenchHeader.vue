@@ -1,6 +1,6 @@
 <template>
   <a-card
-    :bordered="bordered"
+    :bordered="false"
   >
     <div class="page-header-content">
 

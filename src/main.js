@@ -2,7 +2,7 @@ import Vue from 'vue'
 
 import Cookies from 'js-cookie'
 
-import 'normalize.css/normalize.css' // a modern alternative to CSS resets
+import 'normalize.css/normalize.css' // CSS重置的现代替代方案
 
 import Element from 'element-ui'
 import './styles/element-variables.scss'
@@ -19,21 +19,25 @@ import './permission' // permission control
 
 import * as filters from './filters' // global filters
 
+import VueCalendarHeatmap from 'vue-calendar-heatmap'
+Vue.use(VueCalendarHeatmap)
+
 /**
- * If you don't want to use mock-server
- * you want to use MockJs for mock api
- * you can execute: mockXHR()
- *
- * Currently MockJs will be used in the production environment,
- * please remove it before going online ! ! !
+*如果你不想使用mock-server
+*你想使用MockJs模拟api
+你可以执行:mockXHR()
+*
+*目前MockJs将在生产环境中使用，
+*请在上网前将其删除!！ ！
  */
-if (process.env.NODE_ENV === 'production') {
-  const { mockXHR } = require('../mock')
-  mockXHR()
-}
+// if (process.env.NODE_ENV === 'production') {
+//   const { mockXHR } = require('../mock')
+//   mockXHR()
+// }
 
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
+import './styles/ant-design-vue-variables.less' // 引入自定义主题文件
 import ProLayout, { PageHeaderWrapper } from '@ant-design-vue/pro-layout'
 Vue.use(Antd)
 Vue.component('pro-layout', ProLayout)
