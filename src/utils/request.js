@@ -2,6 +2,7 @@ import axios from 'axios'
 import { Message } from 'element-ui'
 import store from '@/store'
 import { getToken, setToken, isLoginOrRefreshTokenRequest } from '@/utils/auth'
+import router from '@/router'
 
 // create an axios instance
 const service = axios.create({
@@ -92,8 +93,12 @@ service.interceptors.response.use(
     const res = response.data
     if (res.code !== 0) {
       if (res.code === 400001 && !isLoginOrRefreshTokenRequest(response.config)) {
+        console.log('response url: ', response.config.url)
         const refresh_token = getToken('RefreshToken')
         if (refresh_token) {
+          console.log(response.config.url.includes('/accounts/refresh/'), '11111111111111111111111',
+            !response.config.url.includes('/accounts/refresh/'))
+
           if (!isRefreshing) {
             isRefreshing = true
             return refreshAuthorizationToken(refresh_token, response).catch(e => {
@@ -108,8 +113,11 @@ service.interceptors.response.use(
             })
           }
         } else {
+          console.log('2222222222222222222222222222222229')
           Message({ message: '刷新令牌未找到', type: 'error', duration: 5 * 1000 })
         }
+      } else {
+        return router.push('/login')
       }
       return response
     } else {
@@ -120,7 +128,7 @@ service.interceptors.response.use(
     if (error.response.status === 400) {
       Message({ message: 'Bad Request', type: 'error', duration: 5 * 1000 })
       // router.push({ path: '/400' }); // 跳转到自定义的 400 页面
-    } else if (error.response.status === 401) {
+    } else if (error.response.status === 401 && !error.response.config.url.includes('/accounts/refresh/')) {
       const refresh_token = getToken('RefreshToken')
       if (refresh_token) {
         if (!isRefreshing) {

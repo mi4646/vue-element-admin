@@ -70,13 +70,13 @@ export const constantRoutes = [
     path: '/',
     component: Layout,
     redirect: '/workplace',
-    meta: { title: '仪表盘', icon: 'dashboard', affix: false },
+    meta: { title: '仪表盘', icon: 'el-icon-s-home', affix: false },
     children: [
       {
         path: 'workplace',
         component: () => import('@/views/dashboard/workplace/index'),
         name: 'Workplace',
-        meta: { title: '工作台', icon: 'dashboard', affix: true }
+        meta: { title: '工作台', icon: 'el-icon-s-platform', affix: true }
       },
       {
         path: '/analysis',
