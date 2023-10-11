@@ -7,7 +7,7 @@
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
 
     <!-- 折线图 -->
-    <el-row style="background:#fff;padding:16px 16px 16px 16px;margin-bottom:32px;">
+    <a-row style="background:#fff;padding:16px 16px 16px 16px;margin-bottom:32px;">
       <a-card
         style="width: 100%; min-height: 480px;"
         :tab-list="tabListNoTitle"
@@ -24,44 +24,81 @@
           <line-chart-2 />
         </p>
       </a-card>
-    </el-row>
+    </a-row>
 
-    <el-card style="margin-top: 1.25rem">
-      <div class="e-title">文章贡献统计</div>
-      <div v-loading="loading">
-        <calendar-heatmap :end-date="new Date()" :values="articleStatisticsDTOs" />
-      </div>
-    </el-card>
+    <a-card style="margin-top: 1.25rem" title="文章贡献统计" :loading="loading">
+      <calendar-heatmap />
+    </a-card>
 
-    <!-- <el-row :gutter="32">
-      <el-col :xs="24" :sm="24" :lg="8">
+    <a-row :gutter="32" style="margin-top: 1.25rem">
+      <a-col :span="16">
+        <a-card title="文章浏览量Top10" style="width: 100%; min-height: 450px;">
+          <article-views-bar />
+        </a-card>
+      </a-col>
+
+      <a-col :xs="24" :sm="24" :lg="8">
+        <a-card title="文章分类统计" style="height: 450px">
+          <div class="chart-wrapper">
+            <pie-chart />
+          </div>
+        </a-card>
+      </a-col>
+    </a-row>
+
+    <a-row :gutter="20" style="margin-top: 1.25rem">
+      <a-col :span="16">
+        <a-card title="用户地域分布" style="height: 350px">
+          <div v-loading="loading">
+            <!-- <div class="area-wrapper">
+              <el-radio-group v-model="type">
+                <el-radio :label="1">用户</el-radio>
+                <el-radio :label="2">游客</el-radio>
+              </el-radio-group>
+            </div> -->
+            <!-- <v-chart :options="userAreaMap" /> -->
+          </div>
+        </a-card>
+      </a-col>
+
+      <a-col :xs="24" :sm="24" :lg="8">
+        <a-card title="文章标签统计" style="height: 350px">
+          <div v-loading="loading">
+            <tag-cloud style="margin-top: 1.5rem" :data="tagDTOs" />
+          </div>
+        </a-card>
+      </a-col>
+    </a-row>
+
+    <!-- <a-row :gutter="32">
+      <a-col :xs="24" :sm="24" :lg="8">
         <div class="chart-wrapper">
           <raddar-chart />
         </div>
-      </el-col>
-      <el-col :xs="24" :sm="24" :lg="8">
+      </a-col>
+      <a-col :xs="24" :sm="24" :lg="8">
         <div class="chart-wrapper">
           <pie-chart />
         </div>
-      </el-col>
-      <el-col :xs="24" :sm="24" :lg="8">
+      </a-col>
+      <a-col :xs="24" :sm="24" :lg="8">
         <div class="chart-wrapper">
           <bar-chart />
         </div>
-      </el-col>
-    </el-row> -->
+      </a-col>
+    </a-row> -->
 
-    <!-- <el-row :gutter="8">
-      <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 12}" :xl="{span: 12}" style="padding-right:8px;margin-bottom:30px;">
+    <!-- <a-row :gutter="8">
+      <a-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 12}" :xl="{span: 12}" style="padding-right:8px;margin-bottom:30px;">
         <transaction-table />
-      </el-col>
-      <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom:30px;">
+      </a-col>
+      <a-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom:30px;">
         <todo-list />
-      </el-col>
-      <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom:30px;">
+      </a-col>
+      <a-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom:30px;">
         <box-card />
-      </el-col>
-    </el-row> -->
+      </a-col>
+    </a-row> -->
   </div>
 </template>
 
@@ -71,12 +108,14 @@ import PanelGroup from './components/PanelGroup'
 // import LineChart from './components/LineChart'
 import LineChart2 from './components/LineChart2'
 // import RaddarChart from './components/RaddarChart'
-// import PieChart from './components/PieChart'
+import PieChart from './components/PieChart'
 // import BarChart from './components/BarChart'
 import BarChart2 from './components/BarChart2'
 // import TransactionTable from './components/TransactionTable'
 // import TodoList from './components/TodoList'
 // import BoxCard from './components/BoxCard'
+import CalendarHeatmap from './components/CalendarHeatmap'
+import ArticleViewsBar from './components/ArticleViewsBar'
 
 const lineChartData = {
   newVisitis: {
@@ -104,16 +143,19 @@ export default {
     PanelGroup,
     // LineChart,
     // RaddarChart,
-    // PieChart,
+    PieChart,
     // BarChart,
     // TransactionTable,
     // TodoList,
     // BoxCard,
     LineChart2,
-    BarChart2
+    BarChart2,
+    CalendarHeatmap,
+    ArticleViewsBar
   },
   data() {
     return {
+      loading: false,
       articleStatisticsDTOs: [],
       lineChartData: lineChartData.newVisitis,
       tabListNoTitle: [
@@ -126,7 +168,59 @@ export default {
           tab: '访问量'
         }
       ],
-      noTitleKey: 'tab1'
+      noTitleKey: 'tab1',
+      tagDTOs: [
+        {
+          'id': 36,
+          'tagName': 'Java',
+          'count': null
+        },
+        {
+          'id': 38,
+          'tagName': 'C++',
+          'count': null
+        },
+        {
+          'id': 39,
+          'tagName': 'Docker',
+          'count': null
+        },
+        {
+          'id': 40,
+          'tagName': 'MySQL',
+          'count': null
+        },
+        {
+          'id': 41,
+          'tagName': 'Aurora',
+          'count': null
+        },
+        {
+          'id': 42,
+          'tagName': 'RabbitMQ',
+          'count': null
+        },
+        {
+          'id': 44,
+          'tagName': 'Netty',
+          'count': null
+        },
+        {
+          'id': 46,
+          'tagName': '数据结构',
+          'count': null
+        },
+        {
+          'id': 47,
+          'tagName': '算法',
+          'count': null
+        },
+        {
+          'id': 48,
+          'tagName': '推广',
+          'count': null
+        }
+      ]
 
     }
   },
