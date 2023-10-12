@@ -21,6 +21,10 @@ export default {
     height: {
       type: String,
       default: '350px'
+    },
+    chartData: {
+      type: Array,
+      default: () => [] // 设置默认值为一个空数组
     }
   },
   data() {
@@ -54,7 +58,7 @@ export default {
             }
           }
         },
-        grid: { left: '1%', right: '1%', top: '2  %', bottom: 0, containLabel: true },
+        grid: { left: '1%', right: '1%', top: '2%', bottom: 0, containLabel: true },
         xAxis: {
           type: 'category',
           data: [...new Array(12)].map((_item, index) => `${index + 1}月`)

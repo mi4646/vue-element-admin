@@ -4,7 +4,8 @@
     <github-corner class="github-corner" />
 
     <!-- 顶部4个卡片 -->
-    <panel-group @handleSetLineChartData="handleSetLineChartData" />
+    <panel-group />
+    <!--  <panel-group @handleSetLineChartData="handleSetLineChartData" /> -->
 
     <!-- 折线图 -->
     <a-row style="background:#fff;padding:16px 16px 16px 16px;margin-bottom:32px;">
@@ -21,6 +22,7 @@
         </p>
         <p v-else>
           <!-- 访问量折线图  -->
+          <!-- <line-chart-2 :chart-data="lineChartData" /> -->
           <line-chart-2 />
         </p>
       </a-card>
@@ -48,8 +50,8 @@
 
     <a-row :gutter="20" style="margin-top: 1.25rem">
       <a-col :span="16">
-        <a-card title="用户地域分布" style="height: 350px">
-          <div v-loading="loading">
+        <a-card title="用户地域分布" style="height: 450px">
+          <div :loading="loading">
             <!-- <div class="area-wrapper">
               <el-radio-group v-model="type">
                 <el-radio :label="1">用户</el-radio>
@@ -62,9 +64,9 @@
       </a-col>
 
       <a-col :xs="24" :sm="24" :lg="8">
-        <a-card title="文章标签统计" style="height: 350px">
-          <div v-loading="loading">
-            <tag-cloud style="margin-top: 1.5rem" :data="tagDTOs" />
+        <a-card title="文章标签统计" style="height: 450px">
+          <div :loading="loading">
+            <tag-cloud :data="tagDTOs" />
           </div>
         </a-card>
       </a-col>
@@ -88,15 +90,21 @@
       </a-col>
     </a-row> -->
 
-    <!-- <a-row :gutter="8">
+    <!-- <a-row :gutter="8" style="margin-top: 1.25rem">
       <a-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 12}" :xl="{span: 12}" style="padding-right:8px;margin-bottom:30px;">
-        <transaction-table />
+        <a-card title="最近文章">
+          <transaction-table />
+        </a-card>
       </a-col>
       <a-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom:30px;">
-        <todo-list />
+        <a-card title="消息">
+          <todo-list />
+        </a-card>
       </a-col>
       <a-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom:30px;">
-        <box-card />
+        <a-card title="">
+          <box-card />
+        </a-card>
       </a-col>
     </a-row> -->
   </div>
@@ -116,25 +124,7 @@ import BarChart2 from './components/BarChart2'
 // import BoxCard from './components/BoxCard'
 import CalendarHeatmap from './components/CalendarHeatmap'
 import ArticleViewsBar from './components/ArticleViewsBar'
-
-const lineChartData = {
-  newVisitis: {
-    expectedData: [100, 120, 161, 134, 105, 160, 165],
-    actualData: [120, 82, 91, 154, 162, 140, 145]
-  },
-  messages: {
-    expectedData: [200, 192, 120, 144, 160, 130, 140],
-    actualData: [180, 160, 151, 106, 145, 150, 130]
-  },
-  purchases: {
-    expectedData: [80, 100, 121, 104, 105, 90, 100],
-    actualData: [120, 90, 100, 138, 142, 130, 130]
-  },
-  shoppings: {
-    expectedData: [130, 140, 141, 142, 145, 150, 160],
-    actualData: [120, 82, 91, 154, 162, 140, 130]
-  }
-}
+import TagCloud from '@/components/TagCloud'
 
 export default {
   name: 'DashboardAdmin',
@@ -151,13 +141,13 @@ export default {
     LineChart2,
     BarChart2,
     CalendarHeatmap,
-    ArticleViewsBar
+    ArticleViewsBar,
+    TagCloud
   },
   data() {
     return {
       loading: false,
       articleStatisticsDTOs: [],
-      lineChartData: lineChartData.newVisitis,
       tabListNoTitle: [
         {
           key: 'tab1',
@@ -169,68 +159,13 @@ export default {
         }
       ],
       noTitleKey: 'tab1',
-      tagDTOs: [
-        {
-          'id': 36,
-          'tagName': 'Java',
-          'count': null
-        },
-        {
-          'id': 38,
-          'tagName': 'C++',
-          'count': null
-        },
-        {
-          'id': 39,
-          'tagName': 'Docker',
-          'count': null
-        },
-        {
-          'id': 40,
-          'tagName': 'MySQL',
-          'count': null
-        },
-        {
-          'id': 41,
-          'tagName': 'Aurora',
-          'count': null
-        },
-        {
-          'id': 42,
-          'tagName': 'RabbitMQ',
-          'count': null
-        },
-        {
-          'id': 44,
-          'tagName': 'Netty',
-          'count': null
-        },
-        {
-          'id': 46,
-          'tagName': '数据结构',
-          'count': null
-        },
-        {
-          'id': 47,
-          'tagName': '算法',
-          'count': null
-        },
-        {
-          'id': 48,
-          'tagName': '推广',
-          'count': null
-        }
-      ]
-
+      tagDTOs: [{ 'id': '05023f8da31c4b4187cc6899e2a3aec2', 'name': '镇远县' }, { 'id': '0ef028e5278f4f5ca31f99f1bd22b1cc', 'name': '剑河县' }, { 'id': '1a32ef04d3c548eaa6777abb46da32f2', 'name': '台江县' }, { 'id': '2c26488325bd493687d16315fe0e5fdd', 'name': '岑巩县' }, { 'id': '3a786111828a4b9f89ae9da25753eedd', 'name': '黎平' }, { 'id': '4ed593eed91b4244969995237f5c96c5', 'name': '丹寨县' }, { 'id': '615d2c178f1a47cb8d473823e74f5386', 'name': '凯里市' }, { 'id': '76f652df03db43349272a9aff492b065', 'name': '榕江县' }, { 'id': '8ff29d0d35e548feb945063b34ed9c9b', 'name': '黄平县' }, { 'id': 'a8ac2170008746fdadc05ea461bc5e37', 'name': '雷山县' }]
     }
   },
   created() {
     this.getAnalyzes()
   },
   methods: {
-    handleSetLineChartData(type) {
-      this.lineChartData = lineChartData[type]
-    },
     // 获取数据
     getAnalyzes() {
       this.$store.dispatch('dashboard/getAnalyzes')
