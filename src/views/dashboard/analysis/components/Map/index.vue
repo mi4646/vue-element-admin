@@ -1,5 +1,9 @@
 <!-- 参考：
 https://juejin.cn/post/7153085909196341256
+1.ECharts 菜鸟教程：https://www.runoob.com/echarts/echarts-tutorial.html
+2.Echarts官方示例：https://echarts.apache.org/examples/zh/index.html
+3.样子2018师傅的汉化地图：https://www.cnblogs.com/yang-2018/p/13812892.html
+4.氵易风灬师傅的地图介绍：https://blog.csdn.net/qq_21963133/article/details/80012899
  -->
 <template>
   <div class="mapChart">
@@ -22,23 +26,13 @@ export default {
     },
     height: {
       type: String,
-      default: '350px'
+      default: '420px'
     },
-    // id: {
-    //   type: String,
-    //   default: '',
-    //   required: true
-    // },
     chartData: {
       type: Array,
       default: () => [],
       required: true
     }
-    // title: {
-    //   type: String,
-    //   default: '',
-    //   required: true
-    // }
   },
   data() {
     return {
@@ -75,50 +69,105 @@ export default {
       })
     },
     setOptions(data = []) {
-      this.chart.setOption({
-        tooltip: {
-          trigger: 'item',
-          formatter: '{b}<br/>{c} (人)'
-        },
-        toolbox: {
-          show: true,
-          orient: 'vertical',
-          left: 'right',
-          top: 'center',
-          feature: {
-            dataView: { readOnly: false },
-            restore: {},
-            saveAsImage: {}
-          }
-        },
-        visualMap: {
-          min: 800,
-          max: 50000,
-          text: ['High', 'Low'],
-          realtime: false,
-          calculable: true,
-          left: '5%',
-          bottom: '8%',
-          textStyle: {
-            color: '#fff'
+      this.chart.setOption(
+        {
+          title: { // 标题样式
+            x: 'center',
+            textStyle: {
+              fontSize: 18,
+              color: 'black'
+            }
           },
-          color: '#fff',
-          inRange: {
-            color: ['lightskyblue', 'yellow', 'orangered']
-          }
-        },
-        series: [
-          {
-            type: 'map',
-            map: 'china',
-            label: {
-              show: true,
-              color: 'yellow'
-            },
-            data
-          }
-        ]
-      })
+          tooltip: {
+            trigger: 'item',
+            formatter: function(params) {
+              console.log(params)
+              if (params.name) {
+                return params.name + ' : ' + (isNaN(params.value) ? 0 : parseInt(params.value))
+              }
+            }
+          },
+          visualMap: { // 视觉映射组件
+            left: '2%',
+            bottom: '15%',
+            min: 10,
+            max: 500000,
+            text: ['高', '低'],
+            realtime: false, // 拖拽时，是否实时更新
+            calculable: true, // 是否显示拖拽用的手柄
+            inRange: {
+              color: ['lightskyblue', 'yellow', 'orangered']
+            }
+          },
+          series: [
+            {
+              type: 'map',
+              mapType: 'china',
+              roam: false, // 是否开启鼠标缩放和平移漫游
+              itemStyle: { // 地图区域的多边形 图形样式
+                normal: { // 是图形在默认状态下的样式
+                  label: {
+                    show: true, // 是否显示标签
+                    textStyle: {
+                      color: 'black'
+                    }
+                  }
+                },
+                zoom: 1.5, // 地图缩放比例,默认为1
+                emphasis: { // 是图形在高亮状态下的样式,比如在鼠标悬浮或者图例联动高亮时
+                  label: { show: true }
+                }
+              },
+              top: '3%', // 组件距离容器的距离
+              data: data
+            }
+          ]
+        }
+      //   {
+      //   tooltip: {
+      //     trigger: 'item',
+      //     formatter: '{b}<br/>{c} (人)'
+      //   },
+      //   toolbox: {
+      //     show: true,
+      //     orient: 'vertical',
+      //     left: 'right',
+      //     top: 'center',
+      //     feature: {
+      //       dataView: { readOnly: false },
+      //       restore: {},
+      //       saveAsImage: {}
+      //     }
+      //   },
+      //   visualMap: {
+      //     min: 800,
+      //     max: 50000,
+      //     text: ['High', 'Low'],
+      //     realtime: false,
+      //     calculable: true,
+      //     left: '2%',
+      //     bottom: '3%',
+      //     textStyle: {
+      //       color: '#fff'
+      //     },
+      //     color: '#fff',
+      //     inRange: {
+      //       color: ['lightskyblue', 'yellow', 'orangered']
+      //     }
+      //   },
+      //   series: [
+      //     {
+      //       type: 'map',
+      //       map: 'china',
+      //       label: {
+      //         show: true,
+      //         color: 'yellow'
+      //       },
+      //       data
+      //     }
+      //   ]
+      // }
+      )
     }
   }
 }
