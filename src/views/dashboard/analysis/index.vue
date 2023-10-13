@@ -59,6 +59,7 @@
               </el-radio-group>
             </div> -->
             <!-- <v-chart :options="userAreaMap" /> -->
+            <map-chart :chart-data="areaData" />
           </div>
         </a-card>
       </a-col>
@@ -124,7 +125,8 @@ import BarChart2 from './components/BarChart2'
 // import BoxCard from './components/BoxCard'
 import CalendarHeatmap from './components/CalendarHeatmap'
 import ArticleViewsBar from './components/ArticleViewsBar'
-import TagCloud from '@/components/TagCloud'
+import TagCloud from './components/TagCloud'
+import MapChart from './components/Map'
 
 export default {
   name: 'DashboardAdmin',
@@ -142,7 +144,8 @@ export default {
     BarChart2,
     CalendarHeatmap,
     ArticleViewsBar,
-    TagCloud
+    TagCloud,
+    MapChart
   },
   data() {
     return {
@@ -159,7 +162,8 @@ export default {
         }
       ],
       noTitleKey: 'tab1',
-      tagDTOs: [{ 'id': '05023f8da31c4b4187cc6899e2a3aec2', 'name': '镇远县' }, { 'id': '0ef028e5278f4f5ca31f99f1bd22b1cc', 'name': '剑河县' }, { 'id': '1a32ef04d3c548eaa6777abb46da32f2', 'name': '台江县' }, { 'id': '2c26488325bd493687d16315fe0e5fdd', 'name': '岑巩县' }, { 'id': '3a786111828a4b9f89ae9da25753eedd', 'name': '黎平' }, { 'id': '4ed593eed91b4244969995237f5c96c5', 'name': '丹寨县' }, { 'id': '615d2c178f1a47cb8d473823e74f5386', 'name': '凯里市' }, { 'id': '76f652df03db43349272a9aff492b065', 'name': '榕江县' }, { 'id': '8ff29d0d35e548feb945063b34ed9c9b', 'name': '黄平县' }, { 'id': 'a8ac2170008746fdadc05ea461bc5e37', 'name': '雷山县' }]
+      tagDTOs: [{ 'id': '05023f8da31c4b4187cc6899e2a3aec2', 'name': '镇远县' }, { 'id': '0ef028e5278f4f5ca31f99f1bd22b1cc', 'name': '剑河县' }, { 'id': '1a32ef04d3c548eaa6777abb46da32f2', 'name': '台江县' }, { 'id': '2c26488325bd493687d16315fe0e5fdd', 'name': '岑巩县' }, { 'id': '3a786111828a4b9f89ae9da25753eedd', 'name': '黎平' }, { 'id': '4ed593eed91b4244969995237f5c96c5', 'name': '丹寨县' }, { 'id': '615d2c178f1a47cb8d473823e74f5386', 'name': '凯里市' }, { 'id': '76f652df03db43349272a9aff492b065', 'name': '榕江县' }, { 'id': '8ff29d0d35e548feb945063b34ed9c9b', 'name': '黄平县' }, { 'id': 'a8ac2170008746fdadc05ea461bc5e37', 'name': '雷山县' }],
+      areaData: [{ 'name': '山东', 'value': 37 }, { 'name': '台湾', 'value': 1 }, { 'name': '福建', 'value': 27 }, { 'name': '法国', 'value': 1 }, { 'name': '河北', 'value': 18 }, { 'name': '河南', 'value': 35 }, { 'name': '湖北', 'value': 54 }, { 'name': '湖南', 'value': 34 }, { 'name': '海南', 'value': 5 }, { 'name': '江西', 'value': 27 }, { 'name': '黑龙江', 'value': 15 }, { 'name': '陕西', 'value': 13 }, { 'name': '贵州', 'value': 12 }, { 'name': '江苏', 'value': 81 }, { 'name': '安徽', 'value': 22 }, { 'name': '美国', 'value': 11 }, { 'name': '吉林', 'value': 7 }, { 'name': '甘肃', 'value': 8 }, { 'name': '山西', 'value': 11 }, { 'name': '四川', 'value': 56 }, { 'name': '孟加拉', 'value': 1 }, { 'name': '加拿大', 'value': 2 }, { 'name': '日本', 'value': 2 }, { 'name': '浙江', 'value': 43 }, { 'name': '云南', 'value': 8 }, { 'name': '爱尔兰', 'value': 1 }, { 'name': '辽宁', 'value': 15 }, { 'name': '广东', 'value': 103 }, { 'name': '未知', 'value': 1 }, { 'name': '青海', 'value': 2 }, { 'name': '捷克', 'value': 1 }, { 'name': '新加坡', 'value': 4 }, { 'name': '中国', 'value': 170 }, { 'name': '澳大利亚', 'value': 3 }, { 'name': '内网IP', 'value': 2 }]
     }
   },
   created() {
