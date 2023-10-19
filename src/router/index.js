@@ -5,6 +5,7 @@ Vue.use(Router)
 
 /* Layout */
 import Layout from '@/layout'
+import chinaMap from '@/views/dashboard/echartsmap'
 
 /* *
  * Note: sub-menu only appear when route children.length >= 1
@@ -83,6 +84,13 @@ export const constantRoutes = [
         component: () => import('@/views/dashboard/analysis/index'),
         name: 'Analysis',
         meta: { title: '分析页', icon: 'dashboard', affix: false }
+      },
+      {
+        path: '/echartsmap',
+        component: chinaMap,
+        name: 'Echartsmap',
+        // meta: { title: '中国地图', icon: '@/icons/svg/map.svg', affix: false }
+        meta: { title: '中国地图', icon: 'el-icon-map-location', affix: false }
       }
     ]
   },

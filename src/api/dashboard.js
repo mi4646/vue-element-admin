@@ -28,3 +28,11 @@ export function getDiZhi() {
     method: 'get'
   })
 }
+
+export function getChianMapJson(id) {
+  return request({
+    url: '/static/json/map/',
+    method: 'get',
+    params: { id }
+  })
+}
