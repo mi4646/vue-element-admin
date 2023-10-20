@@ -15,9 +15,9 @@
 
 <script>
 import echarts from 'echarts'
-import { getChinaJson, getProvinceJson, getCityJson, getDistrictJson } from '@/api/dashboard'
 import { mapOption } from '@/config/mapOption'
 import resize from '@/views/dashboard/analysis/components/mixins/resize'
+import { getChinaJson, getProvinceJson, getCityJson, getDistrictJson } from '@/api/dashboard'
 
 export default {
   name: 'ChinaMap',
@@ -346,10 +346,6 @@ export default {
       this.parentInfo.splice(index + 1)
       const data = this.deepTree[index]
 
-      // console.log('this.deepTree: ', this.deepTree)
-      console.log(this.parentInfo, '111111111111111111', index)
-      console.log('data', data)
-
       this.mapDataList = data.mapDataList
       var areaName = data.params.name
       var areaCode = data.params.adcode
@@ -366,6 +362,9 @@ export default {
       this.$emit('update:mapNameList', mapNameList)
       this.$emit('update:mapCodeList', mapCodeList)
       this.renderMap(areaName, this.mapDataList)
+
+      // 根据数组下标，截取缓存的地图数据
+      this.deepTree = this.deepTree.splice(0, index + 1)
     },
 
     // 返回
@@ -387,8 +386,6 @@ export default {
         this.$emit('update:areaLevel', this.areaLevelMap[areaLevel])
         this.$emit('update:mapNameList', mapNameList)
         this.$emit('update:mapCodeList', mapCodeList)
-        console.log('areaName:', areaName)
-        console.log('this.mapDataList:', this.mapDataList)
         this.renderMap(areaName, this.mapDataList)
       }
     }
