@@ -90,9 +90,8 @@ service.interceptors.response.use(
   * 也可以通过HTTP状态码来判断状态
   */
   response => {
-    const res = response.data
-    if (res.code !== 0) {
-      if (res.code === 400001 && !isLoginOrRefreshTokenRequest(response.config)) {
+    if (response.data.code === 400001) {
+      if (!isLoginOrRefreshTokenRequest(response.config)) {
         console.log('response url: ', response.config.url)
         const refresh_token = getToken('RefreshToken')
         if (refresh_token) {
@@ -119,10 +118,8 @@ service.interceptors.response.use(
       } else {
         return router.push('/login')
       }
-      return response
-    } else {
-      return res
     }
+    return response.data
   },
   error => {
     if (error.response.status === 400) {
