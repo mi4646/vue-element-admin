@@ -94,7 +94,26 @@ export const constantRoutes = [
       }
     ]
   },
-
+  {
+    path: '/article',
+    component: Layout,
+    redirect: '/article/article-list',
+    meta: { title: '文章管理', icon: 'documentation' },
+    children: [
+      {
+        path: 'article-list',
+        component: () => import('@/views/article/article/index'),
+        name: 'article-list',
+        meta: { title: '发布编辑', icon: 'iconfont el-icon-myfabiaowenzhang' }
+      },
+      {
+        path: 'article-list',
+        component: () => import('@/views/article/article-list/index'),
+        name: 'article-list',
+        meta: { title: '文章列表', icon: 'iconfont el-icon-mywenzhangliebiao' }
+      }
+    ]
+  },
   {
     path: '/profile',
     component: Layout,

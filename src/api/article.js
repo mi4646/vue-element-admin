@@ -1,5 +1,50 @@
 import request from '@/utils/request'
 
+// 文章列表
+export function PostsList(query) {
+  return request({
+    url: '/article/posts/',
+    method: 'get',
+    params: query
+  })
+}
+
+// 文章修改/编辑
+export function PostsUpdate(data) {
+  return request({
+    url: '/article/posts/',
+    method: 'put',
+    data: data
+  })
+}
+
+// 文章删除
+export function PostsDelete(params) {
+  return request({
+    url: '/article/posts/',
+    method: 'delete',
+    data: params
+  })
+}
+
+// 分类列表
+export function CatesList(query) {
+  return request({
+    url: '/article/categorys/',
+    method: 'get',
+    params: query
+  })
+}
+
+// 标签列表
+export function TagsList(query) {
+  return request({
+    url: '/article/tags/',
+    method: 'get',
+    params: query
+  })
+}
+
 export function fetchList(query) {
   return request({
     url: '/vue-element-admin/article/list',
