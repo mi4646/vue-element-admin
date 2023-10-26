@@ -27,19 +27,6 @@ Vue.use(VueCalendarHeatmap)
 
 import dayjs from 'dayjs'
 
-/**
-*如果你不想使用mock-server
-*你想使用MockJs模拟api
-你可以执行:mockXHR()
-*
-*目前MockJs将在生产环境中使用，
-*请在上网前将其删除!！ ！
- */
-// if (process.env.NODE_ENV === 'production') {
-//   const { mockXHR } = require('../mock')
-//   mockXHR()
-// }
-
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 import './styles/ant-design-vue-variables.less' // 引入自定义主题文件
@@ -67,6 +54,23 @@ Object.keys(filters).forEach(key => {
 })
 
 Vue.config.productionTip = false
+
+/*
+mavonEditor 富文本及代码高亮设置
+文档：https://github.com/hinesboy/mavonEditor
+https://uixor.com/article/1473849675479126017
+*/
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
+import hljs from 'highlight.js'
+import 'highlight.js/styles/github.css' // 根据自己的需求选择样式文件
+Vue.use(mavonEditor)
+Vue.directive('highlight', function(el) {
+  const blocks = el.querySelectorAll('pre code')
+  blocks.forEach((block) => {
+    hljs.highlightBlock(block)
+  })
+})
 
 new Vue({
   el: '#app',

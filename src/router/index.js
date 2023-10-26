@@ -9,23 +9,8 @@ import chinaMap from '@/views/dashboard/echartsmap'
 
 /* *
  * Note: sub-menu only appear when route children.length >= 1
- * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
- *
- * hidden: true                   if set true, item will not show in the sidebar(default is false)
- * alwaysShow: true               if set true, will always show the root menu
- *                                if not set alwaysShow, when item has more than one children route,
- *                                it will becomes nested mode, otherwise not show the root menu
- * redirect: noRedirect           if set noRedirect will no redirect in the breadcrumb
- * name:'router-name'             the name is used by <keep-alive> (must set!!!)
- * meta : {
-    roles: ['admin','editor']    control the page roles (you can set multiple roles)
-    title: 'title'               the name show in sidebar and breadcrumb (recommend set)
-    icon: 'svg-name'/'el-icon-x' the icon show in the sidebar
-    noCache: true                if set true, the page will no be cached(default is false)
-    affix: true                  if set true, the tag will affix in the tags-view
-    breadcrumb: false            if set false, the item will hidden in breadcrumb(default is true)
-    activeMenu: '/example/list'  if set path, the sidebar will highlight the path you set
-  }
+ * Detail see: https://panjiachen.gitee.io/vue-element-admin-site/zh/
+// 当设置 true 的时候该路由不会在侧边栏出现 如401，login等页面，或者如一些编辑页面/edit/1
  */
 
 /* **
@@ -102,15 +87,16 @@ export const constantRoutes = [
     children: [
       {
         path: 'article-list',
-        component: () => import('@/views/article/article/index'),
-        name: 'article-list',
-        meta: { title: '发布编辑', icon: 'iconfont el-icon-myfabiaowenzhang' }
-      },
-      {
-        path: 'article-list',
         component: () => import('@/views/article/article-list/index'),
         name: 'article-list',
         meta: { title: '文章列表', icon: 'iconfont el-icon-mywenzhangliebiao' }
+      },
+      {
+        // path: 'article-editor/:id?',
+        path: 'article-editor/*',
+        component: () => import('@/views/article/article-editor/index'),
+        name: 'article-editor',
+        meta: { title: '文章编辑', icon: 'iconfont el-icon-myfabiaowenzhang' }
       }
     ]
   },

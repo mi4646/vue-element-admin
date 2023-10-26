@@ -294,9 +294,9 @@ export default {
         this.updateIsRestore = false
       })
     },
-    // 文章编辑
-    editArticle() {
-      console.log('点击了编辑')
+    // 文章编辑 跳转到编辑页面
+    editArticle(id) {
+      this.$router.push(`/article/article-editor/${id}`)
     },
     // 文章彻底删除
     deleteArticles(id) {

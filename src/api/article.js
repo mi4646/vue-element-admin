@@ -9,6 +9,15 @@ export function PostsList(query) {
   })
 }
 
+// 文章详情
+export function fetchPostsInfo(id, query) {
+  return request({
+    url: '/article/postsinfo/' + id + '/',
+    method: 'get',
+    params: query
+  })
+}
+
 // 文章修改/编辑
 export function PostsUpdate(data) {
   return request({
@@ -42,6 +51,15 @@ export function TagsList(query) {
     url: '/article/tags/',
     method: 'get',
     params: query
+  })
+}
+
+// 上传附件
+export function UploadAccessory(data) {
+  return request({
+    url: '/article/accessory/',
+    method: 'post',
+    data: data
   })
 }
 

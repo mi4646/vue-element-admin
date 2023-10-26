@@ -435,5 +435,13 @@ export function getDayInfo() {
   const next = lunar.getNextJieQi()
   const nextJieqi = next.getName() + ' ' + next.getSolar().toYmd()
 
-  return `${day} 星期${week}，农历${lunarMonth}${lunarDay}（当前${jieqi}，${nextJieqi} ）`
+  return `${day} 星期${week}，农历${lunarMonth}${lunarDay}（当前${jieqi}，${nextJieqi} )`
+}
+
+// 根据路由获取文章ID
+export function getArticleIdFromPath(route) {
+  const path = route.path
+  const arr = path.split('/')
+  const articleId = arr[arr.length - 1]
+  return articleId
 }
