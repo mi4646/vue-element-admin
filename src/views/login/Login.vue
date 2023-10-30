@@ -104,11 +104,13 @@ export default {
               this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
               // 延迟 1 秒显示欢迎信息
               setTimeout(() => {
-                this.$notification.success({
-                  message: '欢迎',
-                  description: `${timeFix()}，欢迎回来`
+                this.$notify({
+                  title: '欢迎',
+                  duration: 1500,
+                  type: 'success',
+                  message: `${timeFix()}，欢迎回来`
                 })
-              }, 1000)
+              }, 3000)
               return false
             })
             .catch(() => {

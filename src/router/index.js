@@ -92,7 +92,13 @@ export const constantRoutes = [
         meta: { title: '文章列表', icon: 'iconfont el-icon-mywenzhangliebiao' }
       },
       {
-        // path: 'article-editor/:id?',
+        hidden: true,
+        path: 'article-editor',
+        component: () => import('@/views/article/article-editor/index'),
+        name: 'article-editor',
+        meta: { title: '文章编辑', icon: 'iconfont el-icon-myfabiaowenzhang' }
+      },
+      {
         path: 'article-editor/*',
         component: () => import('@/views/article/article-editor/index'),
         name: 'article-editor',

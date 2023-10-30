@@ -11,7 +11,7 @@
       >
         保存草稿
       </el-button>
-      <el-button type="danger" size="medium" style="margin-left: 10px" @click="openModel"> 发布文章 </el-button>
+      <el-button type="danger" size="medium" style="margin-left: 10px" @click="releaseArticle"> 发布文章 </el-button>
     </div>
 
     <!-- 富文本组件 -->
@@ -28,12 +28,16 @@
     />
 
     <!-- 对话框 -->
-    <dialog-table />
+    <dialog-table
+      v-if="article.id"
+      :article="article"
+      :dialog-table-visible="dialogTableVisible"
+    />
   </el-card>
 </template>
 
 <script>
-import { UploadAccessory, fetchPostsInfo } from '@/api/article'
+import { postsCreate, uploadAccessory, fetchPostsInfo } from '@/api/article'
 import DialogTable from './components/DialogTable.vue'
 import { getArticleIdFromPath } from '@/utils/index'
 import * as imageConversion from 'image-conversion'
@@ -51,11 +55,10 @@ export default {
       categorys: [],
       tagList: [],
       cate: null,
-      tag_ids: [],
       article: {
         id: null,
         title: new Date().toLocaleString('zh-CN', { hour12: false }).replaceAll('/', '-'),
-        content: '',
+        content: '111',
         articleCover: '',
         cate_name: null,
         tags: [],
@@ -66,21 +69,13 @@ export default {
       html: ''
     }
   },
-  computed: {
-    tagClass() {
-      return function(item) {
-        const index = this.article.tags.indexOf(item.name)
-        return index !== -1 ? 'tag-item-select' : 'tag-item'
-      }
-    }
-  },
   created() {
     const articleId = getArticleIdFromPath(this.$route)
-    console.log(articleId, '111111111111111111')
-    if (articleId && ['*', ':id'].indexOf(articleId) === -1) {
+    if (articleId && ['*', ':id', 'article-editor'].indexOf(articleId) === -1) {
       fetchPostsInfo(articleId, {}).then((response) => {
         if (!response.code) {
           this.article = response.data
+          console.log(this.article, 'article')
         } else {
           this.$message.error({ message: response.codemsg })
         }
@@ -91,44 +86,7 @@ export default {
       console.log('使用ctrl+s保存在浏览器的数据')
     }
   },
-  destroyed() {
-    this.autoSaveArticle()
-  },
   methods: {
-    // 自动保存文章
-    autoSaveArticle() {
-      if (
-        this.autoSave &&
-        this.article.title.trim() !== '' &&
-        this.article.content.trim() !== '' &&
-        this.article.id != null
-      ) {
-        const param = {
-          status: 1,
-          ids: [this.article.id],
-          slug: this.article.slug,
-          cate: this.article.cate,
-          title: this.article.title,
-          is_top: this.article.is_top,
-          tag_ids: this.tag_ids,
-          content: this.article.content,
-          is_essence: this.article.is_essence
-        }
-        this.axios.put('/api/article/posts/', param).then(({ data }) => {
-          if (data.code === 0) {
-            this.$notify.success({
-              title: '成功',
-              message: '自动保存成功'
-            })
-          } else {
-            this.$notify.error({
-              title: '失败',
-              message: '自动保存失败'
-            })
-          }
-        })
-      }
-    },
     // 文章保存为草稿
     saveArticleDraft() {
       if (this.article.title.trim() === '') {
@@ -140,35 +98,28 @@ export default {
         return false
       }
       this.article.status = 2
-      this.axios.post('/api/article/posts/', this.article).then(({ data }) => {
-        if (data.code === 0) {
-          if (this.article.id === null) {
-            this.$store.commit('removeTab', '发布文章')
-          } else {
-            this.$store.commit('removeTab', '修改文章')
-          }
-          sessionStorage.removeItem('article')
-          this.$router.push({ path: '/article-list' })
-          this.$notify.success({
-            title: '成功',
-            message: '保存草稿成功'
-          })
+      postsCreate(this.article).then((response) => {
+        if (response.code === 0) {
+          this.$router.push({ path: '/article/article-list' })
+          this.$message.success({ message: '保存草稿成功' })
         } else {
-          this.$notify.error({
-            title: '失败',
-            message: '保存草稿失败'
-          })
+          this.$message.error({ message: response.codemsg })
         }
       }).catch(error => {
-        this.$notify.error({ title: '失败', message: error })
-      }).finally(() => {
-        this.autoSave = false
+        this.$message.error({ message: error })
       })
-      console.log('保存为草稿')
     },
     // 文章发布
-    openModel() {
-      console.log('文章发布')
+    releaseArticle() {
+      if (this.article.title.trim() === '') {
+        this.$message.error('文章标题不能为空')
+        return false
+      }
+      if (this.article.content.trim() === '') {
+        this.$message.error('文章内容不能为空')
+        return false
+      }
+      this.dialogTableVisible = true
     },
     // 上传图片
     uploadImg(pos, file) {
@@ -179,7 +130,7 @@ export default {
       var formData = new FormData()
       if (file.size / 1024 < UPLOAD_SIZE) {
         formData.append('file', file)
-        UploadAccessory(formData).then((response) => {
+        uploadAccessory(formData).then((response) => {
           this.$refs.md.$img2Url(pos, response.data)
         }).catch(error => {
           this.$message.error({ message: error })
@@ -187,7 +138,7 @@ export default {
       } else {
         imageConversion.compressAccurately(file, UPLOAD_SIZE).then((res) => {
           formData.append('file', new window.File([res], file.name, { type: file.type }))
-          UploadAccessory(formData).then((response) => {
+          uploadAccessory(formData).then((response) => {
             this.$refs.md.$img2Url(pos, window.config.host + response.data.image)
           }).catch(error => {
             this.$message.error({ message: error })
@@ -233,37 +184,4 @@ export default {
   color: #f56c6c;
 }
 
-.tag-item {
-  margin-right: 1rem;
-  margin-bottom: 1rem;
-  cursor: pointer;
-}
-
-.tag-item-select {
-  margin-right: 1rem;
-  margin-bottom: 1rem;
-  cursor: not-allowed;
-  color: #ccccd8 !important;
-}
-
-.category-item {
-  cursor: pointer;
-  padding: 0.6rem 0.5rem;
-}
-
-.category-item:hover {
-  background-color: #f0f9eb;
-  color: #67c23a;
-}
-
-.popover-title {
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.popover-container {
-  margin-top: 1rem;
-  height: 260px;
-  overflow-y: auto;
-}
 </style>

@@ -86,26 +86,36 @@
 
     <el-table
       v-loading="loading"
-      border
+      stripe
       :data="articlesList"
       @selection-change="selectionChange"
     >
-      <el-table-column type="selection" width="55" />
-      <!-- <el-table-column prop="articleCover" label="文章封面" width="180" align="center">
+      <el-table-column type="selection" width="50" align="center" />
+      <el-table-column prop="index" label="序号" width="80" align="center">
         <template slot-scope="scope">
-          <el-image class="article-cover" :src="scope.row.articleCover
-              ? scope.row.articleCover
-              : 'https://static.talkxj.com/articles/c5cc2b2561bd0e3060a500198a4ad37d.png'
-            " />
-          <i v-if="scope.row.status == 1" class="iconfont el-icon-mygongkai article-status-icon" />
-          <i v-if="scope.row.status == 2" class="iconfont el-icon-mymima article-status-icon" />
-          <i v-if="scope.row.status == 3" class="iconfont el-icon-mycaogaoxiang article-status-icon" />
+          {{ (scope.$index+1)+(current-1)*size }}
         </template>
-      </el-table-column> -->
+      </el-table-column>
+      <el-table-column
+        prop="create_date"
+        label="创建时间"
+        width="130"
+        align="center"
+      >
+        <template slot-scope="scope">
+          <i class="el-icon-time" style="margin-right: 5px" />
+          {{ scope.row.create_date | date }}
+        </template>
+      </el-table-column>
       <el-table-column prop="title" label="标题" align="center" />
       <!-- <el-table-column prop="title" label="别名" align="center" /> -->
       <!-- <el-table-column prop="summary" label="文章概要" align="center" /> -->
-      <el-table-column prop="cate__name" label="分类" width="110" align="center" />
+      <el-table-column prop="cate__name" label="分类" width="110" align="center">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.cate__name" type="success">{{ scope.row.cate__name }}</el-tag>
+        </template>
+      </el-table-column>
+
       <el-table-column prop="tags" label="标签" width="170" align="center">
         <template slot-scope="scope">
           <el-tag v-for="item of scope.row.tags" :key="item.id" style="margin-right: 0.2rem; margin-top: 0.2rem">
@@ -136,12 +146,6 @@
           </el-tag>
         </template>
       </el-table-column> -->
-      <el-table-column prop="create_date" label="创建时间" width="130" align="center">
-        <template slot-scope="scope">
-          <i class="el-icon-time" style="margin-right: 5px" />
-          {{ scope.row.create_date | date }}
-        </template>
-      </el-table-column>
       <el-table-column prop="is_top" label="置顶" width="80" align="center">
         <template slot-scope="scope">
           <el-switch
@@ -206,11 +210,11 @@
             title="确定彻底删除吗？"
             @onConfirm="deleteArticles(scope.row.id)"
           >
-            <el-button
+            <el-buttonPostsUpdate
               slot="reference"
               size="mini"
               type="danger"
-            > 删除 </el-button>
+            > 删除 </el-buttonPostsUpdate>
           </el-popconfirm>
         </template>
       </el-table-column>
@@ -221,7 +225,7 @@
 <script>
 import HeadButton from './HeadButton.vue'
 
-import { PostsUpdate, PostsDelete } from '@/api/article'
+import { postsUpdate, postsDelete } from '@/api/article'
 export default {
   name: 'ArticleTable',
   components: {
@@ -235,6 +239,14 @@ export default {
     isDelete: {
       type: Number,
       default: 0
+    },
+    current: {
+      type: Number,
+      default: 1
+    },
+    size: {
+      type: Number,
+      default: 10
     },
     // 文章列表数据
     articlesList: {
@@ -281,7 +293,7 @@ export default {
         param.ids = this.articleIds
       }
       param.status = isDelete === 0 ? 3 : 2
-      PostsUpdate(param).then((response) => {
+      postsUpdate(param).then((response) => {
         if (response.code === 0) {
           this.$parent.$parent.listArticles()
         } else {
@@ -306,7 +318,7 @@ export default {
       } else {
         params = { ids: [id] }
       }
-      PostsDelete(params).then((response) => {
+      postsDelete(params).then((response) => {
         if (response.code === 0) {
           this.$parent.$parent.listArticles()
         } else {
@@ -324,7 +336,7 @@ export default {
       params.ids = [article.id]
       params.is_top = article.is_top
       params.is_essence = article.is_essence
-      PostsUpdate(params).then((response) => {
+      postsUpdate(params).then((response) => {
         if (response.code === 0) {
           this.$parent.$parent.listArticles()
         } else {

@@ -71,8 +71,20 @@ export default {
       this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
-      await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      try {
+        await this.$confirm('确认要注销吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+
+        // 确认删除后执行的逻辑
+        await this.$store.dispatch('user/logout')
+        this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      } catch (error) {
+        // 取消删除后执行的逻辑
+        this.$message({ type: 'info', message: '已取消' })
+      }
     }
   }
 }

@@ -31,6 +31,8 @@
       :is-delete="isDelete"
       :categories="categories"
       :tags="tags"
+      :current="current"
+      :size="size"
     />
 
     <!-- 分页组件 -->
@@ -51,7 +53,7 @@
 
 <script>
 import ArticleTable from './components/ArticleTable.vue'
-import { PostsList, CatesList, TagsList } from '@/api/article'
+import { postsList, catesList, tagsList } from '@/api/article'
 
 export default {
   components: {
@@ -93,7 +95,7 @@ export default {
   methods: {
     // 文章列表接口
     listArticles() {
-      PostsList(
+      postsList(
         {
           page: this.current,
           p_size: this.size,
@@ -153,7 +155,7 @@ export default {
     },
     // 分类列表
     listCategories() {
-      CatesList().then((response) => {
+      catesList().then((response) => {
         if (response.code === 0) {
           this.categories = response.data
         } else {
@@ -165,7 +167,7 @@ export default {
     },
     // 标签列表
     listTags() {
-      TagsList().then((response) => {
+      tagsList().then((response) => {
         if (response.code === 0) {
           this.tags = response.data
         } else {

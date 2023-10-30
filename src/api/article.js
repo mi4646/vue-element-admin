@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 // 文章列表
-export function PostsList(query) {
+export function postsList(query) {
   return request({
     url: '/article/posts/',
     method: 'get',
@@ -18,8 +18,17 @@ export function fetchPostsInfo(id, query) {
   })
 }
 
+// 文章添加
+export function postsCreate(data) {
+  return request({
+    url: '/article/posts/',
+    method: 'post',
+    data: data
+  })
+}
+
 // 文章修改/编辑
-export function PostsUpdate(data) {
+export function postsUpdate(data) {
   return request({
     url: '/article/posts/',
     method: 'put',
@@ -28,7 +37,7 @@ export function PostsUpdate(data) {
 }
 
 // 文章删除
-export function PostsDelete(params) {
+export function postsDelete(params) {
   return request({
     url: '/article/posts/',
     method: 'delete',
@@ -37,7 +46,7 @@ export function PostsDelete(params) {
 }
 
 // 分类列表
-export function CatesList(query) {
+export function catesList(query) {
   return request({
     url: '/article/categorys/',
     method: 'get',
@@ -46,7 +55,7 @@ export function CatesList(query) {
 }
 
 // 标签列表
-export function TagsList(query) {
+export function tagsList(query) {
   return request({
     url: '/article/tags/',
     method: 'get',
@@ -55,50 +64,10 @@ export function TagsList(query) {
 }
 
 // 上传附件
-export function UploadAccessory(data) {
+export function uploadAccessory(data) {
   return request({
     url: '/article/accessory/',
     method: 'post',
     data: data
-  })
-}
-
-export function fetchList(query) {
-  return request({
-    url: '/vue-element-admin/article/list',
-    method: 'get',
-    params: query
-  })
-}
-
-export function fetchArticle(id) {
-  return request({
-    url: '/vue-element-admin/article/detail',
-    method: 'get',
-    params: { id }
-  })
-}
-
-export function fetchPv(pv) {
-  return request({
-    url: '/vue-element-admin/article/pv',
-    method: 'get',
-    params: { pv }
-  })
-}
-
-export function createArticle(data) {
-  return request({
-    url: '/vue-element-admin/article/create',
-    method: 'post',
-    data
-  })
-}
-
-export function updateArticle(data) {
-  return request({
-    url: '/vue-element-admin/article/update',
-    method: 'post',
-    data
   })
 }
