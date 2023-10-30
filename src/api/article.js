@@ -45,15 +45,6 @@ export function postsDelete(params) {
   })
 }
 
-// 分类列表
-export function catesList(query) {
-  return request({
-    url: '/article/categorys/',
-    method: 'get',
-    params: query
-  })
-}
-
 // 标签列表
 export function tagsList(query) {
   return request({

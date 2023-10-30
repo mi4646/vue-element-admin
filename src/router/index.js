@@ -86,24 +86,33 @@ export const constantRoutes = [
     meta: { title: '文章管理', icon: 'documentation' },
     children: [
       {
+        path: 'categories',
+        component: () => import('@/views/category/index'),
+        name: 'article-editor',
+        meta: { title: '分类管理', icon: 'iconfont el-icon-myfenlei' }
+      },
+      {
         path: 'article-list',
         component: () => import('@/views/article/article-list/index'),
         name: 'article-list',
         meta: { title: '文章列表', icon: 'iconfont el-icon-mywenzhangliebiao' }
       },
       {
-        hidden: true,
+
         path: 'article-editor',
         component: () => import('@/views/article/article-editor/index'),
         name: 'article-editor',
-        meta: { title: '文章编辑', icon: 'iconfont el-icon-myfabiaowenzhang' }
+        meta: { title: '文章添加', icon: 'iconfont el-icon-myfabiaowenzhang' }
       },
       {
-        path: 'article-editor/*',
+        //   path: 'article-editor/*',
+        path: 'article-editor/:id',
+        hidden: true,
         component: () => import('@/views/article/article-editor/index'),
         name: 'article-editor',
         meta: { title: '文章编辑', icon: 'iconfont el-icon-myfabiaowenzhang' }
       }
+
     ]
   },
   {
