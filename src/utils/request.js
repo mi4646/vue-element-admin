@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
 import store from '@/store'
-import { getToken, setToken, isLoginOrRefreshTokenRequest } from '@/utils/auth'
+import { getToken, setToken, isLoginOrRefreshTokenRequest, removeToken } from '@/utils/auth'
 import router from '@/router'
 
 // create an axios instance
@@ -57,10 +57,6 @@ async function refreshAuthorizationToken(refresh_token, response) {
       response.config.headers.Authorization = `${token}`
       requests.forEach(cb => cb(token))
       requests = []
-      // 判断 url 中是否包含 /api，如果包含则去掉
-      if (response.config.url.includes('/api')) {
-        response.config.url = response.config.url.replace('/api', '')
-      }
       return service(response.config)
     } else {
       return Promise.reject(new Error('Error'))
@@ -90,38 +86,13 @@ service.interceptors.response.use(
   * 也可以通过HTTP状态码来判断状态
   */
   response => {
-    if (response.data.code === 400001) {
-      if (!isLoginOrRefreshTokenRequest(response.config)) {
-        console.log('response url: ', response.config.url)
-        const refresh_token = getToken('RefreshToken')
-        if (refresh_token) {
-          console.log(response.config.url.includes('/accounts/refresh/'), '11111111111111111111111',
-            !response.config.url.includes('/accounts/refresh/'))
-
-          if (!isRefreshing) {
-            isRefreshing = true
-            return refreshAuthorizationToken(refresh_token, response).catch(e => {
-              Message({ message: '令牌无效或已过期1', type: 'error', duration: 5 * 1000 })
-            })
-          } else {
-            return new Promise(resolve => {
-              requests.push(token => {
-                response.config.headers.Authorization = `${token}`
-                resolve(service(response.config))
-              })
-            })
-          }
-        } else {
-          console.log('2222222222222222222222222222222229')
-          Message({ message: '刷新令牌未找到', type: 'error', duration: 5 * 1000 })
-        }
-      } else {
-        return router.push('/login')
-      }
-    }
     return response.data
   },
   error => {
+    // 判断 url 中是否包含 /api，如果包含则去掉
+    if (error.response.config.url.includes('/api')) {
+      error.response.config.url = error.response.config.url.replace('/api', '')
+    }
     if (error.response.status === 400) {
       Message({ message: 'Bad Request', type: 'error', duration: 5 * 1000 })
       // router.push({ path: '/400' }); // 跳转到自定义的 400 页面
@@ -132,10 +103,14 @@ service.interceptors.response.use(
           isRefreshing = true
           return refreshAuthorizationToken(refresh_token, error.response).catch(e => {
             Message({ message: '令牌无效或已过期', type: 'error', duration: 5 * 1000 })
+            removeToken() // 删除token
+            router.replace({ path: '/login' })
+            return error.response.data
           })
         } else {
           return new Promise(resolve => {
             requests.push(token => {
+              console.log(error.response.config, 'error')
               error.response.config.headers.Authorization = `${token}`
               resolve(service(error.response.config))
             })
@@ -145,6 +120,7 @@ service.interceptors.response.use(
         Message({ message: '刷新令牌未找到', type: 'error', duration: 5 * 1000 })
       }
     } else if (error.response.status === 404) {
+      console.log(error.response, 'error')
       Message({ message: 'Not Found', type: 'error', duration: 5 * 1000 })
       // router.replace({ path: '/404' }) // 跳转到自定义的 404 页面
     } else if (error.response.status === 500) {
