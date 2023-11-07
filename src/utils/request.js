@@ -36,7 +36,6 @@ service.interceptors.request.use(
   },
   error => {
     // 做一些请求错误
-    console.log(error) // for debug
     return Promise.reject(error)
   }
 )
@@ -110,7 +109,6 @@ service.interceptors.response.use(
         } else {
           return new Promise(resolve => {
             requests.push(token => {
-              console.log(error.response.config, 'error')
               error.response.config.headers.Authorization = `${token}`
               resolve(service(error.response.config))
             })
@@ -120,7 +118,6 @@ service.interceptors.response.use(
         Message({ message: '刷新令牌未找到', type: 'error', duration: 5 * 1000 })
       }
     } else if (error.response.status === 404) {
-      console.log(error.response, 'error')
       Message({ message: 'Not Found', type: 'error', duration: 5 * 1000 })
       // router.replace({ path: '/404' }) // 跳转到自定义的 404 页面
     } else if (error.response.status === 500) {

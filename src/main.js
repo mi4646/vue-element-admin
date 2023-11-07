@@ -25,8 +25,6 @@ import * as filters from './filters' // global filters
 import VueCalendarHeatmap from 'vue-calendar-heatmap'
 Vue.use(VueCalendarHeatmap)
 
-import dayjs from 'dayjs'
-
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 import './styles/ant-design-vue-variables.less' // 引入自定义主题文件
@@ -41,14 +39,18 @@ Vue.use(Element, {
   // locale: enLang // 如果使用中文，无需设置，请删除
 })
 
+/*
+时间日期处理库
+*/
+import dayjs from 'dayjs'
 Vue.filter('date', function(value, formatStr = 'YYYY-MM-DD') {
   return dayjs(value).format(formatStr)
 })
-
 Vue.filter('dateTime', function(value, formatStr = 'YYYY-MM-DD HH:mm:ss') {
   return dayjs(value).format(formatStr)
 })
-// register global utility filters
+
+// 注册全局实用程序过滤器
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })

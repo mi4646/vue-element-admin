@@ -111,7 +111,7 @@ export default {
           this.articlesList = response.data
           this.count = response.total_count
         } else {
-          this.$message.error({ message: response.message })
+          this.$message.error({ message: response.codemsg })
         }
       }).catch(error => {
         this.$message.error({ message: error })
@@ -160,7 +160,7 @@ export default {
         if (response.code === 0) {
           this.categories = response.data
         } else {
-          this.$message.error({ message: response.message })
+          this.$message.error({ message: response.codemsg })
         }
       }).catch(error => {
         this.$message.error({ message: error })
@@ -172,7 +172,7 @@ export default {
         if (response.code === 0) {
           this.tags = response.data
         } else {
-          this.$message.error({ message: response.message })
+          this.$message.error({ message: response.codemsg })
         }
       }).catch(error => {
         this.$message.error({ message: error })

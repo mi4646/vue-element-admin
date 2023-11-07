@@ -99,15 +99,15 @@
       <el-table-column
         prop="create_date"
         label="创建时间"
-        width="130"
+        width="250"
         align="center"
       >
         <template slot-scope="scope">
           <i class="el-icon-time" style="margin-right: 5px" />
-          {{ scope.row.create_date | date }}
+          {{ scope.row.create_date | dateTime }}
         </template>
       </el-table-column>
-      <el-table-column prop="title" label="标题" align="center" />
+      <el-table-column prop="title" label="标题" width="300" align="center" />
       <!-- <el-table-column prop="title" label="别名" align="center" /> -->
       <!-- <el-table-column prop="summary" label="文章概要" align="center" /> -->
       <el-table-column prop="cate__name" label="分类" width="110" align="center">
@@ -116,7 +116,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="tags" label="标签" width="170" align="center">
+      <el-table-column prop="tags" label="标签" width="300" align="center">
         <template slot-scope="scope">
           <el-tag v-for="item of scope.row.tags" :key="item.id" style="margin-right: 0.2rem; margin-top: 0.2rem">
             {{ item.name }}
