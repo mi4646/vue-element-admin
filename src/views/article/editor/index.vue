@@ -58,7 +58,7 @@ export default {
       article: {
         id: null,
         title: new Date().toLocaleString('zh-CN', { hour12: false }).replaceAll('/', '-'),
-        content: '111',
+        content: '',
         articleCover: '',
         cate_name: null,
         tags: [],

@@ -93,14 +93,14 @@ export const constantRoutes = [
       },
       {
         path: 'article-list',
-        component: () => import('@/views/article/article-list/index'),
+        component: () => import('@/views/article/list/index'),
         name: 'article-list',
         meta: { title: '文章列表', icon: 'iconfont el-icon-mywenzhangliebiao' }
       },
       {
 
         path: 'article-editor',
-        component: () => import('@/views/article/article-editor/index'),
+        component: () => import('@/views/article/editor/index'),
         name: 'article-editor',
         meta: { title: '文章添加', icon: 'iconfont el-icon-myfabiaowenzhang' }
       },
@@ -108,7 +108,7 @@ export const constantRoutes = [
         //   path: 'article-editor/*',
         path: 'article-editor/:id',
         hidden: true,
-        component: () => import('@/views/article/article-editor/index'),
+        component: () => import('@/views/article/editor/index'),
         name: 'article-editor',
         meta: { title: '文章编辑', icon: 'iconfont el-icon-myfabiaowenzhang' }
       }
