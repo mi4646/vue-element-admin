@@ -88,8 +88,14 @@ export const constantRoutes = [
       {
         path: 'categories',
         component: () => import('@/views/category/index'),
-        name: 'article-editor',
+        name: 'categories',
         meta: { title: '分类管理', icon: 'iconfont el-icon-myfenlei' }
+      },
+      {
+        path: 'tags',
+        component: () => import('@/views/tag/index'),
+        name: 'tags',
+        meta: { title: '标签管理', icon: 'iconfont el-icon-myicontag' }
       },
       {
         path: 'article-list',

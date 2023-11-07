@@ -45,15 +45,6 @@ export function postsDelete(params) {
   })
 }
 
-// 标签列表
-export function tagsList(query) {
-  return request({
-    url: '/article/tags/',
-    method: 'get',
-    params: query
-  })
-}
-
 // 上传附件
 export function uploadAccessory(data) {
   return request({

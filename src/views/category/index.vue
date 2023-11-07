@@ -189,7 +189,7 @@ import { catesList, catesCreate, catesUpdate, catesDelete } from '@/api/category
 export default {
   data() {
     return {
-      clearParentVisible: false,
+      // clearParentVisible: false,
       categoryOptions: [],
       categorys: [],
       isDelete: false,
@@ -208,7 +208,7 @@ export default {
       current: 1,
       size: 10,
       count: 0,
-      clearParent: 'false',
+      // clearParent: 'false',
 
       menuIds: [], // 选中数据的ids 做回显用
       selectAllClick: false, // table的全选
@@ -221,12 +221,12 @@ export default {
       if (!this.keywords) {
         this.searchCategories()
       }
-    },
-    clearParent(v) {
-      if (v === 'true') {
-        this.clearParentVisible = true
-      }
     }
+    // clearParent(v) {
+    //   if (v === 'true') {
+    //     this.clearParentVisible = true
+    //   }
+    // }
   },
   created() {
     this.current = 1

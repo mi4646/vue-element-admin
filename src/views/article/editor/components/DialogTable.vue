@@ -123,8 +123,9 @@
 </template>
 
 <script>
-import { tagsList, postsCreate, postsUpdate } from '@/api/article'
+import { postsCreate, postsUpdate } from '@/api/article'
 import { catesList } from '@/api/category'
+import { tagsList } from '@/api/tags'
 
 export default {
   name: 'DialogTable',

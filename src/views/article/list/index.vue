@@ -53,9 +53,9 @@
 
 <script>
 import ArticleTable from './components/ArticleTable.vue'
-import { postsList, tagsList } from '@/api/article'
+import { postsList } from '@/api/article'
 import { catesList } from '@/api/category'
-
+import { tagsList } from '@/api/tags'
 export default {
   components: {
     ArticleTable
