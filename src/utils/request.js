@@ -103,7 +103,7 @@ service.interceptors.response.use(
           return refreshAuthorizationToken(refresh_token, error.response).catch(e => {
             Message({ message: '令牌无效或已过期', type: 'error', duration: 5 * 1000 })
             removeToken() // 删除token
-            router.replace({ path: '/login' })
+            router.push(`/login`)
             return error.response.data
           })
         } else {
@@ -116,13 +116,14 @@ service.interceptors.response.use(
         }
       } else {
         Message({ message: '刷新令牌未找到', type: 'error', duration: 5 * 1000 })
+        router.push(`/login`)
       }
     } else if (error.response.status === 404) {
       Message({ message: 'Not Found', type: 'error', duration: 5 * 1000 })
-      // router.replace({ path: '/404' }) // 跳转到自定义的 404 页面
+      // router.push({ path: '/404' }) // 跳转到自定义的 404 页面
     } else if (error.response.status === 500) {
       Message({ message: '服务器错误, 系统繁忙', type: 'error', duration: 5 * 1000 })
-      // router.replace({ path: '/500' }) // 跳转到自定义的 500 页面
+      // router.push({ path: '/500' }) // 跳转到自定义的 500 页面
     } else {
       Message({ message: error.message, type: 'error', duration: 5 * 1000 })
     }
