@@ -64,7 +64,7 @@ export const asyncRoutes = [
     path: '/',
     component: Layout,
     redirect: '/workplace',
-    meta: { title: '仪表盘', icon: 'el-icon-s-home', affix: false },
+    meta: { title: '仪表盘', icon: 'icon-home-filling', affix: false },
     children: [
       {
         path: 'workplace',
@@ -76,14 +76,13 @@ export const asyncRoutes = [
         path: '/analysis',
         component: () => import('@/views/dashboard/analysis/index'),
         name: 'Analysis',
-        meta: { title: '分析页', icon: 'dashboard', affix: false }
+        meta: { title: '分析页', icon: 'icon-dashboard-fill', affix: false }
       },
       {
         path: '/echartsmap',
         component: chinaMap,
         name: 'Echartsmap',
-        // meta: { title: '中国地图', icon: '@/icons/svg/map.svg', affix: false }
-        meta: { title: '中国地图', icon: 'el-icon-map-location', affix: false }
+        meta: { title: '中国地图', icon: 'icon-ic_mode_map', affix: false }
       }
     ]
   },
@@ -91,32 +90,32 @@ export const asyncRoutes = [
     path: '/article',
     component: Layout,
     redirect: '/article/article-list',
-    meta: { title: '文章管理', icon: 'documentation' },
+    meta: { title: '文章管理', icon: 'icon-guanliwenzhang' },
     children: [
       {
         path: 'categories',
         component: () => import('@/views/category/index'),
         name: 'categories',
-        meta: { title: '分类管理', icon: 'iconfont el-icon-myfenlei' }
+        meta: { title: '分类管理', icon: 'icon-send-fill' }
       },
       {
         path: 'tags',
         component: () => import('@/views/tag/index'),
         name: 'tags',
-        meta: { title: '标签管理', icon: 'iconfont el-icon-myicontag' }
+        meta: { title: '标签管理', icon: 'icon-discount-fill' }
       },
       {
         path: 'article-list',
         component: () => import('@/views/article/list/index'),
         name: 'article-list',
-        meta: { title: '文章列表', icon: 'iconfont el-icon-mywenzhangliebiao' }
+        meta: { title: '文章列表', icon: 'icon-wenzhangliebiao' }
       },
       {
 
         path: 'article-editor',
         component: () => import('@/views/article/editor/index'),
         name: 'article-editor',
-        meta: { title: '文章添加', icon: 'iconfont el-icon-myfabiaowenzhang' }
+        meta: { title: '文章添加', icon: 'icon-wenzhang-xiugaishijian' }
       },
       {
         //   path: 'article-editor/*',
@@ -124,7 +123,7 @@ export const asyncRoutes = [
         hidden: true,
         component: () => import('@/views/article/editor/index'),
         name: 'article-editor',
-        meta: { title: '文章编辑', icon: 'iconfont el-icon-myfabiaowenzhang' }
+        meta: { title: '文章编辑', icon: 'icon-wenzhang-xiugaishijian' }
       }
     ]
   },
@@ -137,7 +136,7 @@ export const asyncRoutes = [
         path: 'index',
         component: () => import('@/views/memus/index'),
         name: 'menus',
-        meta: { title: '菜单管理', icon: 'iconfont el-icon-mycaidan' }
+        meta: { title: '菜单管理', icon: 'icon-all-fill' }
       }
     ]
   },
@@ -150,7 +149,7 @@ export const asyncRoutes = [
         path: 'index',
         component: () => import('@/views/profile/index'),
         name: 'Profile',
-        meta: { title: '个人中心', icon: 'user', noCache: true }
+        meta: { title: '个人中心', icon: 'icon-customer-businessman-fill', noCache: true }
       }
     ]
   },

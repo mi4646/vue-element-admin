@@ -1,174 +1,347 @@
 @font-face {
-  font-family: 'iconfont';
-  src: url('iconfont.eot?t=1642953623912');
-  src: url('iconfont.eot?t=1642953623912#iefix') format('embedded-opentype'),
-    url('iconfont.woff2?t=1642953623912') format('woff2'), url('iconfont.woff?t=1642953623912') format('woff'),
-    url('iconfont.ttf?t=1642953623912') format('truetype'), url('iconfont.svg?t=1642953623912#iconfont') format('svg');
+  font-family: "iconfont"; /* Project id 4327399 */
+  src: url('iconfont.woff2?t=1699865978825') format('woff2'),
+       url('iconfont.woff?t=1699865978825') format('woff'),
+       url('iconfont.ttf?t=1699865978825') format('truetype');
 }
 
 .iconfont {
-  font-family: 'iconfont' !important;
+  font-family: "iconfont" !important;
+  font-size: 16px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-.el-icon-myiconfontdongtaidianji:before {
-  content: '\e62f';
+.icon-wenzhang-xiugaishijian:before {
+  content: "\e62d";
 }
 
-.el-icon-myzhiding:before {
-  content: '\e64a';
+.icon-wenzhangliebiao:before {
+  content: "\e62c";
 }
 
-.el-icon-mypinglun:before {
-  content: '\e63a';
+.icon-guanliwenzhang:before {
+  content: "\e671";
 }
 
-.el-icon-mybiaoqing:before {
-  content: '\e644';
+.icon-tianmaohaoquan:before {
+  content: "\e600";
 }
 
-.el-icon-mytupian:before {
-  content: '\e691';
+.icon-liebiao:before {
+  content: "\e601";
 }
 
-.el-icon-myfabusekuai:before {
-  content: '\ec46';
+.icon-liebiao1:before {
+  content: "\e602";
 }
 
-.el-icon-mygongkai:before {
-  content: '\e6a9';
+.icon-kanguo:before {
+  content: "\e604";
 }
 
-.el-icon-mycaogaoxiang:before {
-  content: '\e726';
+.icon-gonggao1:before {
+  content: "\e605";
 }
 
-.el-icon-myyemianpeizhi:before {
-  content: '\e61f';
+.icon-xinlang:before {
+  content: "\e607";
 }
 
-.el-icon-myjiekouguanli:before {
-  content: '\e624';
+.icon-weixin:before {
+  content: "\e608";
 }
 
-.el-icon-mydaohanglantubiao_quanxianguanli:before {
-  content: '\e604';
+.icon-tao:before {
+  content: "\e609";
 }
 
-.el-icon-myhuishouzhan:before {
-  content: '\e7f2';
+.icon-morentouxiang:before {
+  content: "\e8cb";
 }
 
-.el-icon-myzhaopian:before {
-  content: '\e623';
+.icon-alipay-circle-fill:before {
+  content: "\e884";
 }
 
-.el-icon-myFiles-59:before {
-  content: '\e7f3';
+.icon-github-fill:before {
+  content: "\e885";
 }
 
-.el-icon-myimage-fill:before {
-  content: '\eb61';
+.icon-QQ-circle-fill:before {
+  content: "\e887";
 }
 
-.el-icon-myjiaoseliebiao:before {
-  content: '\e610';
+.icon-twitter-circle-fill:before {
+  content: "\e88a";
 }
 
-.el-icon-mycaozuorizhi:before {
-  content: '\e7e8';
+.icon-taobao-circle-fill:before {
+  content: "\e88b";
 }
 
-.el-icon-mycaidan:before {
-  content: '\e60e';
+.icon-weibo-circle-fill:before {
+  content: "\e88c";
 }
 
-.el-icon-myfabiaowenzhang:before {
-  content: '\e69e';
+.icon-zhihu-circle-fill:before {
+  content: "\e88d";
 }
 
-.el-icon-mywenzhangliebiao:before {
-  content: '\e62c';
+.icon-signal-fill:before {
+  content: "\e8e9";
 }
 
-.el-icon-myyonghuliebiao:before {
-  content: '\e613';
+.icon-gitee-fill-round:before {
+  content: "\e686";
 }
 
-.el-icon-myxiaoxi:before {
-  content: '\e60d';
+.icon-dashboard-fill:before {
+  content: "\e849";
 }
 
-.el-icon-myliuyan:before {
-  content: '\e606';
+.icon-activity_fill:before {
+  content: "\e6de";
 }
 
-.el-icon-myfenlei:before {
-  content: '\e86c';
+.icon-addpeople_fill:before {
+  content: "\e6e1";
 }
 
-.el-icon-myshouye:before {
-  content: '\e61e';
+.icon-empty_fill:before {
+  content: "\e6f7";
 }
 
-.el-icon-mywendang:before {
-  content: '\e622';
+.icon-group_fill:before {
+  content: "\e6ff";
 }
 
-.el-icon-myxitong:before {
-  content: '\e600';
+.icon-int:before {
+  content: "\e763";
 }
 
-.el-icon-mypinglunzu:before {
-  content: '\e765';
+.icon-gonggao:before {
+  content: "\e8c5";
 }
 
-.el-icon-myshezhi:before {
-  content: '\e654';
+.icon-pinglun:before {
+  content: "\e8c6";
 }
 
-.el-icon-mydashujukeshihuaico-:before {
-  content: '\e7ff';
+.icon-shoucang:before {
+  content: "\e8c7";
 }
 
-.el-icon-myicontag:before {
-  content: '\e61d';
+.icon-remen:before {
+  content: "\e8c9";
 }
 
-.el-icon-myliebiao:before {
-  content: '\e645';
+.icon-chuangzuo:before {
+  content: "\e8ca";
 }
 
-.el-icon-myuser:before {
-  content: '\e607';
+.icon-decorate-fill:before {
+  content: "\e852";
 }
 
-.el-icon-myfangwenliang:before {
-  content: '\e676';
+.icon-discount-fill:before {
+  content: "\e853";
 }
 
-.el-icon-mymima:before {
-  content: '\e62e';
+.icon-ic_mode_map:before {
+  content: "\e60d";
 }
 
-.el-icon-mytuichu:before {
-  content: '\e6c2';
+.icon-send-fill:before {
+  content: "\e888";
 }
 
-.el-icon-myicwindowzoom48px:before {
-  content: '\e603';
+.icon-a-commandinquiry-fill:before {
+  content: "\e889";
 }
 
-.el-icon-mydianzan:before {
-  content: '\e60c';
+.icon-dynamic-filling:before {
+  content: "\e68a";
 }
 
-.el-icon-mywenzhang-copy:before {
-  content: '\e643';
+.icon-intermediate-filling:before {
+  content: "\e68b";
 }
 
-.el-icon-myguanyuwo:before {
-  content: '\e62b';
+.icon-favorite-filling:before {
+  content: "\e68c";
 }
+
+.icon-layout-filling:before {
+  content: "\e68d";
+}
+
+.icon-history-filling:before {
+  content: "\e68e";
+}
+
+.icon-filter-filling:before {
+  content: "\e68f";
+}
+
+.icon-file-common-filling:before {
+  content: "\e690";
+}
+
+.icon-news-filling:before {
+  content: "\e691";
+}
+
+.icon-edit-filling:before {
+  content: "\e692";
+}
+
+.icon-notification-filling:before {
+  content: "\e693";
+}
+
+.icon-user-filling:before {
+  content: "\e694";
+}
+
+.icon-switch-filling:before {
+  content: "\e696";
+}
+
+.icon-work-filling:before {
+  content: "\e697";
+}
+
+.icon-task-filling:before {
+  content: "\e698";
+}
+
+.icon-folder-filling:before {
+  content: "\e69a";
+}
+
+.icon-home-filling:before {
+  content: "\e69b";
+}
+
+.icon-maichepin:before {
+  content: "\e603";
+}
+
+.icon-zhuanchezhuanyongbeifen:before {
+  content: "\e606";
+}
+
+.icon-a-business-icon-Bigpromotion:before {
+  content: "\e822";
+}
+
+.icon-business-icon-feeds-logo-fill:before {
+  content: "\e823";
+}
+
+.icon-business-icon-feeds-fill:before {
+  content: "\e824";
+}
+
+.icon-business-icon-sales-center-fill:before {
+  content: "\e825";
+}
+
+.icon-cart-add-fill:before {
+  content: "\e826";
+}
+
+.icon-catalog-check-fill:before {
+  content: "\e827";
+}
+
+.icon-catalog-fill:before {
+  content: "\e828";
+}
+
+.icon-catalog-download-fill:before {
+  content: "\e829";
+}
+
+.icon-customer-businessman-fill:before {
+  content: "\e82a";
+}
+
+.icon-goods-inspection-fill:before {
+  content: "\e82b";
+}
+
+.icon-logistics-land-transport-fill:before {
+  content: "\e82c";
+}
+
+.icon-logistics-warehouse-fill:before {
+  content: "\e82e";
+}
+
+.icon-order-inspection-fill:before {
+  content: "\e833";
+}
+
+.icon-product-loaction-fill:before {
+  content: "\e834";
+}
+
+.icon-all-fill:before {
+  content: "\e84a";
+}
+
+.icon-folder-fill:before {
+  content: "\e856";
+}
+
+.icon-email-fill:before {
+  content: "\e857";
+}
+
+.icon-global-trade:before {
+  content: "\e858";
+}
+
+.icon-home-fill:before {
+  content: "\e859";
+}
+
+.icon-honor-fill:before {
+  content: "\e85a";
+}
+
+.icon-layers-fill:before {
+  content: "\e85c";
+}
+
+.icon-pin-fill:before {
+  content: "\e863";
+}
+
+.icon-store-fill:before {
+  content: "\e86a";
+}
+
+.icon-template-fill:before {
+  content: "\e86e";
+}
+
+.icon-top-raning-fill:before {
+  content: "\e86f";
+}
+
+.icon-user-defined-fill:before {
+  content: "\e871";
+}
+
+.icon-video-fill:before {
+  content: "\e872";
+}
+
+.icon-shujucanmou:before {
+  content: "\e87e";
+}
+
