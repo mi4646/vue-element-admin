@@ -51,7 +51,15 @@ export const constantRoutes = [
     path: '/401',
     component: () => import('@/views/error-page/401'),
     hidden: true
-  },
+  }
+
+]
+
+/**
+* asyncRoutes
+* 需要根据用户角色动态加载的路由
+ */
+export const asyncRoutes = [
   {
     path: '/',
     component: Layout,
@@ -118,14 +126,25 @@ export const constantRoutes = [
         name: 'article-editor',
         meta: { title: '文章编辑', icon: 'iconfont el-icon-myfabiaowenzhang' }
       }
-
+    ]
+  },
+  {
+    path: '/menus',
+    component: Layout,
+    redirect: '/menus/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/memus/index'),
+        name: 'menus',
+        meta: { title: '菜单管理', icon: 'iconfont el-icon-mycaidan' }
+      }
     ]
   },
   {
     path: '/profile',
     component: Layout,
     redirect: '/profile/index',
-    // hidden: true,
     children: [
       {
         path: 'index',
@@ -134,24 +153,18 @@ export const constantRoutes = [
         meta: { title: '个人中心', icon: 'user', noCache: true }
       }
     ]
-  }
-]
+  },
 
-/**
- * asyncRoutes
- * the routes that need to be dynamically loaded based on user roles
- */
-export const asyncRoutes = [
-/*   {
+  /*   {
     path: '/permission',
     component: Layout,
     redirect: '/permission/page',
-    alwaysShow: true, // will always show the root menu
+    alwaysShow: true, // 将始终显示根菜单
     name: 'Permission',
     meta: {
       title: 'Permission',
       icon: 'lock',
-      roles: ['admin', 'editor'] // you can set roles in root nav
+      roles: ['admin', 'editor'] //您可以在根导航中设置角色
     },
     children: [
       {
@@ -160,7 +173,7 @@ export const asyncRoutes = [
         name: 'PagePermission',
         meta: {
           title: 'Page Permission',
-          roles: ['admin'] // or you can only set roles in sub nav
+          roles: ['admin'] // 或者只能在子导航中设置角色
         }
       },
       {
@@ -169,7 +182,7 @@ export const asyncRoutes = [
         name: 'DirectivePermission',
         meta: {
           title: 'Directive Permission'
-          // if do not set roles, means: this page does not require permission
+          // 如果未设置角色，则表示:此页面不需要权限
         }
       },
       {
@@ -189,7 +202,7 @@ export const asyncRoutes = [
 ]
 
 const createRouter = () => new Router({
-  // mode: 'history'， //需要服务支持
+  // mode: 'history', // 需要服务支持
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })

@@ -120,7 +120,6 @@ import LineChart2 from './components/LineChart2'
 import PieChart from './components/PieChart'
 // import BarChart from './components/BarChart'
 import BarChart2 from './components/BarChart2'
-// import TransactionTable from './components/TransactionTable'
 // import TodoList from './components/TodoList'
 // import BoxCard from './components/BoxCard'
 import CalendarHeatmap from './components/CalendarHeatmap'
@@ -137,7 +136,6 @@ export default {
     // RaddarChart,
     PieChart,
     // BarChart,
-    // TransactionTable,
     // TodoList,
     // BoxCard,
     LineChart2,
