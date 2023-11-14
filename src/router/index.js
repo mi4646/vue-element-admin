@@ -67,10 +67,10 @@ export const asyncRoutes = [
     meta: { title: '仪表盘', icon: 'icon-home-filling', affix: false },
     children: [
       {
-        path: 'workplace',
+        path: '/workplace',
         component: () => import('@/views/dashboard/workplace/index'),
         name: 'Workplace',
-        meta: { title: '工作台', icon: 'el-icon-s-platform', affix: true }
+        meta: { title: '工作台', icon: 'icon-gongzuotai', affix: true }
       },
       {
         path: '/analysis',
@@ -134,7 +134,7 @@ export const asyncRoutes = [
     children: [
       {
         path: 'index',
-        component: () => import('@/views/memus/index'),
+        component: () => import('@/views/menus/index'),
         name: 'menus',
         meta: { title: '菜单管理', icon: 'icon-all-fill' }
       }

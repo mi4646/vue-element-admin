@@ -25,20 +25,22 @@
     <!-- table表格  default-expand-all-->
     <el-table
       v-loading="loading"
+      fixed
       :data="menus"
       row-key="id"
+      style="width: 100%"
       :tree-props="{ children: 'children' }"
     >
-      <el-table-column prop="name" label="菜单名称" width="140" />
+      <el-table-column prop="name" label="菜单名称" width="180" />
       <el-table-column prop="icon" align="center" label="图标" width="100">
         <template slot-scope="scope">
-          <i :class="'iconfont ' + scope.row.icon" />
+          <i :class="'icon iconfont sub-el-icon ' + scope.row.icon" />
         </template>
       </el-table-column>
-      <el-table-column prop="orderNum" align="center" label="排序" width="100" />
-      <el-table-column prop="path" label="访问路径" />
-      <el-table-column prop="component" label="组件路径" />
-      <el-table-column prop="hidden" label="隐藏" align="center" width="80">
+      <el-table-column prop="orderNum" label="排序" align="center" width="100" />
+      <el-table-column prop="path" label="访问路径" align="center" width="200" />
+      <el-table-column prop="component" label="组件路径" align="center" width="250" />
+      <el-table-column prop="hidden" label="是否隐藏" align="center" width="100">
         <template slot-scope="scope">
           <el-switch
             v-model="scope.row.hidden"
@@ -50,10 +52,22 @@
           />
         </template>
       </el-table-column>
-      <el-table-column prop="hidden" label="缓存" align="center" width="80">
+      <el-table-column prop="Nocache" label="是否缓存" align="center" width="100">
         <template slot-scope="scope">
           <el-switch
-            v-model="scope.row.hidden"
+            v-model="scope.row.Nocache"
+            active-color="#13ce66"
+            inactive-color="#F4F4F5"
+            :active-value="1"
+            :inactive-value="0"
+            @change="changeDisable(scope.row)"
+          />
+        </template>
+      </el-table-column>
+      <el-table-column prop="affix" label="是否固定视图" align="center" width="120">
+        <template slot-scope="scope">
+          <el-switch
+            v-model="scope.row.affix"
             active-color="#13ce66"
             inactive-color="#F4F4F5"
             :active-value="1"
@@ -68,9 +82,14 @@
           {{ scope.row.createTime | dateTime }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="200">
+      <el-table-column fixed="right" label="操作" align="center" width="200">
         <template slot-scope="scope">
-          <el-button v-if="scope.row.component =='Layout'" type="text" size="mini" @click="handleEdit(scope.row, 1)">
+          <el-button
+            v-if="scope.row.component =='Layout'"
+            type="text"
+            size="mini"
+            @click="handleEdit(scope.row, 1)"
+          >
             <i class="el-icon-plus" /> 新增
           </el-button>
           <el-button type="text" size="mini" @click="handleEdit(scope.row, 2)">
@@ -83,6 +102,7 @@
       </el-table-column>
     </el-table>
 
+    <!-- 新增/编辑对话框 -->
     <el-dialog
       :visible.sync="addDialogVisible"
       width="30%"
@@ -119,7 +139,9 @@ export default {
         name: '',
         icon: '',
         path: '',
+        affix: 0,
         hidden: 0,
+        Nocache: 0,
         orderNum: 1,
         component: '',
         children: null,

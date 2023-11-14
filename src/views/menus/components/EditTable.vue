@@ -12,19 +12,11 @@
         <el-input v-model="menuForm.name" style="width: 220px" />
       </el-form-item>
       <el-form-item label="菜单图标">
-        <el-popover placement="bottom-start" width="420px" trigger="click">
-          <el-row>
-            <el-col v-for="(item, index) of icons" :key="index" :md="12" :gutter="10">
-              <div class="icon-item" @click="checkIcon(item)"><i :class="'iconfont ' + item" /> {{ item }}</div>
-            </el-col>
-          </el-row>
-          <el-input
-            slot="reference"
-            v-model="menuForm.icon"
-            :prefix-icon="'iconfont ' + menuForm.icon"
-            style="width: 220px"
-          />
-        </el-popover>
+        <el-input
+          v-model="menuForm.icon"
+          :prefix-icon="'iconfont ' + menuForm.icon"
+          style="width: 220px"
+        />
       </el-form-item>
       <el-form-item v-show="!selected" label="组件路径">
         <el-input v-model="menuForm.component" style="width: 220px" />

@@ -6,6 +6,13 @@
   "description": "我的博客项目vue版",
   "glyphs": [
     {
+      "icon_id": "12100698",
+      "name": "工作台",
+      "font_class": "gongzuotai",
+      "unicode": "e650",
+      "unicode_decimal": 58960
+    },
+    {
       "icon_id": "24085627",
       "name": "文章-修改时间",
       "font_class": "wenzhang-xiugaishijian",
