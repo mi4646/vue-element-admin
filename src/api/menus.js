@@ -10,7 +10,7 @@ export function menusList(query) {
 }
 
 // 菜单添加
-export function menusCreate(data) {
+export function menuCreate(data) {
   return request({
     url: '/accounts/menus/',
     method: 'post',
@@ -19,7 +19,7 @@ export function menusCreate(data) {
 }
 
 // 菜单修改/编辑
-export function menusUpdate(id, data) {
+export function menuUpdate(id, data) {
   return request({
     url: id ? '/accounts/menu/' + id + '/' : '/accounts/menu/',
     method: 'put',
@@ -28,7 +28,7 @@ export function menusUpdate(id, data) {
 }
 
 // 菜单删除
-export function menusDelete(id, params) {
+export function menuDelete(id, params) {
   return request({
     url: id ? '/accounts/menu/' + id + '/' : '/accounts/menu/',
     method: 'delete',

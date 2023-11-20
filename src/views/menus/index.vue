@@ -16,7 +16,13 @@
           style="width: 200px"
           @keyup.enter.native="listMenus"
         />
-        <el-button type="primary" size="small" icon="el-icon-search" style="margin-left: 1rem" @click="listMenus">
+        <el-button
+          type="primary"
+          size="small"
+          icon="el-icon-search"
+          style="margin-left: 1rem"
+          @click="listMenus"
+        >
           搜索
         </el-button>
       </div>
@@ -95,7 +101,7 @@
           <el-button type="text" size="mini" @click="handleEdit(scope.row, 2)">
             <i class="el-icon-edit" /> 修改
           </el-button>
-          <el-popconfirm title="确定删除吗？" style="margin-left: 10px" @confirm="deleteMenu(scope.row.id)">
+          <el-popconfirm title="确定删除吗？" style="margin-left: 10px" @onConfirm="deleteMenu(scope.row.id)">
             <el-button slot="reference" size="mini" type="text"> <i class="el-icon-delete" /> 删除 </el-button>
           </el-popconfirm>
         </template>
@@ -111,8 +117,10 @@
       :title="dialogTitle"
     >
       <edit-table
+        v-if="addDialogVisible"
         :show="show"
         :menu-form="menuForm"
+        :menus="menus"
         :is-catalog.sync="isCatalog"
       />
     </el-dialog>
@@ -121,7 +129,7 @@
 
 <script>
 import EditTable from './components/EditTable.vue'
-import { menusList } from '@/api/menus'
+import { menusList, menuUpdate, menuDelete } from '@/api/menus'
 
 export default {
   components: { EditTable },
@@ -203,53 +211,27 @@ export default {
       }
       this.addDialogVisible = true
     },
-    checkIcon(icon) {
-      this.menuForm.icon = icon
-    },
     changeDisable(menu) {
-      const params = {
-        id: menu.id,
-        hidden: menu.hidden
-      }
-      this.axios.put('/api/accounts/admin/menu/' + menu.id + '/', params).then(({ data }) => {
-        if (data.code === 0) {
-          this.$message.success({
-            title: '成功',
-            message: '修改成功'
-          })
+      menuUpdate(menu.id, menu).then((response) => {
+        if (response.code === 0) {
+          this.listMenus()
         } else {
-          this.$message.error({
-            title: '失败',
-            message: '修改失败'
-          })
+          this.$message.error({ message: response.codemsg })
         }
       }).catch(error => {
-        this.$message.error({
-          title: '失败',
-          message: error
-        })
+        this.$message.error({ message: error })
       })
     },
     // 删除菜单
     deleteMenu(id) {
-      this.axios.delete('/api/accounts/admin/menu/' + id + '/', {}).then(({ data }) => {
-        if (data.code === 0) {
-          this.$message.success({
-            title: '成功',
-            message: '删除成功'
-          })
+      menuDelete(id).then((response) => {
+        if (response.code === 0) {
           this.listMenus()
         } else {
-          this.$message.error({
-            title: '失败',
-            message: data.message
-          })
+          this.$message.error({ message: response.message })
         }
       }).catch(error => {
-        this.$message.error({
-          title: '失败',
-          message: error
-        })
+        this.$message.error({ message: error })
       })
     }
   }
