@@ -5,7 +5,6 @@ Vue.use(Router)
 
 /* Layout */
 import Layout from '@/layout'
-import chinaMap from '@/views/dashboard/echartsmap'
 
 /* *
  * Note: sub-menu only appear when route children.length >= 1
@@ -51,81 +50,6 @@ export const constantRoutes = [
     path: '/401',
     component: () => import('@/views/error-page/401'),
     hidden: true
-  }
-
-]
-
-/**
-* asyncRoutes
-* 需要根据用户角色动态加载的路由
- */
-export const asyncRoutes = [
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/workplace',
-    meta: { title: '仪表盘', icon: 'icon-home-filling', affix: false },
-    children: [
-      {
-        path: '/workplace',
-        component: () => import('@/views/dashboard/workplace/index'),
-        name: 'Workplace',
-        meta: { title: '工作台', icon: 'icon-gongzuotai', affix: true }
-      },
-      {
-        path: '/analysis',
-        component: () => import('@/views/dashboard/analysis/index'),
-        name: 'Analysis',
-        meta: { title: '分析页', icon: 'icon-dashboard-fill', affix: false }
-      },
-      {
-        path: '/echartsmap',
-        component: chinaMap,
-        name: 'Echartsmap',
-        meta: { title: '中国地图', icon: 'icon-ic_mode_map', affix: false }
-      }
-    ]
-  },
-  {
-    path: '/article',
-    component: Layout,
-    redirect: '/article/article-list',
-    meta: { title: '文章管理', icon: 'icon-guanliwenzhang' },
-    children: [
-      {
-        path: 'categories',
-        component: () => import('@/views/category/index'),
-        name: 'categories',
-        meta: { title: '分类管理', icon: 'icon-send-fill' }
-      },
-      {
-        path: 'tags',
-        component: () => import('@/views/tag/index'),
-        name: 'tags',
-        meta: { title: '标签管理', icon: 'icon-discount-fill' }
-      },
-      {
-        path: 'article-list',
-        component: () => import('@/views/article/list/index'),
-        name: 'article-list',
-        meta: { title: '文章列表', icon: 'icon-wenzhangliebiao' }
-      },
-      {
-
-        path: 'article-editor',
-        component: () => import('@/views/article/editor/index'),
-        name: 'article-editor',
-        meta: { title: '文章添加', icon: 'icon-wenzhang-xiugaishijian' }
-      },
-      {
-        //   path: 'article-editor/*',
-        path: 'article-editor/:id',
-        hidden: true,
-        component: () => import('@/views/article/editor/index'),
-        name: 'article-editor',
-        meta: { title: '文章编辑', icon: 'icon-wenzhang-xiugaishijian' }
-      }
-    ]
   },
   {
     path: '/menus',
@@ -139,62 +63,95 @@ export const asyncRoutes = [
         meta: { title: '菜单管理', icon: 'icon-all-fill' }
       }
     ]
-  },
-  {
-    path: '/profile',
-    component: Layout,
-    redirect: '/profile/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/profile/index'),
-        name: 'Profile',
-        meta: { title: '个人中心', icon: 'icon-customer-businessman-fill', noCache: true }
-      }
-    ]
-  },
+  }
 
-  /*   {
-    path: '/permission',
-    component: Layout,
-    redirect: '/permission/page',
-    alwaysShow: true, // 将始终显示根菜单
-    name: 'Permission',
-    meta: {
-      title: 'Permission',
-      icon: 'lock',
-      roles: ['admin', 'editor'] //您可以在根导航中设置角色
-    },
-    children: [
-      {
-        path: 'page',
-        component: () => import('@/views/permission/page'),
-        name: 'PagePermission',
-        meta: {
-          title: 'Page Permission',
-          roles: ['admin'] // 或者只能在子导航中设置角色
-        }
-      },
-      {
-        path: 'directive',
-        component: () => import('@/views/permission/directive'),
-        name: 'DirectivePermission',
-        meta: {
-          title: 'Directive Permission'
-          // 如果未设置角色，则表示:此页面不需要权限
-        }
-      },
-      {
-        path: 'role',
-        component: () => import('@/views/permission/role'),
-        name: 'RolePermission',
-        meta: {
-          title: 'Role Permission',
-          roles: ['admin']
-        }
-      }
-    ]
-  }, */
+]
+
+/**
+* asyncRoutes
+* 需要根据用户角色动态加载的路由
+ */
+export const asyncRoutes = [
+  // {
+  //   path: '/',
+  //   component: Layout,
+  //   redirect: '/workplace',
+  //   meta: { title: '仪表盘', icon: 'icon-home-filling', affix: false },
+  //   children: [
+  //     {
+  //       path: '/workplace',
+  //       component: () => import('@/views/dashboard/workplace/index'),
+  //       name: 'Workplace',
+  //       meta: { title: '工作台', icon: 'icon-gongzuotai', affix: true }
+  //     },
+  //     {
+  //       path: '/analysis',
+  //       component: () => import('@/views/dashboard/analysis/index'),
+  //       name: 'Analysis',
+  //       meta: { title: '分析页', icon: 'icon-dashboard-fill', affix: false }
+  //     },
+  //     {
+  //       path: '/echartsmap',
+  //       component: chinaMap,
+  //       name: 'Echartsmap',
+  //       meta: { title: '中国地图', icon: 'icon-ic_mode_map', affix: false }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/article',
+  //   component: Layout,
+  //   redirect: '/article/article-list',
+  //   meta: { title: '文章管理', icon: 'icon-guanliwenzhang' },
+  //   children: [
+  //     {
+  //       path: 'categories',
+  //       component: () => import('@/views/category/index'),
+  //       name: 'categories',
+  //       meta: { title: '分类管理', icon: 'icon-send-fill' }
+  //     },
+  //     {
+  //       path: 'tags',
+  //       component: () => import('@/views/tag/index'),
+  //       name: 'tags',
+  //       meta: { title: '标签管理', icon: 'icon-discount-fill' }
+  //     },
+  //     {
+  //       path: 'article-list',
+  //       component: () => import('@/views/article/list/index'),
+  //       name: 'article-list',
+  //       meta: { title: '文章列表', icon: 'icon-wenzhangliebiao' }
+  //     },
+  //     {
+
+  //       path: 'article-editor',
+  //       component: () => import('@/views/article/editor/index'),
+  //       name: 'article-editor',
+  //       meta: { title: '文章添加', icon: 'icon-wenzhang-xiugaishijian' }
+  //     },
+  //     {
+  //       //   path: 'article-editor/*',
+  //       path: 'article-editor/:id',
+  //       hidden: true,
+  //       component: () => import('@/views/article/editor/index'),
+  //       name: 'article-editor',
+  //       meta: { title: '文章编辑', icon: 'icon-wenzhang-xiugaishijian' }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/profile',
+  //   component: Layout,
+  //   redirect: '/profile/index',
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/profile/index'),
+  //       name: 'Profile',
+  //       meta: { title: '个人中心', icon: 'icon-customer-businessman-fill', noCache: true }
+  //     }
+  //   ]
+  // },
 
   // 404页一定要放在最后!!
   { path: '*', redirect: '/404', hidden: true }

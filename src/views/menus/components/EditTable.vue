@@ -39,13 +39,16 @@
       <el-form-item label="访问路径" prop="path" class="is-required">
         <el-input v-model="menuForm.path" style="width: 220px" />
       </el-form-item>
-      <el-form-item label="显示排序" prop="orderNum">
-        <el-input-number v-model="menuForm.orderNum" controls-position="right" :min="1" :max="10" />
+
+      <el-form-item label="显示排序" prop="priority">
+        <el-tooltip class="item" effect="dark" content="Top Left 提示文字" placement="top-start" />
+        <el-input-number v-model="menuForm.priority" controls-position="right" :min="1" :max="10000" />
       </el-form-item>
+
       <el-form-item label="显示状态">
         <el-radio-group v-model="menuForm.hidden">
-          <el-radio :label="1">显示</el-radio>
-          <el-radio :label="0">隐藏</el-radio>
+          <el-radio :label="0">显示</el-radio>
+          <el-radio :label="1">隐藏</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="是否缓存">
@@ -86,8 +89,10 @@ export default {
           name: '',
           icon: '',
           path: '',
+          affix: 0,
           hidden: 0,
-          orderNum: 1,
+          Nocache: 0,
+          priority: null,
           component: '',
           children: null,
           parent_id: null
@@ -165,6 +170,7 @@ export default {
         'icon': this.menuForm.icon,
         'affix': this.menuForm.affix,
         'hidden': this.menuForm.hidden,
+        'priority': this.menuForm.priority,
         'Nocache': this.menuForm.Nocache,
         'parent_id': this.menuForm.parent_id,
         'component': this.menuForm.component
@@ -173,7 +179,8 @@ export default {
       method.then((response) => {
         if (response.code === 0) {
           this.$message.success({ message: response.codemsg })
-          this.$parent.$parent.$parent.listMenus()
+          location.reload()
+          // this.$parent.$parent.$parent.listMenus()
         } else {
           this.$message.error({ message: response.codemsg })
         }

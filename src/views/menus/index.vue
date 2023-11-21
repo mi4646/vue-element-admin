@@ -43,7 +43,17 @@
           <i :class="'icon iconfont sub-el-icon ' + scope.row.icon" />
         </template>
       </el-table-column>
-      <el-table-column prop="orderNum" label="排序" align="center" width="100" />
+      <el-table-column prop="priority" label="排序" align="center" width="100">
+        <template slot="header" slot-scope="scope">
+          <span>
+            排序
+            <el-tooltip :aa="scope" class="item" effect="dark" content="" placement="top-start">
+              <div slot="content">首先按数值大小进行<br>排序若数值相同则按<br>添加时间先后进行排<br>序</div>
+              <i class="el-icon-question" style="color:#393a3b; margin-left:5px;'" />
+            </el-tooltip>
+          </span>
+        </template>
+      </el-table-column>
       <el-table-column prop="path" label="访问路径" align="center" width="200" />
       <el-table-column prop="component" label="组件路径" align="center" width="250" />
       <el-table-column prop="hidden" label="是否隐藏" align="center" width="100">
@@ -150,7 +160,7 @@ export default {
         affix: 0,
         hidden: 0,
         Nocache: 0,
-        orderNum: 1,
+        priority: 0,
         component: '',
         children: null,
         parent_id: null
@@ -185,9 +195,11 @@ export default {
               icon: '',
               component: '',
               path: '',
-              orderNum: 1,
+              priority: null,
               children: null,
-              hidden: 0
+              affix: 0,
+              hidden: 0,
+              Nocache: 0
             }
             this.menuForm.children = JSON.parse(JSON.stringify(menu.id))
             break
@@ -202,8 +214,10 @@ export default {
           name: '',
           icon: '',
           path: '',
+          affix: 0,
           hidden: 0,
-          orderNum: 1,
+          Nocache: 0,
+          priority: null,
           children: null,
           parent_id: null,
           component: 'Layout'
@@ -214,7 +228,8 @@ export default {
     changeDisable(menu) {
       menuUpdate(menu.id, menu).then((response) => {
         if (response.code === 0) {
-          this.listMenus()
+          location.reload() // 刷新当前页面
+          // this.listMenus()
         } else {
           this.$message.error({ message: response.codemsg })
         }
@@ -226,7 +241,8 @@ export default {
     deleteMenu(id) {
       menuDelete(id).then((response) => {
         if (response.code === 0) {
-          this.listMenus()
+          location.reload() // 刷新当前页面
+          // this.listMenus()
         } else {
           this.$message.error({ message: response.message })
         }

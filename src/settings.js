@@ -3,25 +3,25 @@ module.exports = {
 
   /**
    * @type {boolean} true | false
-   * @description Whether show the settings right-panel
+   * @description 是否显示右面板设置
    */
   showSettings: true,
 
   /**
    * @type {boolean} true | false
-   * @description Whether need tagsView
+   * @description 是否需要tagsView
    */
   tagsView: true,
 
   /**
    * @type {boolean} true | false
-   * @description Whether fix the header
+   * @description 是否固定头部
    */
   fixedHeader: false,
 
   /**
    * @type {boolean} true | false
-   * @description Whether show the logo in sidebar
+   * @description 是否在侧边栏中显示logo
    */
   sidebarLogo: false
 
