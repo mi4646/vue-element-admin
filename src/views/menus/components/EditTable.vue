@@ -178,8 +178,10 @@ export default {
       const method = params.id ? menuUpdate(params.id, params) : menuCreate(params)
       method.then((response) => {
         if (response.code === 0) {
-          this.$message.success({ message: response.codemsg })
-          location.reload()
+          this.$message.success({ message: '操作成功,页面将重新加载', showClose: true })
+          setTimeout(() => {
+            location.reload() // 刷新当前页面
+          }, 1500)
           // this.$parent.$parent.$parent.listMenus()
         } else {
           this.$message.error({ message: response.codemsg })

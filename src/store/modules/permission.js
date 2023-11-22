@@ -3,6 +3,11 @@ import { menusList } from '@/api/menus'
 import Layout from '@/layout/index'
 import { Message } from 'element-ui'
 
+/**
+ * 移动菜单管理位置到文章管理后面
+ * @param {*Array} routes 后端传来的路由数组
+ * @returns 排序完的数组
+ */
 function moveMenuAfterArticle(routes) {
   const menuIndex = routes.findIndex(route => route.path === '/menus')
   const articleIndex = routes.findIndex(route => route.path === '/article')
@@ -113,13 +118,11 @@ const state = {
 const mutations = {
   SET_ROUTES: (state, routes) => {
     state.addRoutes = routes
-    console.log(constantRoutes.concat(routes))
     // 调用函数进行移动
     const updatedRoutes = moveMenuAfterArticle(constantRoutes.concat(routes))
-    console.log(updatedRoutes, '88888888888888888888888')
+    console.log(updatedRoutes)
     state.routes = updatedRoutes
     // state.routes = constantRoutes.concat(routes)
-    // console.log(state.routes, 'state.routes')
   }
 }
 
@@ -136,9 +139,7 @@ const actions = {
             accessedRoutes = filterAsyncRoutes(mergedData, roles)
           }
           const combinedRoutes = accessedRoutes.concat(asyncRoutes)
-          console.log(combinedRoutes, 'combinedRoutes')
-          // var mergedData = res.data.concat(asyncRoutes)
-          // console.log(mergedData, '66666666666666666666666')
+          // console.log(combinedRoutes, 'combinedRoutes')
 
           const routesData = convertRoutesData(combinedRoutes)
           // console.log('routesData ', routesData)
@@ -146,8 +147,15 @@ const actions = {
           commit('SET_ROUTES', routesData)
           resolve(routesData)
         } else {
-          Message.error('获取菜单失败')
+          Message.error({ message: '获取菜单失败' })
+          commit('SET_ROUTES', asyncRoutes)
+          resolve(asyncRoutes)
         }
+      }).catch(error => {
+        Message.error({ message: '获取菜单失败' })
+        commit('SET_ROUTES', asyncRoutes)
+        resolve(asyncRoutes)
+        console.log(error)
       })
     })
   }

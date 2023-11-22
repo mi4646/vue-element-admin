@@ -28,10 +28,11 @@
       </div>
     </div>
 
-    <!-- table表格  default-expand-all-->
+    <!-- table表格 -->
     <el-table
       v-loading="loading"
       fixed
+      default-expand-all
       :data="menus"
       row-key="id"
       style="width: 100%"
@@ -160,12 +161,11 @@ export default {
         affix: 0,
         hidden: 0,
         Nocache: 0,
-        priority: 0,
-        component: '',
+        priority: null,
+        component: 'Layout',
         children: null,
         parent_id: null
       }
-
     }
   },
   created() {
@@ -176,9 +176,10 @@ export default {
       const params = { name: this.keywords }
       menusList(params).then((response) => {
         this.menus = response.data
-        this.loading = false
       }).catch(error => {
         this.$message.error({ message: error })
+      }).finally(() => {
+        this.loading = false
       })
     },
     // 判断是新增菜单还是编辑菜单
@@ -189,18 +190,6 @@ export default {
         this.isCatalog = false
         switch (type) {
           case 1:
-            this.menuForm = {
-              id: null,
-              name: '',
-              icon: '',
-              component: '',
-              path: '',
-              priority: null,
-              children: null,
-              affix: 0,
-              hidden: 0,
-              Nocache: 0
-            }
             this.menuForm.children = JSON.parse(JSON.stringify(menu.id))
             break
           case 2:
@@ -209,26 +198,16 @@ export default {
         }
       } else {
         this.show = true
-        this.menuForm = {
-          id: null,
-          name: '',
-          icon: '',
-          path: '',
-          affix: 0,
-          hidden: 0,
-          Nocache: 0,
-          priority: null,
-          children: null,
-          parent_id: null,
-          component: 'Layout'
-        }
       }
       this.addDialogVisible = true
     },
     changeDisable(menu) {
       menuUpdate(menu.id, menu).then((response) => {
         if (response.code === 0) {
-          location.reload() // 刷新当前页面
+          this.$message.success({ message: '操作成功,页面将重新加载', showClose: true })
+          setTimeout(() => {
+            location.reload() // 刷新当前页面
+          }, 1500)
           // this.listMenus()
         } else {
           this.$message.error({ message: response.codemsg })
@@ -241,7 +220,10 @@ export default {
     deleteMenu(id) {
       menuDelete(id).then((response) => {
         if (response.code === 0) {
-          location.reload() // 刷新当前页面
+          this.$message.success({ message: '操作成功,页面将重新加载', showClose: true })
+          setTimeout(() => {
+            location.reload() // 刷新当前页面
+          }, 1500)
           // this.listMenus()
         } else {
           this.$message.error({ message: response.message })

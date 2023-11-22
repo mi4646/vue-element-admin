@@ -12,10 +12,7 @@ const whiteList = ['/login', '/auth-redirect'] // 没有重定向白名单
 
 // 路由守卫
 router.beforeEach(async(to, from, next) => {
-  console.log('路由守卫')
-
   if (to.path !== from.path) {
-    console.log('loadingInserted')
     store.dispatch('loading/setLoading', true)
   }
 
