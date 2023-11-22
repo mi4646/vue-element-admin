@@ -1,7 +1,7 @@
 <!-- 添加/编辑对话框 -->
 <template>
   <div>
-    <el-form label-width="90px" size="medium" :model="menuForm">
+    <el-form ref="refundFormData" label-width="90px" size="medium" :model="menuForm">
       <el-form-item v-if="show" label="菜单类型">
         <el-radio-group v-model="selected">
           <el-radio :label="true">目录</el-radio>
@@ -107,6 +107,10 @@ export default {
       type: Boolean,
       default: true
     },
+    addDialogVisible: {
+      type: Boolean,
+      default: false
+    },
     menus: {
       type: Array,
       default() {
@@ -140,9 +144,16 @@ export default {
     }
   },
   methods: {
+    // 清空from表单数据及校验
+    resetForm() {
+      // console.log('清空form表单数据')
+      // 重置数据，同时也取消了表单的校验 refundFormData：el-form用ref绑定的值，
+      this.$refs.refundFormData.resetFields()
+    },
     // 关闭对话框
     closeDialog() {
-      this.$parent.$parent.$parent.addDialogVisible = false
+      // console.log('关闭对话框,调用父组件')
+      this.$parent.handleClose()
     },
     // 添加/修改菜单
     saveOrUpdateMenu() {

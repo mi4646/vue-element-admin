@@ -93,13 +93,13 @@
           />
         </template>
       </el-table-column>
-      <el-table-column prop="createTime" label="创建时间" align="center" width="200">
+      <el-table-column prop="createTime" label="创建时间" align="center" width="190">
         <template slot-scope="scope">
           <i class="el-icon-time" style="margin-right: 5px" />
           {{ scope.row.createTime | dateTime }}
         </template>
       </el-table-column>
-      <el-table-column fixed="right" label="操作" align="center" width="200">
+      <el-table-column fixed="right" label="操作" align="center" width="250">
         <template slot-scope="scope">
           <el-button
             v-if="scope.row.component =='Layout'"
@@ -126,13 +126,17 @@
       top="12vh"
       height="50%"
       :title="dialogTitle"
+      :destroy-on-close="true"
+      @close="handleClose"
     >
       <edit-table
         v-if="addDialogVisible"
+        ref="refundFormData"
         :show="show"
         :menu-form="menuForm"
         :menus="menus"
         :is-catalog.sync="isCatalog"
+        :add-dialog-visible="addDialogVisible"
       />
     </el-dialog>
   </el-card>
@@ -172,6 +176,11 @@ export default {
     this.listMenus()
   },
   methods: {
+    handleClose() {
+      this.addDialogVisible = false
+      this.$refs.refundFormData.resetForm()
+    },
+
     listMenus() {
       const params = { name: this.keywords }
       menusList(params).then((response) => {
