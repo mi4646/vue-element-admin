@@ -22,7 +22,7 @@
         <div class="user-bio-section-header"><svg-icon icon-class="education" /><span>教育</span></div>
         <div class="user-bio-section-body">
           <div class="text-muted">
-            毕业于科技大学计算机科学专业
+            毕业于xxx大学计算机科学专业
           </div>
         </div>
       </div>
@@ -30,33 +30,9 @@
       <div class="user-skills user-bio-section">
         <div class="user-bio-section-header"><svg-icon icon-class="skill" /><span>技能</span></div>
         <div class="user-bio-section-body">
-          <div class="progress-item">
-            <span>Python</span>
-            <el-progress :percentage="100" />
-          </div>
-          <div class="progress-item">
-            <span>Django</span>
-            <el-progress :percentage="70" />
-          </div>
-          <div class="progress-item">
-            <span>爬虫</span>
-            <el-progress :percentage="50" />
-          </div>
-          <div class="progress-item">
-            <span>Flask</span>
-            <el-progress :percentage="45" />
-          </div>
-          <div class="progress-item">
-            <span>Vue</span>
-            <el-progress :percentage="40" />
-          </div>
-          <div class="progress-item">
-            <span>JavaScript</span>
-            <el-progress :percentage="18" />
-          </div>
-          <div class="progress-item">
-            <span>Css</span>
-            <el-progress :percentage="12" />
+          <div v-for="(item,index) in progressList" :key="index">
+            <span>{{ item.name }}</span>
+            <el-progress :percentage="setItemProgress(item)" :color="customColorMethod(item)" />
           </div>
         </div>
       </div>
@@ -79,6 +55,61 @@ export default {
           avatar: '',
           role: ''
         }
+      }
+    }
+  },
+  data() {
+    return {
+      progressList: [{
+        name: 'Python',
+        number: 100
+      },
+      {
+        name: 'Django',
+        number: 90
+      },
+      {
+        name: 'Flask',
+        number: 70
+      },
+      {
+        name: '爬虫',
+        number: 60
+      },
+      {
+        name: 'Vue',
+        number: 50
+      },
+      {
+        name: 'JavaScript',
+        number: 40
+      },
+      {
+        name: 'Css',
+        number: 20
+      }
+      ]
+    }
+  },
+  methods: {
+    setItemProgress(data) {
+      return data.number
+    },
+
+    // 设置当前进度条状态，显示不同颜色
+    customColorMethod(data) {
+      if (data.number === 100) {
+        return '#20a0ff'
+      } else if (data.number >= 80) {
+        return '#13ce66'
+      } else if (data.number >= 60) {
+        return '#E6A23C'
+      } else if (data.number >= 40) {
+        return '#ff4949'
+      } else if (data.number >= 20) {
+        return '#909399'
+      } else {
+        return '#67c23a'
       }
     }
   }

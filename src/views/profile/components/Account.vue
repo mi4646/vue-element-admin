@@ -1,10 +1,10 @@
 <template>
   <el-form>
     <el-form-item label="用户名">
-      <el-input v-model.trim="user.name" />
+      <el-input v-model.trim="user.name" placeholder="请输入用户名" />
     </el-form-item>
     <el-form-item label="邮箱">
-      <el-input v-model.trim="user.email" />
+      <el-input v-model.trim="user.email" placeholder="请输入邮箱" />
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submit">修改</el-button>
