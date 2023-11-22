@@ -25,43 +25,67 @@ function moveMenuAfterArticle(routes) {
  * @param {Array} data
  * @returns {Array}
  */
+
 function convertRoutesData(data) {
   const result = []
 
   data.forEach(item => {
-    const route = {
-      name: item.name,
-      path: item.path,
-      redirect: item.redirect,
-      hidden: Boolean(item.hidden),
-      component: item.component === 'Layout' ? Layout : loadView(item.component),
-      meta: {
-        title: item.name,
-        icon: item.icon,
-        affix: Boolean(item.affix),
-        noCache: Boolean(item.noCache)
-      },
-      children: []
-    }
-
-    if (item.children && item.children.length > 0) {
-      // 设置重定向到第一个子路由
-      route.redirect = item.children[0].path
-      item.children.forEach(child => {
-        const childRoute = {
-          path: child.path,
-          name: child.name,
-          hidden: Boolean(child.hidden),
-          component: loadView(child.component),
-          meta: {
-            title: child.name,
-            icon: child.icon,
-            affix: Boolean(child.affix),
-            noCache: Boolean(child.noCache)
+    let route = {}
+    // 直接展示一级菜单
+    if (!item.parent_id && item.component !== 'Layout') {
+      route = {
+        path: item.path,
+        component: Layout,
+        redirect: `${item.path}/index`,
+        children: [
+          {
+            path: 'index',
+            component: loadView(item.component),
+            name: item.name,
+            meta: {
+              title: item.name,
+              icon: item.icon,
+              noCache: !!item.Nocache
+            }
           }
-        }
-        route.children.push(childRoute)
-      })
+        ]
+      }
+    } else {
+      // 目录嵌套一级菜单形式
+      route = {
+        name: item.name,
+        path: item.path,
+        redirect: item.redirect,
+        hidden: Boolean(item.hidden),
+        component: item.component === 'Layout' ? Layout : loadView(item.component),
+        meta: {
+          title: item.name,
+          icon: item.icon,
+          affix: Boolean(item.affix),
+          noCache: Boolean(item.noCache)
+        },
+        children: []
+      }
+
+      if (item.children && item.children.length > 0) {
+        // 设置重定向到第一个子路由
+        route.redirect = item.children[0].path
+        item.children.forEach(child => {
+          const childRoute = {
+            path: child.path,
+            name: child.name,
+            hidden: Boolean(child.hidden),
+            component: loadView(child.component),
+            meta: {
+              title: child.name,
+              icon: child.icon,
+              affix: Boolean(child.affix),
+              noCache: Boolean(child.noCache)
+            }
+          }
+          route.children.push(childRoute)
+        })
+      }
     }
 
     result.push(route)
@@ -120,7 +144,7 @@ const mutations = {
     state.addRoutes = routes
     // 调用函数进行移动
     const updatedRoutes = moveMenuAfterArticle(constantRoutes.concat(routes))
-    console.log(updatedRoutes)
+    // console.log(updatedRoutes)
     state.routes = updatedRoutes
     // state.routes = constantRoutes.concat(routes)
   }
@@ -132,6 +156,7 @@ const actions = {
       menusList().then(res => {
         if (res.code === 0) {
           var mergedData = res.data
+          // console.log(mergedData, 'mergedData')
           let accessedRoutes
           if (roles.includes('admin')) {
             accessedRoutes = mergedData || []

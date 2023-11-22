@@ -33,7 +33,7 @@
           style="width: 220px"
         />
       </el-form-item>
-      <el-form-item v-show="!selected" label="组件路径" prop="component" class="is-required">
+      <el-form-item label="组件路径" prop="component" class="is-required">
         <el-input v-model="menuForm.component" style="width: 220px" />
       </el-form-item>
       <el-form-item label="访问路径" prop="path" class="is-required">

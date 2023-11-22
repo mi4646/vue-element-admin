@@ -206,6 +206,7 @@ export default {
             break
         }
       } else {
+        // 新增一级菜单
         this.show = true
       }
       this.addDialogVisible = true
