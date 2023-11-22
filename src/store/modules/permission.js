@@ -4,19 +4,17 @@ import Layout from '@/layout/index'
 import { Message } from 'element-ui'
 
 /**
- * 移动菜单管理位置到文章管理后面
- * @param {*Array} routes 后端传来的路由数组
+ * 移动菜单管理到个人中心前面
+ * @param {*Array} routes 路由数组
  * @returns 排序完的数组
  */
 function moveMenuAfterArticle(routes) {
   const menuIndex = routes.findIndex(route => route.path === '/menus')
-  const articleIndex = routes.findIndex(route => route.path === '/article')
-
-  if (menuIndex !== -1 && articleIndex !== -1) {
+  const profileIndex = routes.findIndex(route => route.path === '/profile')
+  if (menuIndex !== -1 && profileIndex !== -1) {
     const menuToMove = routes.splice(menuIndex, 1)[0]
-    routes.splice(articleIndex + 1, 0, menuToMove)
+    routes.splice(profileIndex - 1, 0, menuToMove)
   }
-
   return routes
 }
 
@@ -32,7 +30,7 @@ function convertRoutesData(data) {
   data.forEach(item => {
     let route = {}
     // 直接展示一级菜单
-    if (!item.parent_id && item.component !== 'Layout') {
+    if (!item.parent_id && item.component !== 'Layout' && item.path !== '*') {
       route = {
         path: item.path,
         component: Layout,
@@ -144,6 +142,7 @@ const mutations = {
     state.addRoutes = routes
     // 调用函数进行移动
     const updatedRoutes = moveMenuAfterArticle(constantRoutes.concat(routes))
+    // const updatedRoutes = moveElementAfter(constantRoutes.concat(routes))
     // console.log(updatedRoutes)
     state.routes = updatedRoutes
     // state.routes = constantRoutes.concat(routes)

@@ -53,6 +53,7 @@ export const constantRoutes = [
   },
   {
     path: '/menus',
+    name: '菜单管理',
     component: Layout,
     redirect: '/menus/index',
     children: [

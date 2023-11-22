@@ -102,7 +102,7 @@
       <el-table-column fixed="right" label="操作" align="center" width="250">
         <template slot-scope="scope">
           <el-button
-            v-if="scope.row.component =='Layout'"
+            v-if="!scope.row.parent_id"
             type="text"
             size="mini"
             @click="handleEdit(scope.row, 1)"
