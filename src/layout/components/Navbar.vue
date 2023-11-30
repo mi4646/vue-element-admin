@@ -1,12 +1,24 @@
 <template>
   <div class="navbar">
-    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+    <hamburger
+      id="hamburger-container"
+      :is-active="sidebar.opened"
+      class="hamburger-container"
+      @toggleClick="toggleSideBar"
+    />
 
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
 
     <div class="right-menu">
       <template v-if="device!=='mobile'">
         <search id="header-search" class="right-menu-item" />
+
+        <!-- 锁屏图标 -->
+        <i
+          class="icon iconfont sub-el-icon icon-suopingpingbao
+        right-menu-item hover-effect"
+          @click="TapLockScreen"
+        />
 
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
 
@@ -28,12 +40,6 @@
           <router-link to="/profile/index">
             <el-dropdown-item> 个人中心 </el-dropdown-item>
           </router-link>
-          <!-- <a target="_blank" href="https://github.com/PanJiaChen/vue-element-admin/">
-            <el-dropdown-item>Github</el-dropdown-item>
-          </a> -->
-          <!-- <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
-            <el-dropdown-item>Docs</el-dropdown-item>
-          </a> -->
           <el-dropdown-item divided @click.native="logout">
             <span style="display:block;"> 注销 </span>
           </el-dropdown-item>
@@ -50,6 +56,7 @@ import Hamburger from '@/components/Hamburger'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
+import { setLocked, setLockTime } from '@/utils/auth'
 
 export default {
   components: {
@@ -67,6 +74,13 @@ export default {
     ])
   },
   methods: {
+    TapLockScreen() {
+      // 设置锁屏
+      // this.$store.dispatch('screenLock/setLock', true)
+      setLocked(true)
+      setLockTime(60 * 60)
+      // console.log('点击了锁屏')
+    },
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },

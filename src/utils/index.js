@@ -356,38 +356,6 @@ export function removeClass(ele, cls) {
   }
 }
 
-import { Solar, Lunar } from 'lunar-javascript'
-
-// 获取一周前日期列表
-export function generateLastWeekDates() {
-  const dates = []
-  const today = new Date()
-
-  for (let i = 6; i >= 0; i--) {
-    const date = new Date(today)
-    date.setDate(today.getDate() - i)
-    const year = date.getFullYear()
-    const month = (date.getMonth() + 1).toString().padStart(2, '0')
-    const day = date.getDate().toString().padStart(2, '0')
-    const formattedDate = `${year}-${month}-${day}`
-    dates.push(formattedDate)
-  }
-
-  return dates
-}
-
-export function timeFix() {
-  const time = new Date()
-  const hour = time.getHours()
-  return hour < 9 ? '早上好' : hour <= 11 ? '上午好' : hour <= 13 ? '中午好' : hour < 20 ? '下午好' : '晚上好'
-}
-
-export function welcome() {
-  const arr = ['休息一会儿吧', '准备吃什么呢?', '开始您一天的工作吧！', '我猜你可能累了']
-  const index = Math.floor(Math.random() * arr.length)
-  return arr[index]
-}
-
 // 字符串截取并获得data值
 export function parseData(response) {
   // 判断响应数据是否为字符串类型
@@ -420,22 +388,6 @@ export function parseData(response) {
     console.error('解析JSON数据出错')
     return ''
   }
-}
-
-export function getDayInfo() {
-  const solar = Solar.fromDate(new Date())
-  const day = solar.toString()
-  const week = solar.getWeekInChinese()
-
-  const lunar = Lunar.fromDate(new Date())
-  const lunarMonth = lunar.getMonthInChinese()
-  const lunarDay = lunar.getDayInChinese()
-
-  const jieqi = lunar.getPrevJieQi().getName()
-  const next = lunar.getNextJieQi()
-  const nextJieqi = next.getName() + ' ' + next.getSolar().toYmd()
-
-  return `${day} 星期${week}，农历${lunarMonth}${lunarDay}（当前${jieqi}，${nextJieqi} )`
 }
 
 // 根据路由获取文章ID

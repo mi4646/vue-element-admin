@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { timeFix } from '@/utils/index.js'
+import { timeFix } from '@/utils/userTime.js'
 
 export default {
   data: function() {

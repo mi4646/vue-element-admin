@@ -6,6 +6,41 @@
   "description": "我的博客项目vue版",
   "glyphs": [
     {
+      "icon_id": "4766957",
+      "name": "wifi",
+      "font_class": "wifi",
+      "unicode": "e7e0",
+      "unicode_decimal": 59360
+    },
+    {
+      "icon_id": "4766961",
+      "name": "api",
+      "font_class": "api",
+      "unicode": "e7e1",
+      "unicode_decimal": 59361
+    },
+    {
+      "icon_id": "32538000",
+      "name": "箭头",
+      "font_class": "jiantou",
+      "unicode": "e9cb",
+      "unicode_decimal": 59851
+    },
+    {
+      "icon_id": "1896347",
+      "name": "锁屏屏保",
+      "font_class": "suopingpingbao",
+      "unicode": "ea54",
+      "unicode_decimal": 59988
+    },
+    {
+      "icon_id": "1069168",
+      "name": "导航",
+      "font_class": "daohang",
+      "unicode": "e640",
+      "unicode_decimal": 58944
+    },
+    {
       "icon_id": "12100698",
       "name": "工作台",
       "font_class": "gongzuotai",

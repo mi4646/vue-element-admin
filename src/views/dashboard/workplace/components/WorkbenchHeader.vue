@@ -45,7 +45,8 @@
 <script>
 import { mapGetters } from 'vuex'
 import { getJiTang, getDiZhi } from '@/api/dashboard'
-import { timeFix, welcome, parseData, getDayInfo } from '@/utils/index.js'
+import { parseData } from '@/utils/index.js'
+import { timeFix, welcome, getDayInfo } from '@/utils/userTime.js'
 
 export default {
 

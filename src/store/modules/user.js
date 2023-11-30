@@ -1,5 +1,5 @@
 import { login, logout, getInfo } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getToken, setToken, removeToken, setLocked } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 
 import { Message } from 'element-ui'
@@ -49,6 +49,7 @@ const actions = {
           commit('SET_TOKEN', data.token)
           setToken('Token', data.token)
           setToken('RefreshToken', data.refresh_token)
+          setLocked(false)
           resolve()
         } else {
           Message({ type: 'error', message: response.codemsg, duration: 5 * 1000 })
