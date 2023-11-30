@@ -49,7 +49,7 @@ const actions = {
           commit('SET_TOKEN', data.token)
           setToken('Token', data.token)
           setToken('RefreshToken', data.refresh_token)
-          setLocked(false)
+          setLocked(0)
           resolve()
         } else {
           Message({ type: 'error', message: response.codemsg, duration: 5 * 1000 })

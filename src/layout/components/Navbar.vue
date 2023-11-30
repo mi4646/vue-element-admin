@@ -50,13 +50,12 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
-import { setLocked, setLockTime } from '@/utils/auth'
 
 export default {
   components: {
@@ -74,11 +73,15 @@ export default {
     ])
   },
   methods: {
+    ...mapActions({
+      setIsLock: 'screenLock/setLock'
+    }),
     TapLockScreen() {
       // 设置锁屏
+      this.setIsLock(true)
       // this.$store.dispatch('screenLock/setLock', true)
-      setLocked(true)
-      setLockTime(60 * 60)
+      // setLocked(true)
+      // setLockTime(60 * 60)
       // console.log('点击了锁屏')
     },
     toggleSideBar() {

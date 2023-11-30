@@ -84,6 +84,7 @@ import recharge from './Recharge.vue'
 import { useTime } from '@/utils/userTime.js'
 import { useBattery } from '@/utils/useBattery.js'
 import { setLocked, setLockTime } from '@/utils/auth'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'ScreenLock',
@@ -149,6 +150,9 @@ export default {
     this.loginParams.username = this.$store.state.user.username
   },
   methods: {
+    ...mapActions({
+      setIsLock: 'screenLock/setLock'
+    }),
     updateOnlineStatus() {
       this.onLine = window.navigator.onLine // 更新onLine属性的值
     },
@@ -164,7 +168,8 @@ export default {
       this.loginLoading = true
       this.$store.dispatch('user/login', this.loginParams).then(() => {
         this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-        this.onLockChange()
+        // this.onLockChange()
+        this.setIsLock(false)
         this.onLockLogin(false)
       }).catch(() => {
         this.$message.error({ message: '登录失败，请重试' })
@@ -177,7 +182,8 @@ export default {
       // 确认删除后执行的逻辑
       this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
-      this.onLockChange()
+      // this.onLockChange()
+      this.setIsLock(false)
       this.onLockLogin(false)
     },
     // 修改锁屏状态

@@ -14,7 +14,7 @@ const getters = {
   userData: state => state.user.userData,
   analyzesData: state => state.dashboard.analyzesData,
   permission_routes: state => state.permission.routes,
-  isLocked: state => state.screenLock.isLocked,
+  isLock: state => state.screenLock.isLock,
   lockTime: state => state.screenLock.lockTime
 }
 export default getters
