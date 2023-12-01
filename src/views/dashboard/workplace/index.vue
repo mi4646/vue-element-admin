@@ -57,39 +57,13 @@
           :sm="24"
           :xs="24"
         >
-          <a-card
+
+          <!-- 便捷导航 -->
+          <easy-navigation
             :loading="loading"
             title="快速开始 / 便捷导航"
-            style="margin-bottom: 24px"
             :bordered="bordered"
-            :body-style="{ padding: 0 }"
-          >
-            <a slot="extra">更多</a>
-            <a-card-grid
-              v-for="item in navItems"
-              :key="item.title"
-            >
-              <span class="flex flex-col items-center justify-center">
-                <a-icon
-                  :type="item.icon"
-                  theme="twoTone"
-                  :two-tone-color="item.color"
-                  size="20"
-                  style="margin-right: 10px;"
-                />
-                <span class="mt-2 text-md">{{ item.title }}</span>
-              </span>
-            </a-card-grid>
-            <a-card-grid v-if="navItems.length < 6">
-              <a-button
-                size="small"
-                type="primary"
-                ghost
-                icon="plus"
-                style="height: 19px; line-height: 19px;"
-              >添加</a-button>
-            </a-card-grid>
-          </a-card>
+          />
 
           <a-card
             class="!my-4 enter-y"
@@ -138,6 +112,7 @@
 import { PageHeaderWrapper } from '@ant-design-vue/pro-layout'
 import ProjectCard from './components/ProjectCard.vue'
 import WorkbenchHeader from './components/WorkbenchHeader.vue'
+import EasyNavigation from './components/EasyNavigation.vue'
 
 export default {
   // 文档: https://gitee.com/tokyocsd/ant-design-pro-layout
@@ -150,7 +125,8 @@ export default {
   components: {
     PageHeaderWrapper,
     ProjectCard,
-    WorkbenchHeader
+    WorkbenchHeader,
+    EasyNavigation
   },
   data() {
     return {
@@ -264,39 +240,8 @@ export default {
         avatar: 'https://gw.alipayobjects.com/zos/rmsportal/WhxKECPNujWoWEFNdnJE.png'
       }
       ],
-      radarData: [],
-      navItems: [
-        {
-          title: '首页',
-          icon: 'home',
-          color: '#1fdaca'
-        },
-        {
-          title: '仪表盘',
-          icon: 'appstore',
-          color: '#bf0c2c'
-        },
-        {
-          title: '组件',
-          icon: 'shop',
-          color: '#e18525'
-        },
-        {
-          title: '系统管理',
-          icon: 'setting',
-          color: '#3fb27f'
-        },
-        {
-          title: '权限管理',
-          icon: 'tags',
-          color: '#4daf1bc9'
-        },
-        {
-          title: '图表',
-          icon: 'fund',
-          color: '#00d8ff'
-        }
-      ]
+      radarData: []
+
     }
   },
   mounted() {
@@ -310,16 +255,7 @@ export default {
   methods: {
     // 国际化函数的实现
     i18nRender() {}
-    // getActivity () {
-    //   this.$http.get('/workplace/activity').then(res => {
-    //     this.activities = res.result
-    //   })
-    // },
-    // getTeams () {
-    //   this.$http.get('/workplace/teams').then(res => {
-    //     this.teams = res.result
-    //   })
-    // },
+
     // initRadar () {
     //   this.radarLoading = true
     //   this.$http.get('/workplace/radar').then(res => {

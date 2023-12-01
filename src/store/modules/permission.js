@@ -139,11 +139,12 @@ const state = {
 
 const mutations = {
   SET_ROUTES: (state, routes) => {
-    state.addRoutes = routes
+    routes = moveMenuAfterArticle(constantRoutes.concat(routes))
     // 调用函数进行移动
-    const updatedRoutes = moveMenuAfterArticle(constantRoutes.concat(routes))
+    const updatedRoutes = routes
     // const updatedRoutes = moveElementAfter(constantRoutes.concat(routes))
     // console.log(updatedRoutes)
+    state.addRoutes = routes
     state.routes = updatedRoutes
     // state.routes = constantRoutes.concat(routes)
   }
