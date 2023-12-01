@@ -74,9 +74,6 @@ router.beforeEach(async(to, from, next) => {
 })
 
 router.afterEach(() => {
-  // 解决页面加载滚动条不见bug
-  document.querySelector('body').setAttribute('style', 'overflow: auto !important;')
-
   // 最多延迟 关闭 loading
   setTimeout(() => {
     store.dispatch('loading/setLoading', false)
