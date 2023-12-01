@@ -50,14 +50,26 @@
         <div class="demo-basic--circle">
           <div class="block">
             <el-avatar
+              v-if="avatar"
               shape="square"
               :size="128"
               :src="avatar"
             />
+            <el-avatar v-else :size="128" shape="square">
+              <img src="@/assets/images/default-avatar.svg">
+            </el-avatar>
           </div>
 
         </div>
-        <div class="username">{{ loginParams.username }}</div>
+        <div v-if="loginParams.username" class="username">{{ loginParams.username }}</div>
+        <el-input
+          v-else
+          v-model="loginParams.username"
+          type="text"
+          autofocus
+          placeholder="请输入登录用户名"
+          @keyup.enter="onLogin"
+        />
         <el-input
           v-model="loginParams.password"
           type="password"
@@ -83,8 +95,6 @@
 import recharge from './Recharge.vue'
 import { useTime } from '@/utils/userTime.js'
 import { useBattery } from '@/utils/useBattery.js'
-import { setLocked, setLockTime } from '@/utils/auth'
-import { mapActions } from 'vuex'
 
 export default {
   name: 'ScreenLock',
@@ -109,6 +119,7 @@ export default {
       calcDischargingTime: '',
       calcChargingTime: '',
       showLogin: false,
+      errorMsg: '',
       loginLoading: false, // 正在登录
       isLoginError: false, // 密码错误
       loginParams: {
@@ -150,9 +161,6 @@ export default {
     this.loginParams.username = this.$store.state.user.username
   },
   methods: {
-    ...mapActions({
-      setIsLock: 'screenLock/setLock'
-    }),
     updateOnlineStatus() {
       this.onLine = window.navigator.onLine // 更新onLine属性的值
     },
@@ -162,17 +170,20 @@ export default {
     },
     // 进入系统
     onLogin() {
-      if (!this.loginParams.password.trim()) {
-        alert('密码不能为空')
+      if (!this.loginParams.password.trim() && !this.loginParams.username.trim()) {
+        this.isLoginError = true
+        this.errorMsg = '用户名和密码不能为空'
       }
+
       this.loginLoading = true
       this.$store.dispatch('user/login', this.loginParams).then(() => {
         this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-        // this.onLockChange()
-        this.setIsLock(false)
+        this.onLockChange()
         this.onLockLogin(false)
-      }).catch(() => {
-        this.$message.error({ message: '登录失败，请重试' })
+      }).catch(error => {
+        this.isLoginError = true
+        this.errorMsg = '登录失败，请重试'
+        console.log(error)
       }).finally(() => {
         this.loginLoading = false
       })
@@ -182,14 +193,13 @@ export default {
       // 确认删除后执行的逻辑
       this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
-      // this.onLockChange()
-      this.setIsLock(false)
+      this.onLockChange()
       this.onLockLogin(false)
     },
     // 修改锁屏状态
     onLockChange() {
-      setLocked(false)
-      setLockTime(0)
+      this.$store.dispatch('screenLock/setLock', false)
+      this.$store.dispatch('screenLock/setLockTime', 0)
     }
   }
 
@@ -210,7 +220,7 @@ export default {
     z-index: 9999;
 
     &.onLockLogin {
-      background-color: rgba(25, 28, 34, 0.88);
+      background: #34373C;
       backdrop-filter: blur(7px);
     }
 

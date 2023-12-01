@@ -23,24 +23,3 @@ export function isLoginOrRefreshTokenRequest(config) {
   return config.url.includes(LOGIN_URL) || config.url.includes(REFRESH_TOKEN_URL)
 }
 
-/**
- *锁屏验证
- * @param {*} key
- * @returns
- */
-export function getLocked() {
-  return Cookies.get('isLocked')
-}
-
-export function setLocked(value = false) {
-  return Cookies.set('isLocked', value)
-}
-
-export function getLockTime() {
-  return Cookies.get('lockTime')
-}
-
-export function setLockTime(value = 60 * 60) {
-  return Cookies.set('lockTime', value)
-}
-

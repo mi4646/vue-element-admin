@@ -78,11 +78,8 @@ export default {
     }),
     TapLockScreen() {
       // 设置锁屏
-      this.setIsLock(true)
-      // this.$store.dispatch('screenLock/setLock', true)
-      // setLocked(true)
-      // setLockTime(60 * 60)
-      // console.log('点击了锁屏')
+      this.$store.dispatch('screenLock/setLock', true)
+      this.$store.dispatch('screenLock/setLockTime', parseInt(process.env.VUE_APP_LOCK_TIME))
     },
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')

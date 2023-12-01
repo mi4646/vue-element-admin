@@ -329,10 +329,8 @@ export default {
       if (tagsIndex !== -1) {
         this.article.tags.splice(tagsIndex, 1)
       }
-      console.log(tagId, '22222222222222222222')
 
       if (tagId) {
-        console.log(tagId, '22222222222222222222')
         // 循环遍历数组，在找到要删除的元素时，使用pop方法删除该元素
         for (let i = 0; i < this.tag_ids.length; i++) {
           if (this.tag_ids[i] === tagId) {
@@ -341,8 +339,6 @@ export default {
           }
         }
       }
-
-      console.log(this.tag_ids, '11111111111111111111', this.article.tags)
     }
   }
 }

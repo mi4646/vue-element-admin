@@ -3,12 +3,11 @@
  */
 
 // 长时间不操作默认锁屏时间
-const initTime = 10 * 1000
-let timeOut = null
+const initTime = parseInt(process.env.VUE_APP_LOCK_TIME)
 
 const state = {
-  lockTime: initTime,
-  isLock: false
+  lockTime: 0,
+  isLock: sessionStorage.getItem('isLock') || 'false'
 }
 
 const mutations = {
@@ -17,6 +16,7 @@ const mutations = {
     state.isLock = v
   },
   SET_LOCKTIME: (state, v = initTime) => {
+    console.log('修改定时时间', v)
     state.lockTime = v
   }
 }
@@ -25,15 +25,9 @@ const actions = {
   setLockTime: ({ commit }, v) => {
     commit('SET_LOCKTIME', v)
   },
-  setLock: ({ commit, state }, v) => {
+  setLock: ({ commit }, v) => {
     commit('SET_LOCK', v)
-    if (!v) {
-      clearTimeout(timeOut)
-      timeOut = null
-      timeOut = setTimeout(() => {
-        commit('SET_LOCK', true)
-      }, state.lockTime)
-    }
+    sessionStorage.setItem('isLock', v)
   }
 }
 
