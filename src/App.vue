@@ -83,7 +83,6 @@ export default {
     this.isLogin = window.location.href.includes('/login')
   },
   mounted() {
-    console.log('锁屏时间', parseInt(process.env.VUE_APP_LOCK_TIME))
     if (this.isLock === 'true') { // 锁屏状态下 浏览器刷新后保持锁屏状态
       this.lockTime = parseInt(process.env.VUE_APP_LOCK_TIME)
     } else {
@@ -95,16 +94,13 @@ export default {
   },
   methods: {
     init() {
-      console.log('是否是登录页', this.isLogin)
-      if (!this.isLogin) {
-        this.reckonByTime()
-        document.addEventListener('click', this.clickHandle)
-        document.addEventListener('dblclick', this.dblclickHandle)
-        document.addEventListener('contextmenu', this.contextmenuHandle)
-        document.addEventListener('mousemove', this.mousemoveHandle)
-        document.addEventListener('mousewheel', this.mousewheelHandle)
-        document.addEventListener('keydown', this.keydownHandle)
-      }
+      this.reckonByTime()
+      document.addEventListener('click', this.clickHandle)
+      document.addEventListener('dblclick', this.dblclickHandle)
+      document.addEventListener('contextmenu', this.contextmenuHandle)
+      document.addEventListener('mousemove', this.mousemoveHandle)
+      document.addEventListener('mousewheel', this.mousewheelHandle)
+      document.addEventListener('keydown', this.keydownHandle)
     },
     // 移除事件监听、定时器等
     removeHandle() {
@@ -121,14 +117,16 @@ export default {
     },
     // 无操作计时
     reckonByTime() {
-      if (this.timer) {
-        this.lockTime = 0
-        clearInterval(this.timer)
-        this.timer = null
+      if (!this.isLogin) {
+        if (this.timer) {
+          this.lockTime = 0
+          clearInterval(this.timer)
+          this.timer = null
+        }
+        this.timer = setInterval(() => {
+          this.lockTime += 1
+        }, 1000)
       }
-      this.timer = setInterval(() => {
-        this.lockTime += 1
-      }, 1000)
     },
     // 鼠标点击
     clickHandle() {

@@ -16,7 +16,7 @@ const mutations = {
     state.isLock = v
   },
   SET_LOCKTIME: (state, v = initTime) => {
-    console.log('修改定时时间', v)
+    // console.log('修改定时时间', v)
     state.lockTime = v
   }
 }
