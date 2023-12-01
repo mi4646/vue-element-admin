@@ -242,6 +242,10 @@ export default {
           })
         }
       }
+
+      this.option.grid = {
+        top: '20%' // 距离容器上边界40像素
+      }
       // 设置左下角数量范围值
       this.option.visualMap.min = mapDataList.length > 1 ? mapDataList[mapDataList.length - 2].value : 0
       this.option.visualMap.max = mapDataList.length > 0 ? mapDataList[0].value : 0
@@ -398,6 +402,7 @@ export default {
 #map-container {
   height: 66.6%;
   position: relative;
+  top: 10%;
 
   .echarts {
     height: 100%;
@@ -432,6 +437,12 @@ export default {
       margin: 0 11px;
       color: #fff;
     }
+
+  .container {
+  text-align: center;
+  line-height: 100px; /* 父容器高度为100px */
+}
+
 }
 
 </style>
