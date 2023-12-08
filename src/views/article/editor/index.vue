@@ -16,6 +16,7 @@
 
     <!-- 富文本组件 -->
     <mavon-editor
+      v-if="!loading"
       ref="md"
       v-model="article.content"
       :font-size="option.fontSize"
@@ -41,6 +42,7 @@ import DialogTable from './components/DialogTable.vue'
 import { getArticleIdFromPath } from '@/utils/index'
 import * as imageConversion from 'image-conversion'
 import { mavonEditorConfig } from '@/config/mavonEditor'
+import { mapGetters } from 'vuex'
 
 export default {
   components: { DialogTable },
@@ -67,6 +69,11 @@ export default {
       },
       html: ''
     }
+  },
+  computed: {
+    ...mapGetters([
+      'loading'
+    ])
   },
   created() {
     const articleId = getArticleIdFromPath(this.$route)

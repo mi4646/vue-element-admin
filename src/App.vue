@@ -13,7 +13,7 @@ export default {
 <template>
   <div v-cloak id="app">
     <loading v-if="isLoading" />
-    <router-view v-else />
+    <router-view />
 
     <transition v-if="isLock === 'true' && !isLogin" name="slide-up">
       <Lockscreen />
