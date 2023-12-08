@@ -26,7 +26,6 @@
 
     <!-- 文章列表表格组件  class="nav-left"-->
     <article-table
-      :loading="loading"
       :articles-list="articlesList"
       :is-delete="isDelete"
       :categories="categories"
@@ -62,7 +61,6 @@ export default {
   },
   data: function() {
     return {
-      loading: true,
       activeName: 'all',
       articlesList: [],
       tags: [],
@@ -115,8 +113,6 @@ export default {
         }
       }).catch(error => {
         this.$message.error({ message: error })
-      }).finally(() => {
-        this.loading = false
       })
     },
     // 切换标签

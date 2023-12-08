@@ -27,9 +27,8 @@
       @change="handleChange"
     />
 
-    <!-- 对话框 -->
+    <!-- 对话框 v-if="article.id"-->
     <dialog-table
-      v-if="article.id"
       :article="article"
       :dialog-table-visible="dialogTableVisible"
     />

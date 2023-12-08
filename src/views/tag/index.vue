@@ -22,7 +22,7 @@
     </div>
 
     <!-- table表格 -->
-    <el-table v-loading="loading" stripe :data="tags" @selection-change="selectionChange">
+    <el-table stripe :data="tags" @selection-change="selectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column prop="createTime" label="创建时间" width="250" align="center">
         <template slot-scope="scope">
@@ -95,7 +95,6 @@ export default {
   data: function() {
     return {
       isDelete: false,
-      loading: true,
       addOrEdit: false,
       keywords: null,
       tags: [],
@@ -150,7 +149,6 @@ export default {
         if (response.code === 0) {
           this.tags = response.data
           this.count = response.total_count
-          this.loading = false
         } else {
           this.$message.error({ message: response.codemsg })
         }

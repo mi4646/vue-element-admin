@@ -30,7 +30,6 @@
 
     <!-- table表格 -->
     <el-table
-      v-loading="loading"
       fixed
       default-expand-all
       :data="menus"
@@ -152,7 +151,6 @@ export default {
     return {
       dialogTitle: '',
       keywords: '',
-      loading: true,
       addDialogVisible: false,
       isCatalog: true,
       show: true,
@@ -187,8 +185,6 @@ export default {
         this.menus = response.data
       }).catch(error => {
         this.$message.error({ message: error })
-      }).finally(() => {
-        this.loading = false
       })
     },
     // 判断是新增菜单还是编辑菜单

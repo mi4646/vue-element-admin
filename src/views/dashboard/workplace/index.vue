@@ -14,12 +14,10 @@
           :xs="24"
         >
           <ProjectCard
-            :loading="loading"
             class="enter-y"
           />
 
           <a-card
-            :loading="loading"
             :bordered="bordered"
             title="动态"
           >
@@ -60,14 +58,12 @@
 
           <!-- 便捷导航 -->
           <easy-navigation
-            :loading="loading"
             title="快速开始 / 便捷导航"
             :bordered="bordered"
           />
 
           <a-card
             class="!my-4 enter-y"
-            :loading="loading"
             title="XX 指数"
             style="margin-bottom: 24px"
             :body-style="{ padding: 0 }"
@@ -81,7 +77,6 @@
           </a-card>
 
           <a-card
-            :loading="loading"
             title="友链"
             :bordered="bordered"
             style="margin-bottom: 24px;
@@ -132,7 +127,6 @@ export default {
     return {
       user: {},
       avatar: '',
-      loading: true,
       bordered: false,
       radarLoading: true,
       activities: [{
@@ -248,9 +242,6 @@ export default {
     // this.getActivity()
     // this.getTeams()
     // this.initRadar()
-  },
-  created() {
-    setTimeout(() => { this.loading = false }, 1500)
   },
   methods: {
     // 国际化函数的实现

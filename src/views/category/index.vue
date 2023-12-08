@@ -193,7 +193,6 @@ export default {
       categoryOptions: [],
       categorys: [],
       isDelete: false,
-      loading: true,
       addOrEdit: false,
       keywords: null,
       categoryIds: [],
@@ -231,7 +230,6 @@ export default {
   created() {
     this.current = 1
     this.listCategories()
-    this.loading = false
   },
   methods: {
     searchCategories() {
@@ -268,7 +266,6 @@ export default {
           this.categoryOptions = this.flattenTree(response.data)
           console.log('this.categoryOptions ', this.categoryOptions)
           this.count = response.total_count
-          this.loading = false
         } else {
           this.$message.error({ message: response.codemsg })
         }

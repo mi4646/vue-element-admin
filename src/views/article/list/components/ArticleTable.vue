@@ -85,7 +85,6 @@
     </div>
 
     <el-table
-      v-loading="loading"
       stripe
       :data="articlesList"
       @selection-change="selectionChange"
@@ -140,7 +139,7 @@
       <el-table-column prop="word_number" label="评论" width="70" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.word_number">
-            <el-badge value="1" />
+            <el-badge value="1" style="margin-top: 10px;" />
           </span>
           <span v-else>0</span>
         </template>
@@ -231,10 +230,7 @@ export default {
     HeadButton
   },
   props: {
-    loading: {
-      type: Boolean,
-      default: true
-    },
+
     isDelete: {
       type: Number,
       default: 0
@@ -307,7 +303,7 @@ export default {
     },
     // 文章编辑 跳转到编辑页面
     editArticle(id) {
-      this.$router.push(`/article/article-editor/${id}`)
+      this.$router.push(`/article-editor/${id}/`)
     },
     // 文章彻底删除
     deleteArticles(id) {

@@ -2,7 +2,6 @@
 <template>
   <div>
     <a-card
-      :loading="loading"
       :title="title"
       style="margin-bottom: 24px"
       :bordered="bordered"
@@ -37,10 +36,6 @@
 <script>
 export default {
   props: {
-    loading: {
-      type: Boolean,
-      default: true
-    },
     title: {
       type: String,
       default: ''

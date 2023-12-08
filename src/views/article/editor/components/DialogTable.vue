@@ -190,7 +190,7 @@ export default {
     }
   },
   created() {
-    this.article = this.$parent.$parent.article
+    // this.article = this.$parent.$parent.article
     this.tag_ids = this.article.tags.map(item => item.id)
     this.article.tags = this.article.tags.map(item => item.name)
   },
@@ -209,7 +209,7 @@ export default {
       const method = this.article.id ? postsUpdate : postsCreate
       const param = {
         status: this.article.status,
-        ids: [this.article.id],
+        // ids: [this.article.id],
         slug: this.article.slug,
         cate: this.article.cate,
         title: this.article.title,
@@ -220,7 +220,7 @@ export default {
       }
       method(param).then((response) => {
         if (response.code === 0) {
-          this.$router.push({ path: '/article/article-list' })
+          this.$router.push({ path: '/article-list' })
         } else {
           this.$message.error({ message: response.codemsg })
         }

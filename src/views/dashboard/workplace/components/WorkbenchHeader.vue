@@ -82,7 +82,6 @@ export default {
   created() {
     this.getChickenSoup()
     this.welcome = welcome()
-    setTimeout(() => { this.loading = false }, 1500)
   },
   methods: {
     // 根据三方接口获取鸡汤
