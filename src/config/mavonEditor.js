@@ -4,7 +4,7 @@ mavonEditor -一个基于Vue的降价编辑器，支持各种个性化功能
 主题：https://github.com/hinesboy/mavonEditor/blob/master/src/lib/core/hljs/lang.hljs.css.js
 */
 
-export const mavonEditor = {
+export const mavonEditorConfig = {
   toolbars: {
     bold: true, // 粗体
     italic: true, // 斜体

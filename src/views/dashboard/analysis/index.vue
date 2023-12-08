@@ -28,7 +28,7 @@
       </a-card>
     </a-row>
 
-    <a-card style="margin-top: 1.25rem" title="文章贡献统计">
+    <a-card style="margin-top: 1.25rem" title="文章贡献统计" :loading="loading">
       <calendar-heatmap />
     </a-card>
 
@@ -51,7 +51,7 @@
     <a-row :gutter="20" style="margin-top: 1.25rem">
       <a-col :span="16">
         <a-card title="用户地域分布" style="height: 450px">
-          <div>
+          <div :loading="loading">
             <!-- <div class="area-wrapper">
               <el-radio-group v-model="type">
                 <el-radio :label="1">用户</el-radio>
@@ -66,7 +66,7 @@
 
       <a-col :xs="24" :sm="24" :lg="8">
         <a-card title="文章标签统计" style="height: 450px">
-          <div>
+          <div :loading="loading">
             <tag-cloud :data="tagDTOs" />
           </div>
         </a-card>
@@ -147,6 +147,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       articleStatisticsDTOs: [],
       tabListNoTitle: [
         {

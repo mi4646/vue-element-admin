@@ -65,9 +65,10 @@ https://uixor.com/article/1473849675479126017
 */
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
+Vue.use(mavonEditor)
+
 import hljs from 'highlight.js'
 import 'highlight.js/styles/github.css' // 根据自己的需求选择样式文件
-Vue.use(mavonEditor)
 Vue.directive('highlight', function(el) {
   const blocks = el.querySelectorAll('pre code')
   blocks.forEach((block) => {

@@ -40,13 +40,13 @@ import { postsCreate, uploadAccessory, fetchPostsInfo } from '@/api/article'
 import DialogTable from './components/DialogTable.vue'
 import { getArticleIdFromPath } from '@/utils/index'
 import * as imageConversion from 'image-conversion'
-import { mavonEditor } from '@/config/mavonEditor'
+import { mavonEditorConfig } from '@/config/mavonEditor'
 
 export default {
   components: { DialogTable },
   data: function() {
     return {
-      option: { ...mavonEditor }, // mavonEditor的相关配置
+      option: { ...mavonEditorConfig }, // mavonEditor的相关配置
       dialogTableVisible: false,
       autoSave: true,
       cate_name: '',
@@ -99,7 +99,7 @@ export default {
       this.article.status = 2
       postsCreate(this.article).then((response) => {
         if (response.code === 0) {
-          this.$router.push({ path: '/article/article-list' })
+          this.$router.push({ path: '/article-list' })
           this.$message.success({ message: '保存草稿成功' })
         } else {
           this.$message.error({ message: response.codemsg })
