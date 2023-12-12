@@ -8,19 +8,19 @@
     style="margin-top: 5%;"
   >
     <div slot="title" class="dialog-title-container">发布文章</div>
-    <el-form label-width="80px" size="medium" :model="article">
+    <el-form label-width="80px" size="medium" :model="articleProp">
       <el-form-item label="文章分类">
         <el-tag
-          v-show="article.cate_name"
+          v-show="articleProp.cate_name"
           type="success"
           style="margin: 0 1rem 0 0"
           :closable="true"
           @close="removeCategory"
         >
-          {{ article.cate_name }}
+          {{ articleProp.cate_name }}
         </el-tag>
 
-        <el-popover v-if="!article.cate_name" placement="bottom-start" width="460" trigger="click">
+        <el-popover v-if="!articleProp.cate_name" placement="bottom-start" width="460" trigger="click">
           <div class="popover-title">分类</div>
           <el-autocomplete
             v-model="cate_name"
@@ -46,7 +46,7 @@
 
       <el-form-item label="文章标签">
         <el-tag
-          v-for="(item, index) of article.tags"
+          v-for="(item, index) of articleProp.tags"
           :key="index"
           style="margin: 0 1rem 0 0"
           :closable="true"
@@ -57,7 +57,7 @@
         </el-tag>
 
         <el-popover
-          v-if="article.tags.length < 4"
+          v-if="articleProp.tags.length < 4"
           width="460"
           trigger="click"
           placement="top-start"
@@ -89,7 +89,7 @@
 
       <el-form-item label="置顶">
         <el-switch
-          v-model="article.is_top"
+          v-model="articleProp.is_top"
           active-color="#13ce66"
           inactive-color="#F4F4F5"
           :active-value="1"
@@ -99,7 +99,7 @@
 
       <el-form-item label="推荐">
         <el-switch
-          v-model="article.is_essence"
+          v-model="articleProp.is_essence"
           active-color="#13ce66"
           inactive-color="#F4F4F5"
           :active-value="1"
@@ -135,7 +135,7 @@ export default {
       type: Boolean,
       default: false
     },
-    article: {
+    articleProp: {
       type: Object,
       default() {
         return {
@@ -151,6 +151,7 @@ export default {
         }
       }
     }
+
   },
   data() {
     return {
@@ -162,22 +163,23 @@ export default {
     }
   },
   computed: {
+    // 给标签选择框动态绑定不可选中class
     tagClass() {
       return function(item) {
-        const index = this.article.tags.indexOf(item.name)
-        return index !== -1 ? 'tag-item-select' : 'tag-item'
+        const exists = this.articleProp.tags.some(i => i.id === item.id)
+        return exists ? 'tag-item-select' : 'tag-item'
       }
     },
     publicStatus: {
       get() {
-        if (this.article.status === 2) {
+        if (this.articleProp.status === 2) {
           return 1
         } else {
-          return this.article.status
+          return this.articleProp.status
         }
       },
       set(value) {
-        this.article.status = value
+        this.articleProp.status = value
       }
     }
   },
@@ -190,33 +192,37 @@ export default {
     }
   },
   created() {
-    // this.article = this.$parent.$parent.article
-    this.tag_ids = this.article.tags.map(item => item.id)
-    this.article.tags = this.article.tags.map(item => item.name)
+    console.log(this.articleProp, 'articleProp')
+    this.tag_ids = this.articleProp.tags.map(item => item.id)
+    console.log(this.tag_ids, 'create tag_ids')
   },
   methods: {
     // 发布按钮点击事件
     saveOrUpdateArticle() {
-      if (this.article.title.trim() === '') {
+      if (this.articleProp.title.trim() === '') {
         this.$message.error('文章标题不能为空')
         return false
       }
-      if (this.article.content.trim() === '') {
+      if (this.articleProp.content.trim() === '') {
         this.$message.error('文章内容不能为空')
         return false
       }
 
-      const method = this.article.id ? postsUpdate : postsCreate
+      const method = this.articleProp.id ? postsUpdate : postsCreate
+
       const param = {
-        status: this.article.status,
-        // ids: [this.article.id],
-        slug: this.article.slug,
-        cate: this.article.cate,
-        title: this.article.title,
-        is_top: this.article.is_top,
-        tag_ids: this.tag_ids,
-        content: this.article.content,
-        is_essence: this.article.is_essence
+        status: this.articleProp.status,
+        slug: this.articleProp.slug,
+        cate: this.articleProp.cate,
+        title: this.articleProp.title,
+        is_top: this.articleProp.is_top,
+        tag: this.tag_ids,
+        content: this.articleProp.content,
+        is_essence: this.articleProp.is_essence
+      }
+      const articleId = this.$route.params.id
+      if (articleId) {
+        param.id = articleId
       }
       method(param).then((response) => {
         if (response.code === 0) {
@@ -273,12 +279,12 @@ export default {
       }
     },
     addCategory(item) {
-      this.article.cate_name = item.name
-      this.article.cate = item.id
+      this.articleProp.cate_name = item.name
+      this.articleProp.cate = item.id
     },
     removeCategory() {
-      this.article.cate_name = null
-      this.article.cate = null
+      this.articleProp.cate_name = null
+      this.articleProp.cate = null
     },
     // 标签列表
     listTags() {
@@ -292,6 +298,7 @@ export default {
         this.$message.error({ message: error })
       })
     },
+    // 标签搜索
     searchTags(keywords, cb) {
       const params = {
         name: keywords
@@ -316,18 +323,20 @@ export default {
       }
     },
     addTag(item) {
-      this.article.tags.push(item.name)
+      this.articleProp.tags.push(item)
+      console.log(this.articleProp.tags, 'addtags', 'item', item)
       this.tag_ids.push(item.id)
+      console.log(this.tag_ids, 'tag_ids')
     },
     removeTag(item) {
-      const tagsIndex = this.article.tags.indexOf(item)
+      const tagsIndex = this.articleProp.tags.indexOf(item)
       // 使用find方法查找name值为'3333'的元素
       const element = this.tagList.find(tag => tag.name === item)
       // 如果找到了匹配的元素，则获取其id值
       const tagId = element ? element.id : undefined
 
       if (tagsIndex !== -1) {
-        this.article.tags.splice(tagsIndex, 1)
+        this.articleProp.tags.splice(tagsIndex, 1)
       }
 
       if (tagId) {

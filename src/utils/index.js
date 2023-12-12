@@ -390,10 +390,3 @@ export function parseData(response) {
   }
 }
 
-// 根据路由获取文章ID
-export function getArticleIdFromPath(route) {
-  const path = route.path
-  const arr = path.split('/')
-  const articleId = arr[arr.length - 1]
-  return articleId
-}

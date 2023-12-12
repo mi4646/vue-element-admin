@@ -208,11 +208,11 @@
             title="确定彻底删除吗？"
             @onConfirm="deleteArticles(scope.row.id)"
           >
-            <el-buttonPostsUpdate
+            <el-button
               slot="reference"
               size="mini"
               type="danger"
-            > 删除 </el-buttonPostsUpdate>
+            > 删除 </el-button>
           </el-popconfirm>
         </template>
       </el-table-column>

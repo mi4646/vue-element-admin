@@ -30,7 +30,8 @@
 
     <!-- 对话框 v-if="article.id"-->
     <dialog-table
-      :article="article"
+      v-if="article.id"
+      :article-prop="article"
       :dialog-table-visible="dialogTableVisible"
     />
   </el-card>
@@ -39,7 +40,7 @@
 <script>
 import { postsCreate, uploadAccessory, fetchPostsInfo } from '@/api/article'
 import DialogTable from './components/DialogTable.vue'
-import { getArticleIdFromPath } from '@/utils/index'
+// import { getArticleIdFromPath } from '@/utils/index'
 import * as imageConversion from 'image-conversion'
 import { mavonEditorConfig } from '@/config/mavonEditor'
 import { mapGetters } from 'vuex'
@@ -76,7 +77,7 @@ export default {
     ])
   },
   created() {
-    const articleId = getArticleIdFromPath(this.$route)
+    const articleId = this.$route.params.id
     if (articleId && ['*', ':id', 'article-editor'].indexOf(articleId) === -1) {
       fetchPostsInfo(articleId, {}).then((response) => {
         if (!response.code) {
