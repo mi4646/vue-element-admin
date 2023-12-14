@@ -221,11 +221,6 @@ export default {
         this.searchCategories()
       }
     }
-    // clearParent(v) {
-    //   if (v === 'true') {
-    //     this.clearParentVisible = true
-    //   }
-    // }
   },
   created() {
     this.current = 1
@@ -314,7 +309,8 @@ export default {
         return false
       }
       const method = this.categoryForm.id ? catesUpdate : catesCreate
-      method(this.categoryForm).then((response) => {
+      const { id, name, desc, cate } = this.categoryForm
+      method({ id, name, desc, cate }).then((response) => {
         if (response.code === 0) {
           this.listCategories()
         } else {

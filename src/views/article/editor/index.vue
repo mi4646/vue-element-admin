@@ -30,7 +30,6 @@
 
     <!-- 对话框 v-if="article.id"-->
     <dialog-table
-      v-if="article.id"
       :article-prop="article"
       :dialog-table-visible="dialogTableVisible"
     />
@@ -61,7 +60,6 @@ export default {
         id: null,
         title: new Date().toLocaleString('zh-CN', { hour12: false }).replaceAll('/', '-'),
         content: '',
-        articleCover: '',
         cate_name: null,
         tags: [],
         is_top: 0,
@@ -105,7 +103,8 @@ export default {
         return false
       }
       this.article.status = 2
-      postsCreate(this.article).then((response) => {
+      const { title, content, status } = this.article
+      postsCreate({ title, content, status }).then((response) => {
         if (response.code === 0) {
           this.$router.push({ path: '/article-list' })
           this.$message.success({ message: '保存草稿成功' })

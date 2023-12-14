@@ -192,9 +192,7 @@ export default {
     }
   },
   created() {
-    console.log(this.articleProp, 'articleProp')
     this.tag_ids = this.articleProp.tags.map(item => item.id)
-    console.log(this.tag_ids, 'create tag_ids')
   },
   methods: {
     // 发布按钮点击事件
@@ -324,29 +322,20 @@ export default {
     },
     addTag(item) {
       this.articleProp.tags.push(item)
-      console.log(this.articleProp.tags, 'addtags', 'item', item)
       this.tag_ids.push(item.id)
-      console.log(this.tag_ids, 'tag_ids')
     },
     removeTag(item) {
       const tagsIndex = this.articleProp.tags.indexOf(item)
-      // 使用find方法查找name值为'3333'的元素
-      const element = this.tagList.find(tag => tag.name === item)
-      // 如果找到了匹配的元素，则获取其id值
-      const tagId = element ? element.id : undefined
+      const tagId = item.id
 
       if (tagsIndex !== -1) {
         this.articleProp.tags.splice(tagsIndex, 1)
       }
 
-      if (tagId) {
-        // 循环遍历数组，在找到要删除的元素时，使用pop方法删除该元素
-        for (let i = 0; i < this.tag_ids.length; i++) {
-          if (this.tag_ids[i] === tagId) {
-            this.tag_ids.splice(i, 1)
-            break
-          }
-        }
+      //  this.tag_ids.filter(item => item !== tagId)
+      const index = this.tag_ids.indexOf(tagId)
+      if (index > -1) {
+        this.tag_ids.splice(index, 1)
       }
     }
   }

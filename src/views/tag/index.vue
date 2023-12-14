@@ -194,9 +194,9 @@ export default {
         this.$message.error('标签名不能为空')
         return false
       }
-
       const method = this.tagForm.id ? tasUpdate : tagsCreate
-      method(this.tagForm).then((response) => {
+      const { id, name, desc } = this.tagForm
+      method({ id, name, desc }).then((response) => {
         if (response.code === 0) {
           this.listTags()
         } else {
