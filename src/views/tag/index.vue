@@ -24,13 +24,18 @@
     <!-- table表格 -->
     <el-table stripe :data="tags" @selection-change="selectionChange">
       <el-table-column type="selection" width="55" align="center" />
+      <el-table-column prop="index" label="序号" width="100" align="center">
+        <template slot-scope="scope">
+          {{ (scope.$index+1)+(current-1)*size }}
+        </template>
+      </el-table-column>
       <el-table-column prop="createTime" label="创建时间" width="250" align="center">
         <template slot-scope="scope">
           <i class="el-icon-time" style="margin-right: 5px" />
           {{ scope.row.create_date | dateTime }}
         </template>
       </el-table-column>
-      <el-table-column prop="name" width="400" label="标签名" align="center">
+      <el-table-column prop="name" width="300" label="标签名" align="center">
         <template slot-scope="scope">
           <el-tag>
             {{ scope.row.name }}
