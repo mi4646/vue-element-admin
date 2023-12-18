@@ -1,47 +1,39 @@
 <template>
-  <a-card
-    class="project-list"
-    v-bind="$attrs"
-    style="margin-bottom: 24px;"
-    :bordered="false"
-    title="Vue后台管理系统项目"
-    :body-style="{ padding: 0 }"
-  >
-    <a slot="extra">更多</a>
-    <div>
-      <a-card-grid v-for="(item, i) in projects" :key="i" class="project-card-grid">
-        <a-card :bordered="false" :body-style="{ padding: 0 }">
-          <a-card-meta>
-            <div slot="title" class="card-title">
-              <a-avatar size="small" :src="item.cover" />
-              <a>{{ item.title }}</a>
-            </div>
-            <div slot="description" class="card-description">
-              {{ item.description }}
-            </div>
-          </a-card-meta>
-          <!-- 图标 -->
-          <div style="display: flex; justify-content: flex-end; align-items: flex-end; margin-top: 16px;">
-            <a :href="item.github" target="_blank">
-              <a-icon type="github" style="margin-right: 8px;" />
-            </a>
-            <a :href="item.gitee" target="_blank">
-              <a-icon type="google" style="margin-right: 8px;" />
-            </a>
-            <a :href="item.link" target="_blank">
-              <a-tooltip placement="bottom">
-                <template slot="title">
-                  预览项目
-                </template>
-                <a-icon type="dribbble" />
-              </a-tooltip>
-            </a>
-          </div>
 
-        </a-card>
-      </a-card-grid>
-    </div>
-  </a-card>
+  <div>
+    <a-card-grid v-for="(item, i) in projects" :key="i" class="project-card-grid">
+      <a-card :bordered="false" :body-style="{ padding: 0 }">
+        <a-card-meta>
+          <div slot="title" class="card-title">
+            <a-avatar size="small" :src="item.cover" />
+            <a>{{ item.title }}</a>
+          </div>
+          <div slot="description" class="card-description">
+            {{ item.description }}
+          </div>
+        </a-card-meta>
+        <!-- 图标 -->
+        <div style="display: flex; justify-content: flex-end; align-items: flex-end; margin-top: 16px;">
+          <a :href="item.github" target="_blank">
+            <a-icon type="github" style="margin-right: 8px;" />
+          </a>
+          <a :href="item.gitee" target="_blank">
+            <a-icon type="google" style="margin-right: 8px;" />
+          </a>
+          <a :href="item.link" target="_blank">
+            <a-tooltip placement="bottom">
+              <template slot="title">
+                预览项目
+              </template>
+              <a-icon type="dribbble" />
+            </a-tooltip>
+          </a>
+        </div>
+
+      </a-card>
+    </a-card-grid>
+  </div>
+
 </template>
 
 <script>
@@ -60,8 +52,8 @@ export default {
     getProjects() {
       getProject().then(response => {
         this.projects = response.data
-      }).catch(err => {
-        this.$notify.error({ title: '失败', message: err })
+      }).catch(error => {
+        this.$message.error({ message: error })
       })
     }
   }

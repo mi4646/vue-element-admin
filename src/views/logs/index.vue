@@ -53,7 +53,11 @@
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column prop="username" label="操作人员" align="center" width="150" />
+      <el-table-column prop="username" label="操作人员" align="center" width="150">
+        <template slot-scope="scope">
+          {{ scope.row.user.username }}
+        </template>
+      </el-table-column>
       <el-table-column prop="ipSource" label="登录地址" align="center" width="150" />
       <el-table-column label="操作" align="center" width="300">
         <template slot-scope="scope">

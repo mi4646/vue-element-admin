@@ -6,7 +6,6 @@
       <el-form-item label="IP地址：">
         <template v-if="optLog.remote_addr">
           {{ !optLog.showIp ? optLog.remote_addr.replace(/\.\d{1,3}\.\d{1,3}$/, '.**.**') : optLog.remote_addr }}
-          <!-- <el-icon color="#1976D2" @click="optLog.showIp=!optLog.showIp">mdi-eye-off</el-icon> -->
           <i class="el-icon-view" style="margin-left: 10px;" @click="optLog.showIp=!optLog.showIp" />
         </template>
       </el-form-item>
@@ -17,7 +16,7 @@
         <div v-html="optLog.msg" />
       </el-form-item>
       <el-form-item label="操作人员：">
-        {{ optLog.username }}
+        {{ optLog.user.username }}
       </el-form-item>
     </el-form>
   </el-dialog>

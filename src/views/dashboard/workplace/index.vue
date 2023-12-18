@@ -13,37 +13,30 @@
           :sm="24"
           :xs="24"
         >
-          <ProjectCard
-            class="enter-y"
-          />
+
+          <a-card
+            class="project-list"
+            v-bind="$attrs"
+            style="margin-bottom: 24px;"
+            :bordered="false"
+            title="Vue后台管理系统项目"
+            :body-style="{ padding: 0 }"
+          >
+            <a slot="extra">更多</a>
+
+            <ProjectCard
+              class="enter-y"
+            />
+          </a-card>
 
           <a-card
             :bordered="bordered"
             title="动态"
           >
-            <a slot="extra">更多</a>
-            <a-list>
-              <a-list-item
-                v-for="(item, index) in activities"
-                :key="index"
-              >
-                <a-list-item-meta>
-                  <a-avatar
-                    slot="avatar"
-                    size="small"
-                    :src="item.user.avatar"
-                  />
-                  <div slot="title">
-                    <span>{{ item.user.nickname }}</span>&nbsp; 在&nbsp;<a
-                      href="#"
-                    >{{ item.project.name }}</a>&nbsp;
-                    <span>{{ item.project.action }}</span>&nbsp;
-                    <a href="#">{{ item.project.event }}</a>
-                  </div>
-                  <div slot="description">{{ item.time }}</div>
-                </a-list-item-meta>
-              </a-list-item>
-            </a-list>
+            <a slot="extra">
+              <router-link to="/logs/index">更多</router-link>
+            </a>
+            <dynamic-state />
           </a-card>
         </a-col>
 
@@ -108,6 +101,7 @@ import { PageHeaderWrapper } from '@ant-design-vue/pro-layout'
 import ProjectCard from './components/ProjectCard.vue'
 import WorkbenchHeader from './components/WorkbenchHeader.vue'
 import EasyNavigation from './components/EasyNavigation.vue'
+import DynamicState from './components/DynamicState.vue'
 
 export default {
   // 文档: https://gitee.com/tokyocsd/ant-design-pro-layout
@@ -121,7 +115,8 @@ export default {
     PageHeaderWrapper,
     ProjectCard,
     WorkbenchHeader,
-    EasyNavigation
+    EasyNavigation,
+    DynamicState
   },
   data() {
     return {
@@ -129,85 +124,6 @@ export default {
       avatar: '',
       bordered: false,
       radarLoading: true,
-      activities: [{
-        id: 1,
-        user: {
-          nickname: '@name',
-          avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png'
-        },
-        project: {
-          name: '白鹭酱油开发组',
-          action: '更新',
-          event: '番组计划'
-        },
-        time: '2018-08-23 14:47:00'
-      },
-      {
-        id: 1,
-        user: {
-          nickname: '蓝莓酱',
-          avatar: 'https://gw.alipayobjects.com/zos/rmsportal/jZUIxmJycoymBprLOUbT.png'
-        },
-        project: {
-          name: '白鹭酱油开发组',
-          action: '更新',
-          event: '番组计划'
-        },
-        time: '2018-08-23 09:35:37'
-      },
-      {
-        id: 1,
-        user: {
-          nickname: '@name',
-          avatar: '@image(64x64)'
-        },
-        project: {
-          name: '白鹭酱油开发组',
-          action: '创建',
-          event: '番组计划'
-        },
-        time: '2017-05-27 00:00:00'
-      },
-      {
-        id: 1,
-        user: {
-          nickname: '曲丽丽',
-          avatar: '@image(64x64)'
-        },
-        project: {
-          name: '高逼格设计天团',
-          action: '更新',
-          event: '六月迭代'
-        },
-        time: '2018-08-23 14:47:00'
-      },
-      {
-        id: 1,
-        user: {
-          nickname: '@name',
-          avatar: '@image(64x64)'
-        },
-        project: {
-          name: '高逼格设计天团',
-          action: 'created',
-          event: '六月迭代'
-        },
-        time: '2018-08-23 14:47:00'
-      },
-      {
-        id: 1,
-        user: {
-          nickname: '曲丽丽',
-          avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png'
-        },
-        project: {
-          name: '高逼格设计天团',
-          action: 'created',
-          event: '六月迭代'
-        },
-        time: '2018-08-23 14:47:00'
-      }
-      ],
       teams: [{
         id: 1,
         name: '科学搬砖组',
@@ -235,33 +151,11 @@ export default {
       }
       ],
       radarData: []
-
     }
-  },
-  mounted() {
-    // this.getActivity()
-    // this.getTeams()
-    // this.initRadar()
   },
   methods: {
     // 国际化函数的实现
     i18nRender() {}
-
-    // initRadar () {
-    //   this.radarLoading = true
-    //   this.$http.get('/workplace/radar').then(res => {
-    //     const dv = new DataSet.View().source(res.result)
-    //     dv.transform({
-    //       type: 'fold',
-    //       fields: ['个人', '团队', '部门'],
-    //       key: 'user',
-    //       value: 'score'
-    //     })
-
-    //     this.radarData = dv.rows
-    //     this.radarLoading = false
-    //   })
-    // }
   }
 }
 </script>
