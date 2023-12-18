@@ -154,7 +154,6 @@ export default {
     changes() {
       this.listLogs()
     }
-    //
   },
   created() {
     this.listLogs()

@@ -25,6 +25,15 @@ export function logout() {
   })
 }
 
+// 标签列表
+export function usersList(query) {
+  return request({
+    url: '/accounts/users/',
+    method: 'get',
+    params: query
+  })
+}
+
 // 用户修改
 export function userUpdate(data) {
   return request({

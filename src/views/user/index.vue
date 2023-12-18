@@ -20,27 +20,19 @@
     </div>
 
     <el-table stripe :data="userList">
-      <el-table-column prop="linkAvatar" label="头像" align="center" width="100">
+      <el-table-column prop="index" label="序号" width="100" align="center">
+        <template slot-scope="scope">
+          {{ (scope.$index+1)+(current-1)*size }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="avatar" label="头像" align="center" width="100">
         <template slot-scope="scope">
           <img :src="scope.row.avatar" width="40" height="40">
         </template>
       </el-table-column>
-      <el-table-column prop="nickname" label="昵称" align="center" width="140" />
-      <el-table-column prop="loginType" label="登录方式" align="center" width="80">
-        <template slot-scope="scope">
-          <el-tag v-if="scope.row.loginType == 1" type="success">邮箱</el-tag>
-          <el-tag v-if="scope.row.loginType == 2">QQ</el-tag>
-          <el-tag v-if="scope.row.loginType == 3" type="danger">微博</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column prop="roles" label="用户角色" align="center">
-        <template slot-scope="scope">
-          <el-tag v-for="(item, index) of scope.row.roles" :key="index" style="margin-right: 4px; margin-top: 4px">
-            {{ item.roleName }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column prop="isDisable" label="禁用" align="center" width="100">
+      <el-table-column prop="username" label="用户名" align="center" width="200" />
+      <el-table-column prop="nick_name" label="昵称" align="center" width="200" />
+      <el-table-column prop="isDisable" label="禁用" align="center" width="150">
         <template slot-scope="scope">
           <el-switch
             v-model="scope.row.isDisable"
@@ -52,20 +44,19 @@
           />
         </template>
       </el-table-column>
-      <el-table-column prop="ipAddress" label="登录ip" align="center" width="140" />
-      <el-table-column prop="ipSource" label="登录地址" align="center" width="140" />
-      <el-table-column prop="createTime" label="创建时间" width="130" align="center">
+      <el-table-column prop="date_joined" label="创建时间" width="200" align="center">
         <template slot-scope="scope">
           <i class="el-icon-time" style="margin-right: 5px" />
-          {{ scope.row.createTime | date }}
+          {{ scope.row.date_joined | dateTime }}
         </template>
       </el-table-column>
-      <el-table-column prop="lastLoginTime" label="上次登录时间" width="130" align="center">
+      <el-table-column prop="last_login" label="上次登录时间" width="200" align="center">
         <template slot-scope="scope">
           <i class="el-icon-time" style="margin-right: 5px" />
-          {{ scope.row.lastLoginTime | date }}
+          {{ scope.row.last_login | dateTime }}
         </template>
       </el-table-column>
+      <el-table-column prop="desc" label="描述" align="center" width="300" />
       <el-table-column label="操作" align="center" width="100">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="openEditModel(scope.row)"> 编辑 </el-button>
@@ -109,6 +100,8 @@
 </template>
 
 <script>
+import { usersList } from '@/api/user'
+
 export default {
   data: function() {
     return {
@@ -144,9 +137,8 @@ export default {
     }
   },
   created() {
-    this.current = this.$store.state.pageState.user
     this.listUsers()
-    this.listRoles()
+    // this.listRoles()
   },
   methods: {
     searchUsers() {
@@ -159,7 +151,6 @@ export default {
     },
     currentChange(current) {
       this.current = current
-      this.$store.commit('updateUserPageState', current)
       this.listUsers()
     },
     changeDisable(user) {
@@ -203,24 +194,22 @@ export default {
         })
     },
     listUsers() {
-      this.axios
-        .get('/api/accounts/users/', {
-          params: {
-            page: this.current,
-            p_size: this.size,
-            username: this.keywords,
-            loginType: this.loginType
-          }
-        })
-        .then(({ data }) => {
-          this.userList = data.data
-          this.count = data.total_count
-        }).catch(error => {
-          this.$notify.error({
-            title: '失败',
-            message: error
-          })
-        })
+      const params = {
+        page: this.current,
+        p_size: this.size
+        // username: this.keywords,
+        // loginType: this.loginType
+      }
+      usersList(params).then((response) => {
+        if (response.code === 0) {
+          this.userList = response.data
+          this.count = response.total_count
+        } else {
+          this.$message.error({ message: response.codemsg })
+        }
+      }).catch(error => {
+        this.$message.error({ message: error })
+      })
     },
     listRoles() {
       this.axios.get('/api/admin/users/role').then(({ data }) => {
