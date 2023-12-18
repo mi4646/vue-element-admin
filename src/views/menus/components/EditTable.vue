@@ -169,7 +169,7 @@ export default {
         this.$message.error('菜单组件路径不能为空')
         return false
       }
-      if (this.menuForm.path.trim() === '') {
+      if (this.menuForm.path.trim() === '' && this.menuForm.parent_id) {
         this.$message.error('菜单访问路径不能为空')
         return false
       }

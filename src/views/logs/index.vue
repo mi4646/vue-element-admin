@@ -2,8 +2,12 @@
   <el-card class="main-card">
     <div class="operation-container">
       <div style="margin-left: auto">
+        <el-select v-model="actionType" clearable placeholder="请选择类型" size="small" style="margin-right: 1rem">
+          <el-option v-for="item in typeList" :key="item.type" :label="item.desc" :value="item.type" />
+        </el-select>
         <el-input
-          v-model="keywords"
+          v-model="changes"
+          clearable
           prefix-icon="el-icon-search"
           size="small"
           placeholder="请输入模块名或描述"
@@ -94,9 +98,44 @@ export default {
       size: 10,
       current: 1,
       totalCount: 0,
-      keywords: null,
+      changes: null,
       dialogVisible: false,
-      optLog: {}
+      optLog: {},
+      actionType: null,
+      typeList: [
+        {
+          type: null,
+          desc: '全部'
+        },
+        {
+          type: 0,
+          desc: '创建'
+        },
+        {
+          type: 1,
+          desc: '修改'
+        },
+        {
+          type: 2,
+          desc: '删除'
+        },
+        {
+          type: 3,
+          desc: '访问'
+        },
+        {
+          type: 4,
+          desc: '下载'
+        },
+        {
+          type: 5,
+          desc: '登录'
+        },
+        {
+          type: 6,
+          desc: '退出'
+        }
+      ]
     }
   },
   computed: {
@@ -107,6 +146,15 @@ export default {
         return tags[index]
       }
     }
+  },
+  watch: {
+    actionType() {
+      this.listLogs()
+    },
+    changes() {
+      this.listLogs()
+    }
+    //
   },
   created() {
     this.listLogs()
@@ -129,7 +177,8 @@ export default {
       const params = {
         page: this.current,
         p_size: this.size,
-        keywords: this.keywords
+        changes: this.changes,
+        action: this.actionType
       }
       logsList(params).then((response) => {
         if (response.code === 0) {
