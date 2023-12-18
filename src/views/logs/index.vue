@@ -171,7 +171,16 @@ export default {
       pickerOptions: {
         shortcuts: [
           {
-            text: '最近1周',
+            text: '今天',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start)
+              picker.$emit('pick', [start, end])
+            }
+          },
+          {
+            text: '过去7天',
             onClick(picker) {
               const end = new Date()
               const start = new Date()
