@@ -2,9 +2,36 @@
   <el-card class="main-card">
     <div class="operation-container">
       <div style="margin-left: auto">
-        <el-select v-model="actionType" clearable placeholder="请选择类型" size="small" style="margin-right: 1rem">
-          <el-option v-for="item in typeList" :key="item.type" :label="item.desc" :value="item.type" />
+
+        <el-date-picker
+          v-model="TimeValue"
+          type="daterange"
+          unlink-panels
+          size="small"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          :picker-options="pickerOptions"
+          value-format="yyyy-MM-dd"
+          style="margin-right: 1rem;top: 2px;"
+        />
+
+        <el-select
+          v-model="actionType"
+          clearable
+          placeholder="请选择类型"
+          size="small"
+          style="margin-right: 1rem"
+        >
+          <el-option
+            v-for="item in
+              typeList"
+            :key="item.type"
+            :label="item.desc"
+            :value="item.type"
+          />
         </el-select>
+
         <el-input
           v-model="changes"
           clearable
@@ -14,6 +41,7 @@
           style="width: 200px"
           @keyup.enter.native="searchLogs"
         />
+
         <el-button type="primary" size="small" icon="el-icon-search" style="margin-left: 1rem" @click="searchLogs">
           搜索
         </el-button>
@@ -46,7 +74,7 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="object_repr" label="描述" align="center" width="300">
+      <el-table-column prop="object_repr" label="描述" align="center">
         <template slot-scope="scope">
           <el-button slot="reference" size="mini" type="text">
             {{ scope.row.object_repr }}
@@ -139,7 +167,60 @@ export default {
           type: 6,
           desc: '退出'
         }
-      ]
+      ],
+      pickerOptions: {
+        shortcuts: [
+          {
+            text: '最近1周',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', [start, end])
+            }
+          },
+          {
+            text: '最近1个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+              picker.$emit('pick', [start, end])
+            }
+          },
+          {
+            text: '最近3个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+              picker.$emit('pick', [start, end])
+            }
+          },
+          {
+            text: '最近半年',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 180)
+              picker.$emit('pick', [start, end])
+            }
+          },
+          {
+            text: '最近1年',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              const currentDate = new Date()
+              const oneYearAgo = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), currentDate.getDate())
+              const timestamp = oneYearAgo.getTime()
+              start.setTime(timestamp)
+              picker.$emit('pick', [start, end])
+            }
+          }
+        ]
+      },
+      TimeValue: []
     }
   },
   computed: {
@@ -156,6 +237,9 @@ export default {
       this.listLogs()
     },
     changes() {
+      this.listLogs()
+    },
+    TimeValue() {
       this.listLogs()
     }
   },
@@ -183,6 +267,12 @@ export default {
         changes: this.changes,
         action: this.actionType
       }
+
+      if (this.TimeValue) {
+        params.start = this.TimeValue[0]
+        params.end = this.TimeValue[1]
+      }
+
       logsList(params).then((response) => {
         if (response.code === 0) {
           this.logs = response.data.map(log => ({ ...log,
