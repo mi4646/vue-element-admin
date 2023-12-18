@@ -15,6 +15,8 @@
         </el-button>
       </div>
     </div>
+
+    <!-- 表格 -->
     <el-table stripe :data="logs">
       <el-table-column prop="index" label="序号" width="100" align="center">
         <template slot-scope="scope">
@@ -58,28 +60,13 @@
       </el-table-column>
     </el-table>
 
-    <!-- 详细信息 -->
-    <el-dialog :visible.sync="dialogVisible" width="40%">
-      <div slot="title" class="dialog-title-container"><i class="el-icon-more" />详细信息</div>
-      <el-form ref="form" :model="optLog" label-width="100px" size="mini">
-        <el-form-item label="IP地址：">
-          <template v-if="optLog.remote_addr">
-            {{ !optLog.showIp ? optLog.remote_addr.replace(/\.\d{1,3}\.\d{1,3}$/, '.**.**') : optLog.remote_addr }}
-            <!-- <el-icon color="#1976D2" @click="scope.row.showIp=!scope.row.showIp">mdi-eye-off</el-icon> -->
-            <i class="el-icon-view" style="margin-left: 10px;" @click="optLog.showIp=!optLog.showIp" />
-          </template>
-        </el-form-item>
-        <el-form-item label="操作描述：">
-          {{ optLog.object_repr }}
-        </el-form-item>
-        <el-form-item label="操作详情：">
-          <div v-html="optLog.msg" />
-        </el-form-item>
-        <el-form-item label="操作人员：">
-          {{ optLog.username }}
-        </el-form-item>
-      </el-form>
-    </el-dialog>
+    <!-- 日志详情信息 -->
+    <log-details
+      v-if="dialogVisible"
+      :dialog-visible.sync="dialogVisible"
+      :opt-log="optLog"
+      @close-dialog="handleCloseDialog"
+    />
 
     <el-pagination
       class="pagination-container"
@@ -97,8 +84,10 @@
 
 <script>
 import { logsList } from '@/api/logs'
+import LogDetails from './components/LogDetails.vue'
 
 export default {
+  components: { LogDetails },
   data() {
     return {
       logs: [],
@@ -155,11 +144,14 @@ export default {
         this.$message.error({ message: error })
       })
     },
-
     // 查看详情
     viewDetail(optLog) {
       this.optLog = JSON.parse(JSON.stringify(optLog))
       this.dialogVisible = true
+    },
+    // 关闭对话框
+    handleCloseDialog() {
+      this.dialogVisible = false
     }
   }
 }
