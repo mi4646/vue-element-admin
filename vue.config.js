@@ -46,7 +46,7 @@ module.exports = {
         }
       },
       [process.env.VUE_APP_BASE_API_JT]: {
-        target: 'https://api.lkblog.net/ws/api.php/', // 请求的第三方接口地址
+        target: 'https://api.vvhan.com/api/sao?type=json', // 请求的第三方接口地址
         ws: true,
         changeOrigin: true, // 请求跨域时，需配置此项
         pathRewrite: { // 路径重写,替换target中的请求地址

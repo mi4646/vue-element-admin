@@ -356,37 +356,3 @@ export function removeClass(ele, cls) {
   }
 }
 
-// 字符串截取并获得data值
-export function parseData(response) {
-  // 判断响应数据是否为字符串类型
-  if (typeof response.data !== 'string') {
-    console.error('响应数据不是一个字符串')
-    return ''
-  }
-
-  // 查找起始位置和结束位置
-  const startIndex = response.data.indexOf('{"data":')
-  const endIndex = response.data.lastIndexOf('}')
-
-  // 判断是否找到起始位置和结束位置
-  if (startIndex === -1 || endIndex === -1) {
-    console.error('未找到"data"字段')
-    return ''
-  }
-
-  // 截取字符串并解析为 JSON 对象
-  const data = response.data.substring(startIndex, endIndex + 1)
-  try {
-    const jsonData = JSON.parse(data)
-    // 判断是否存在"data"属性
-    if (!Object.prototype.hasOwnProperty.call(jsonData, 'data')) {
-      console.error('"data"字段不存在')
-      return ''
-    }
-    return jsonData.data
-  } catch (e) {
-    console.error('解析JSON数据出错')
-    return ''
-  }
-}
-

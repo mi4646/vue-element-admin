@@ -45,7 +45,6 @@
 <script>
 import { mapGetters } from 'vuex'
 import { getJiTang, getDiZhi } from '@/api/dashboard'
-import { parseData } from '@/utils/index.js'
 import { timeFix, welcome, getDayInfo } from '@/utils/userTime.js'
 
 export default {
@@ -87,10 +86,8 @@ export default {
     // 根据三方接口获取鸡汤
     getChickenSoup() {
       getJiTang().then(response => {
-        const jiTang = parseData(response)
-        if (jiTang) {
-          this.heartSentence = jiTang
-        }
+        // console.log(response.data, 'jt')
+        this.heartSentence = response.data.ishan
       }).catch(err => {
         this.$notify.error({ title: '失败', message: err })
       })
