@@ -6,6 +6,13 @@
   "description": "我的博客项目vue版",
   "glyphs": [
     {
+      "icon_id": "22547333",
+      "name": "热榜",
+      "font_class": "rebang",
+      "unicode": "e7c8",
+      "unicode_decimal": 59336
+    },
+    {
       "icon_id": "37649823",
       "name": "用户列表-F",
       "font_class": "yonghuliebiao-F",
