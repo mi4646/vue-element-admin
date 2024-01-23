@@ -22,8 +22,8 @@ export function getJiTang() {
     method: 'get'
   })
 }
-
-export function getDiZhi() {
+// 获取ip地址
+export function getIp() {
   return service_ip({
     url: 'https://ip.nf/me.json',
     method: 'get'

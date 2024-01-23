@@ -44,18 +44,15 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { getJiTang, getDiZhi } from '@/api/dashboard'
+import { getJiTang, getIp } from '@/api/dashboard'
 import { timeFix, welcome, getDayInfo } from '@/utils/userTime.js'
 
 export default {
 
   data() {
     return {
-      current: {},
       dayInfo: '',
       welcome: '',
-      suited: '无',
-      unsuited: '无',
       weatherUrl: '',
       heartSentence: '',
       showIframe: false,
@@ -71,17 +68,14 @@ export default {
   },
   mounted() {
     this.showIframe = true
-    this.suited = '嫁娶,结婚,婚嫁,祈福,求嗣,求子,生子,出行,出火,拆卸,修造,装修,动土,上梁'
-    this.unsuited = '登高.行船.安床.入宅.博彩'
     // 日期、节日、节气
     // https://6tail.cn/calendar/api.html
     this.dayInfo = getDayInfo()
-    this.getIPAddress()
-  },
-  created() {
-    this.getChickenSoup()
     this.welcome = welcome()
+    this.getChickenSoup()
+    this.getWeather()
   },
+
   methods: {
     // 根据三方接口获取鸡汤
     getChickenSoup() {
@@ -89,11 +83,12 @@ export default {
         // console.log(response.data, 'jt')
         this.heartSentence = response.data.ishan
       }).catch(err => {
-        this.$notify.error({ title: '失败', message: err })
+        this.$message.error({ title: '失败', message: err })
       })
     },
-    getIPAddress() {
-      getDiZhi().then(response => {
+    // 获取天气
+    getWeather() {
+      getIp().then(response => {
         const data = response.data
         this.weatherUrl = '//i.tianqi.com/index.php?c=code&id=12&icon=1&num=3&site=5' + '&py=' + data.ip.city
       }).catch(err => {
