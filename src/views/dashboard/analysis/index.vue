@@ -16,7 +16,7 @@
         @tabChange="key => onTabChange(key, 'noTitleKey')"
       >
         <!-- 流量趋势图 -->
-        <p v-if="noTitleKey === 'tab2'">
+        <p v-if="noTitleKey === 'tab1'">
           <!-- <line-chart :chart-data="lineChartData" /> -->
           <bar-chart-2 />
         </p>
@@ -152,11 +152,11 @@ export default {
       tabListNoTitle: [
         {
           key: 'tab1',
-          tab: '流量趋势'
+          tab: '访问量'
         },
         {
           key: 'tab2',
-          tab: '访问量'
+          tab: '流量趋势'
         }
       ],
       noTitleKey: 'tab1',
