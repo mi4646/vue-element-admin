@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
 import store from '@/store'
-import { isLoginOrRefreshTokenRequest, removeTokenAll } from '@/utils'
+import { isLoginOrRefreshTokenRequest } from '@/utils'
 import router from '@/router'
 
 // create an axios instance
@@ -105,7 +105,7 @@ service.interceptors.response.use(
           isRefreshing = true
           return refreshAuthorizationToken(refresh_token, error.response).catch(e => {
             Message({ message: '令牌无效或已过期', type: 'error', duration: 5 * 1000 })
-            removeTokenAll() // 删除token
+            sessionStorage.clear()
             router.push(`/login`)
             return error.response.data
           })

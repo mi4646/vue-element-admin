@@ -1,5 +1,4 @@
 import { login, logout, getInfo } from '@/api/user'
-import { removeTokenAll } from '@/utils'
 import router, { resetRouter } from '@/router'
 
 import { Message } from 'element-ui'
@@ -98,7 +97,8 @@ const actions = {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
           commit('SET_USER', {})
-          removeTokenAll()
+          localStorage.clear()
+          sessionStorage.clear()
           resetRouter()
           // 重置访问视图和缓存视图
           // 固定https://github.com/PanJiaChen/vue-element-admin/issues/2485
@@ -118,7 +118,7 @@ const actions = {
     return new Promise(resolve => {
       commit('SET_TOKEN', '')
       commit('SET_ROLES', [])
-      removeTokenAll()
+      sessionStorage.clear()
       resolve()
     })
   },
