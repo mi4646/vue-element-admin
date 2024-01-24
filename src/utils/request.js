@@ -7,19 +7,22 @@ import router from '@/router'
 // create an axios instance
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
-  // withCredentials: true, // 当跨域请求时发送cookie
-  timeout: 5000 // 请求超时
+  withCredentials: true, // 当跨域请求时发送cookie
+  timeout: 5000, // 请求超时
+  headers: {
+    'Content-Type': 'application/json' // 设置请求头部信息
+  }
 })
 
 export const service_ip = axios.create({
   baseURL: 'https://ip.nf/me.json',
-  // withCredentials: true, // 当跨域请求时发送cookie
+  withCredentials: true, // 当跨域请求时发送cookie
   timeout: 5000 // 请求超时
 })
 
 export const service_jt = axios.create({
-
   baseURL: process.env.VUE_APP_JT_API, // url = base url + request url
+  withCredentials: true, // 当跨域请求时发送cookie
   timeout: 5000 // 请求超时
 })
 
