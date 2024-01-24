@@ -356,3 +356,17 @@ export function removeClass(ele, cls) {
   }
 }
 
+// 清除所有Token
+export function removeTokenAll(keys = ['Token', 'RefreshToken']) {
+  keys.forEach(key => {
+    sessionStorage.removeItem(key)
+  })
+}
+
+// 判断当前请求是否为登录接口或刷新 Token 接口
+export function isLoginOrRefreshTokenRequest(config) {
+  const LOGIN_URL = '/accounts/login/'
+  const REFRESH_TOKEN_URL = '/accounts/refresh/'
+  return config.url.includes(LOGIN_URL) || config.url.includes(REFRESH_TOKEN_URL)
+}
+

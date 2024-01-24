@@ -3,7 +3,6 @@ import store from './store'
 import { Message } from 'element-ui'
 // import NProgress from 'nprogress' // 进度条
 // import 'nprogress/nprogress.css' // 进度条样式
-import { getToken } from '@/utils/auth'// 从cookie中获取token
 import getPageTitle from '@/utils/get-page-title'
 
 // NProgress.configure({ showSpinner: false }) // NProgress配置
@@ -22,7 +21,7 @@ router.beforeEach(async(to, from, next) => {
   // 设置页面标题
   document.title = getPageTitle(to.meta.title)
   // 判断用户是否已经登录
-  const hasToken = getToken()
+  const hasToken = sessionStorage.getItem('Token')
 
   if (hasToken) {
     if (to.path === '/login') {

@@ -1,13 +1,13 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
 import store from '@/store'
-import { getToken, setToken, isLoginOrRefreshTokenRequest, removeToken } from '@/utils/auth'
+import { isLoginOrRefreshTokenRequest, removeTokenAll } from '@/utils'
 import router from '@/router'
 
 // create an axios instance
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
-  withCredentials: true, // 当跨域请求时发送cookie
+  withCredentials: true,
   timeout: 5000, // 请求超时
   headers: {
     'Content-Type': 'application/json' // 设置请求头部信息
@@ -16,13 +16,13 @@ const service = axios.create({
 
 export const service_ip = axios.create({
   baseURL: 'https://ip.nf/me.json',
-  withCredentials: true, // 当跨域请求时发送cookie
+  withCredentials: true,
   timeout: 5000 // 请求超时
 })
 
 export const service_jt = axios.create({
-  baseURL: process.env.VUE_APP_JT_API, // url = base url + request url
-  withCredentials: true, // 当跨域请求时发送cookie
+  baseURL: process.env.VUE_APP_JT_API,
+  withCredentials: true,
   timeout: 5000 // 请求超时
 })
 
@@ -32,7 +32,7 @@ service.interceptors.request.use(
     // 在发送请求之前做些什么
     if (!isLoginOrRefreshTokenRequest(config)) {
       if (store.getters.token) {
-        config.headers['Authorization'] = 'Bearer ' + getToken()
+        config.headers['Authorization'] = 'Bearer ' + sessionStorage.getItem('Token')
       }
     }
     return config
@@ -55,7 +55,7 @@ async function refreshAuthorizationToken(refresh_token, response) {
     const data = await refreshToken(refresh_token)
     if (!data.code) {
       const token = data.token
-      setToken('Token', token)
+      sessionStorage.setItem('Token', token)
       response.config.headers.Authorization = `${token}`
       requests.forEach(cb => cb(token))
       requests = []
@@ -99,13 +99,13 @@ service.interceptors.response.use(
       Message({ message: 'Bad Request', type: 'error', duration: 5 * 1000 })
       // router.push({ path: '/400' }); // 跳转到自定义的 400 页面
     } else if (error.response.status === 401 && !error.response.config.url.includes('/accounts/refresh/')) {
-      const refresh_token = getToken('RefreshToken')
+      const refresh_token = sessionStorage.getItem('RefreshToken')
       if (refresh_token) {
         if (!isRefreshing) {
           isRefreshing = true
           return refreshAuthorizationToken(refresh_token, error.response).catch(e => {
             Message({ message: '令牌无效或已过期', type: 'error', duration: 5 * 1000 })
-            removeToken() // 删除token
+            removeTokenAll() // 删除token
             router.push(`/login`)
             return error.response.data
           })
