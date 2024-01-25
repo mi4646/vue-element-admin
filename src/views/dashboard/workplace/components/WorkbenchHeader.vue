@@ -46,6 +46,7 @@
 import { mapGetters } from 'vuex'
 import { getJiTang } from '@/api/dashboard'
 import { timeFix, welcome, getDayInfo } from '@/utils/userTime.js'
+import { getItemWithExpiration, setItemWithExpiration } from '@/utils/localStorage-expired.js'
 
 export default {
 
@@ -74,19 +75,24 @@ export default {
     // https://6tail.cn/calendar/api.html
     this.dayInfo = getDayInfo()
     this.welcome = welcome()
-    // this.getChickenSoup()
+    this.getChickenSoup()
     this.getWeather()
   },
 
   methods: {
     // 根据三方接口获取鸡汤
     getChickenSoup() {
-      getJiTang().then(response => {
-        // console.log(response.data, 'jt')
-        this.heartSentence = response.data.ishan
-      }).catch(err => {
-        this.$message.error({ title: '失败', message: err })
-      })
+      const localStorageData = getItemWithExpiration('JiTang')
+      if (localStorageData) {
+        this.heartSentence = localStorageData
+      } else {
+        getJiTang().then(response => {
+          setItemWithExpiration('JiTang', response.data.ishan, 60)
+          this.heartSentence = response.data.ishan
+        }).catch(err => {
+          this.$message.error({ title: '失败', message: err })
+        })
+      }
     },
     // 根据ip获取天气
     getWeather() {

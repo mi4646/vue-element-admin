@@ -19,7 +19,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       const localStorageData = getItemWithExpiration('analyzesData')
       if (localStorageData) {
-        // const data = JSON.parse(localStorageData)
         commit('SET_ANALYZES', localStorageData)
         resolve()
       } else {
