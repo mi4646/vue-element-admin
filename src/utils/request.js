@@ -74,6 +74,7 @@ async function refreshAuthorizationToken(refresh_token, response) {
 let isRefreshing = false
 // 重试队列
 let requests = []
+let retryCount = 0
 
 // 响应拦截器
 service.interceptors.response.use(
@@ -101,21 +102,28 @@ service.interceptors.response.use(
     } else if (error.response.status === 401 && !error.response.config.url.includes('/accounts/refresh/')) {
       const refresh_token = sessionStorage.getItem('RefreshToken')
       if (refresh_token) {
-        if (!isRefreshing) {
-          isRefreshing = true
-          return refreshAuthorizationToken(refresh_token, error.response).catch(e => {
-            Message({ message: '令牌无效或已过期', type: 'error', duration: 5 * 1000 })
-            sessionStorage.clear()
-            router.push(`/login`)
-            return error.response.data
-          })
-        } else {
-          return new Promise(resolve => {
-            requests.push(token => {
-              error.response.config.headers.Authorization = `${token}`
-              resolve(service(error.response.config))
+        if (retryCount < 3) {
+          retryCount++
+          if (!isRefreshing) {
+            isRefreshing = true
+            return refreshAuthorizationToken(refresh_token, error.response).catch(e => {
+              Message({ message: '令牌无效或已过期', type: 'error', duration: 5 * 1000 })
+              sessionStorage.clear()
+              router.push(`/login`)
+              return error.response.data
             })
-          })
+          } else {
+            return new Promise(resolve => {
+              requests.push(token => {
+                error.response.config.headers.Authorization = `${token}`
+                resolve(service(error.response.config))
+              })
+            })
+          }
+        } else {
+          sessionStorage.clear()
+          router.push(`/login`)
+          return error.response.data
         }
       } else {
         Message({ message: '刷新令牌未找到', type: 'error', duration: 5 * 1000 })
