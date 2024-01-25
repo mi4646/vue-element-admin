@@ -1,7 +1,7 @@
+import { resetRouter } from '@/router'
+import { getIp } from '@/api/dashboard'
 import { login, logout, getInfo } from '@/api/user'
-import router, { resetRouter } from '@/router'
-
-import { Message } from 'element-ui'
+import { getItemWithExpiration, setItemWithExpiration } from '@/utils/localStorage-expired'
 
 const state = {
   token: sessionStorage.getItem('Token'),
@@ -10,7 +10,8 @@ const state = {
   email: '',
   introduction: '',
   roles: [],
-  userData: {}
+  userData: {},
+  ipAddress: getItemWithExpiration('ipAddress')
 }
 
 const mutations = {
@@ -34,12 +35,15 @@ const mutations = {
   },
   SET_EMAIL: (state, email) => {
     state.email = email
+  },
+  SET_IP: (state, data) => {
+    state.ipAddress = data
   }
 }
 
 const actions = {
   // user login
-  login({ commit }, userInfo) {
+  login({ commit, dispatch }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
@@ -48,9 +52,10 @@ const actions = {
           commit('SET_TOKEN', data.token)
           sessionStorage.setItem('Token', data.token)
           sessionStorage.setItem('RefreshToken', data.refresh_token)
+          dispatch('getIPAddress')
           resolve()
         } else {
-          Message({ type: 'error', message: response.codemsg, duration: 5 * 1000 })
+          reject(response.codemsg)
         }
       }).catch(error => {
         console.log(error)
@@ -62,7 +67,9 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
+      getInfo(
+        // state.token
+      ).then(response => {
         if (response.code === 0) {
           const { data } = response
           if (!data) {
@@ -81,7 +88,7 @@ const actions = {
           commit('SET_INTRODUCTION', introduction)
           resolve(data)
         } else {
-          Message({ type: 'error', message: response.codemsg, duration: 5 * 1000 })
+          reject(response.codemsg)
         }
       }).catch(error => {
         reject(error)
@@ -105,7 +112,7 @@ const actions = {
           dispatch('tagsView/delAllViews', null, { root: true })
           resolve()
         } else {
-          Message({ type: 'error', message: response.codemsg, duration: 5 * 1000 })
+          reject(response.codemsg)
         }
       }).catch(error => {
         reject(error)
@@ -118,29 +125,32 @@ const actions = {
     return new Promise(resolve => {
       commit('SET_TOKEN', '')
       commit('SET_ROLES', [])
+      localStorage.clear()
       sessionStorage.clear()
       resolve()
     })
   },
 
-  // dynamically modify permissions
-  async changeRoles({ commit, dispatch }, role) {
-    const token = role + '-token'
-
-    commit('SET_TOKEN', token)
-
-    const { roles } = await dispatch('getInfo')
-
-    resetRouter()
-
-    // generate accessible routes map based on roles
-    const accessRoutes = await dispatch('permission/generateRoutes', roles, { root: true })
-    // dynamically add accessible routes
-    router.addRoutes(accessRoutes)
-
-    // reset visited views and cached views
-    dispatch('tagsView/delAllViews', null, { root: true })
+  // 获取ip地址
+  getIPAddress({ commit }) {
+    return new Promise((resolve, reject) => {
+      const localStorageData = getItemWithExpiration('ipAddress')
+      if (localStorageData) {
+        commit('SET_IP', localStorageData)
+        resolve()
+      } else {
+        getIp().then(response => {
+          const { data } = response
+          setItemWithExpiration('ipAddress', data)
+          commit('SET_IP', data)
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      }
+    })
   }
+
 }
 
 export default {

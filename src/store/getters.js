@@ -12,10 +12,11 @@ const getters = {
   introduction: state => state.user.introduction,
   roles: state => state.user.roles,
   userData: state => state.user.userData,
-  analyzesData: state => state.dashboard.analyzesData,
   permission_routes: state => state.permission.routes,
   menus: state => state.permission.addRoutes,
   isLock: state => state.screenLock.isLock,
-  lockTime: state => state.screenLock.lockTime
+  lockTime: state => state.screenLock.lockTime,
+  analyzesData: state => state.dashboard.analyzesData,
+  ipAddress: state => state.user.ipAddress
 }
 export default getters

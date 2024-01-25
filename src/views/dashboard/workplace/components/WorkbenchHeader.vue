@@ -44,7 +44,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { getJiTang, getIp } from '@/api/dashboard'
+import { getJiTang } from '@/api/dashboard'
 import { timeFix, welcome, getDayInfo } from '@/utils/userTime.js'
 
 export default {
@@ -53,17 +53,19 @@ export default {
     return {
       dayInfo: '',
       welcome: '',
-      weatherUrl: '',
       heartSentence: '',
       showIframe: false,
-      timeFix: timeFix()
+      timeFix: timeFix(),
+      weatherUrl: '//i.tianqi.com/index.php?c=code&id=12&icon=1&num=3&site=5'
     }
   },
   computed: {
     ...mapGetters([
       'name',
       'avatar',
-      'roles'
+      'roles',
+      'ipAddress',
+      'analyzesData'
     ])
   },
   mounted() {
@@ -72,7 +74,7 @@ export default {
     // https://6tail.cn/calendar/api.html
     this.dayInfo = getDayInfo()
     this.welcome = welcome()
-    this.getChickenSoup()
+    // this.getChickenSoup()
     this.getWeather()
   },
 
@@ -86,15 +88,14 @@ export default {
         this.$message.error({ title: '失败', message: err })
       })
     },
-    // 获取天气
+    // 根据ip获取天气
     getWeather() {
-      getIp().then(response => {
-        const data = response.data
-        this.weatherUrl = '//i.tianqi.com/index.php?c=code&id=12&icon=1&num=3&site=5' + '&py=' + data.ip.city
-      }).catch(err => {
-        console.log(err)
-        this.weatherUrl = '//i.tianqi.com/index.php?c=code&id=12&icon=1&num=3&site=5'
-      })
+      if (this.ipAddress) {
+        const data = this.ipAddress
+        const city = data.ip.city ? data.ip.city : 'haidian'
+        this.weatherUrl = this.weatherUrl + '&py=' + city
+        console.log(this.weatherUrl, 'weatherUrl')
+      }
     }
   }
 }
