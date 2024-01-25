@@ -29,7 +29,7 @@
               :v-if="showIframe"
               width="100%"
               scrolling="no"
-              height="60"
+              height="79"
               frameborder="0"
               allowtransparency="true"
               :src="weatherUrl"
