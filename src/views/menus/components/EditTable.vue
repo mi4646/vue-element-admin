@@ -190,9 +190,8 @@ export default {
       method.then((response) => {
         if (response.code === 0) {
           this.$message.success({ message: '操作成功,页面将重新加载', showClose: true })
-          setTimeout(() => {
-            location.reload() // 刷新当前页面
-          }, 1500)
+          localStorage.removeItem('menuList')
+          setTimeout(() => { location.reload() }, 1500)
           // this.$parent.$parent.$parent.listMenus()
         } else {
           this.$message.error({ message: response.codemsg })

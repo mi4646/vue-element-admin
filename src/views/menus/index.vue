@@ -31,7 +31,6 @@
     <!-- table表格 -->
     <el-table
       fixed
-      default-expand-all
       :data="menus"
       row-key="id"
       style="width: 100%"
@@ -211,10 +210,9 @@ export default {
       menuUpdate(menu.id, menu).then((response) => {
         if (response.code === 0) {
           this.$message.success({ message: '操作成功,页面将重新加载', showClose: true })
-          setTimeout(() => {
-            location.reload() // 刷新当前页面
-          }, 1500)
-          // this.listMenus()
+          localStorage.removeItem('menuList')
+          // 刷新当前页面
+          setTimeout(() => { location.reload() }, 1500)
         } else {
           this.$message.error({ message: response.codemsg })
         }
@@ -227,10 +225,8 @@ export default {
       menuDelete(id).then((response) => {
         if (response.code === 0) {
           this.$message.success({ message: '操作成功,页面将重新加载', showClose: true })
-          setTimeout(() => {
-            location.reload() // 刷新当前页面
-          }, 1500)
-          // this.listMenus()
+          localStorage.removeItem('menuList')
+          setTimeout(() => { location.reload() }, 1500)
         } else {
           this.$message.error({ message: response.message })
         }
