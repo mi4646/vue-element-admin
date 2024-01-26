@@ -2,6 +2,7 @@ import { asyncRoutes, constantRoutes } from '@/router'
 import { menusList } from '@/api/menus'
 import Layout from '@/layout/index'
 import { Message } from 'element-ui'
+import { getItemWithExpiration, setItemWithExpiration } from '@/utils/localStorage-expired'
 
 /**
  * 移动菜单管理到个人中心前面
@@ -132,6 +133,28 @@ export function filterAsyncRoutes(routes, roles) {
   return res
 }
 
+/**
+ * 生成路由数据
+ * @param {Array} mergedData - 合并后的路由数据
+ * @param {Array} roles - 用户角色列表
+ * @returns {Array} - 经过权限处理后的路由数据
+ */
+function generateRoutesData(mergedData, roles) {
+  let accessedRoutes
+  // 如果用户角色包含'admin'，则拥有所有路由权限
+  if (roles.includes('admin')) {
+    accessedRoutes = mergedData || []
+  } else {
+    // 根据用户角色筛选异步路由
+    accessedRoutes = filterAsyncRoutes(mergedData, roles)
+  }
+  // 将筛选后的路由与异步路由合并
+  const combinedRoutes = accessedRoutes.concat(asyncRoutes)
+  // 转换路由数据格式
+  const routesData = convertRoutesData(combinedRoutes)
+  return routesData
+}
+
 const state = {
   routes: [],
   addRoutes: []
@@ -140,48 +163,36 @@ const state = {
 const mutations = {
   SET_ROUTES: (state, routes) => {
     routes = moveMenuAfterArticle(constantRoutes.concat(routes))
-    // 调用函数进行移动
-    const updatedRoutes = routes
-    // const updatedRoutes = moveElementAfter(constantRoutes.concat(routes))
-    // console.log(updatedRoutes)
     state.addRoutes = routes
-    state.routes = updatedRoutes
-    // state.routes = constantRoutes.concat(routes)
+    state.routes = routes
   }
 }
 
 const actions = {
   generateRoutes({ commit }, roles) {
-    return new Promise(resolve => {
-      menusList().then(res => {
-        if (res.code === 0) {
-          var mergedData = res.data
-          // console.log(mergedData, 'mergedData')
-          let accessedRoutes
-          if (roles.includes('admin')) {
-            accessedRoutes = mergedData || []
+    return new Promise((resolve, reject) => {
+      const localStorageData = getItemWithExpiration('menuList')
+      if (localStorageData) {
+        const routesData = generateRoutesData(localStorageData, roles)
+        commit('SET_ROUTES', routesData)
+        resolve(routesData)
+      } else {
+        menusList().then(res => {
+          if (res.code === 0) {
+            setItemWithExpiration('menuList', res.data, null)
+            const routesData = generateRoutesData(res.data, roles)
+            commit('SET_ROUTES', routesData)
+            resolve(routesData)
           } else {
-            accessedRoutes = filterAsyncRoutes(mergedData, roles)
+            Message.error({ message: '获取菜单失败' })
+            reject()
           }
-          const combinedRoutes = accessedRoutes.concat(asyncRoutes)
-          // console.log(combinedRoutes, 'combinedRoutes')
-
-          const routesData = convertRoutesData(combinedRoutes)
-          // console.log('routesData ', routesData)
-
-          commit('SET_ROUTES', routesData)
-          resolve(routesData)
-        } else {
+        }).catch(error => {
           Message.error({ message: '获取菜单失败' })
-          commit('SET_ROUTES', asyncRoutes)
-          resolve(asyncRoutes)
-        }
-      }).catch(error => {
-        Message.error({ message: '获取菜单失败' })
-        commit('SET_ROUTES', asyncRoutes)
-        resolve(asyncRoutes)
-        console.log(error)
-      })
+          reject()
+          console.log(error)
+        })
+      }
     })
   }
 }
