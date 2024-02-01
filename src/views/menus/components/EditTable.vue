@@ -40,7 +40,7 @@
         <el-input v-model="menuForm.path" style="width: 220px" />
       </el-form-item>
 
-      <el-form-item label="Iframe外链" prop="iframe" class="is-required">
+      <el-form-item label="Iframe外链" prop="iframe">
         <el-input v-model="menuForm.iframe" style="width: 220px" />
       </el-form-item>
 
