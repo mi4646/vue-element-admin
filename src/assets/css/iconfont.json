@@ -6,6 +6,13 @@
   "description": "我的博客项目vue版",
   "glyphs": [
     {
+      "icon_id": "19675876",
+      "name": "菜单_技术周刊",
+      "font_class": "caidan_jishuzhoukan",
+      "unicode": "e61d",
+      "unicode_decimal": 58909
+    },
+    {
       "icon_id": "22547333",
       "name": "热榜",
       "font_class": "rebang",
