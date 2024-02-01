@@ -1,7 +1,7 @@
 <!-- 添加/编辑对话框 -->
 <template>
   <div>
-    <el-form ref="refundFormData" label-width="90px" size="medium" :model="menuForm">
+    <el-form ref="refundFormData" label-width="100px" size="medium" :model="menuForm">
       <el-form-item v-if="show" label="菜单类型">
         <el-radio-group v-model="selected">
           <el-radio :label="true">目录</el-radio>
@@ -40,6 +40,10 @@
         <el-input v-model="menuForm.path" style="width: 220px" />
       </el-form-item>
 
+      <el-form-item label="Iframe外链" prop="iframe" class="is-required">
+        <el-input v-model="menuForm.iframe" style="width: 220px" />
+      </el-form-item>
+
       <el-form-item label="显示排序" prop="priority">
         <el-tooltip class="item" effect="dark" content="Top Left 提示文字" placement="top-start" />
         <el-input-number v-model="menuForm.priority" controls-position="right" :min="1" :max="10000" />
@@ -51,23 +55,19 @@
           <el-radio :label="1">隐藏</el-radio>
         </el-radio-group>
       </el-form-item>
+
       <el-form-item label="是否缓存">
         <el-radio-group v-model="menuForm.Nocache">
           <el-radio :label="1">是</el-radio>
           <el-radio :label="0">否</el-radio>
         </el-radio-group>
       </el-form-item>
+
       <el-form-item label="固定视图">
         <el-radio-group v-model="menuForm.affix">
           <el-radio :label="1">是</el-radio>
           <el-radio :label="0">否</el-radio>
         </el-radio-group>
-      </el-form-item>
-      <el-form-item>
-        <div class="dialog-footer">
-          <el-button @click="closeDialog">取 消</el-button>
-          <el-button type="primary" @click="saveOrUpdateMenu(menuForm)"> 确 定 </el-button>
-        </div>
       </el-form-item>
     </el-form>
   </div>
@@ -92,6 +92,7 @@ export default {
           affix: 0,
           hidden: 0,
           Nocache: 0,
+          iframe: '',
           priority: null,
           component: '',
           children: null,
@@ -150,11 +151,6 @@ export default {
       // 重置数据，同时也取消了表单的校验 refundFormData：el-form用ref绑定的值，
       this.$refs.refundFormData.resetFields()
     },
-    // 关闭对话框
-    closeDialog() {
-      // console.log('关闭对话框,调用父组件')
-      this.$parent.handleClose()
-    },
     // 添加/修改菜单
     saveOrUpdateMenu() {
       if (this.menuForm.name.trim() === '') {
@@ -180,6 +176,7 @@ export default {
         'name': this.menuForm.name,
         'icon': this.menuForm.icon,
         'affix': this.menuForm.affix,
+        'iframe': this.menuForm.iframe,
         'hidden': this.menuForm.hidden,
         'priority': this.menuForm.priority,
         'Nocache': this.menuForm.Nocache,
@@ -208,13 +205,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.dialog-footer {
-	position: sticky;
-	bottom: 10px;
-	text-align: right;
-	background-color: #fff;
-}
-
 :is-required >>>.el-form-item__label::after{
     content: '*';
     color: #F56C6C;

@@ -42,7 +42,7 @@
           <i :class="'icon iconfont sub-el-icon ' + scope.row.icon" />
         </template>
       </el-table-column>
-      <el-table-column prop="priority" label="排序" align="center" width="100">
+      <el-table-column prop="priority" label="排序" align="center" width="80">
         <template slot="header" slot-scope="scope">
           <span>
             排序
@@ -53,8 +53,9 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column prop="path" label="访问路径" align="center" width="200" />
-      <el-table-column prop="component" label="组件路径" align="center" width="250" />
+      <el-table-column prop="path" label="访问路径" align="center" width="120" />
+      <el-table-column prop="iframe" label="Iframe外链" align="center" width="180" />
+      <el-table-column prop="component" label="组件路径" align="center" width="220" />
       <el-table-column prop="hidden" label="是否隐藏" align="center" width="100">
         <template slot-scope="scope">
           <el-switch
@@ -121,21 +122,26 @@
     <el-dialog
       :visible.sync="addDialogVisible"
       width="30%"
-      top="12vh"
-      height="50%"
       :title="dialogTitle"
       :destroy-on-close="true"
       @close="handleClose"
     >
-      <edit-table
-        v-if="addDialogVisible"
-        ref="refundFormData"
-        :show="show"
-        :menu-form="menuForm"
-        :menus="menus"
-        :is-catalog.sync="isCatalog"
-        :add-dialog-visible="addDialogVisible"
-      />
+      <div class="scrollable-content">
+        <edit-table
+          v-if="addDialogVisible"
+          ref="refundFormData"
+          :show="show"
+          :menu-form="menuForm"
+          :menus="menus"
+          :is-catalog.sync="isCatalog"
+          :add-dialog-visible="addDialogVisible"
+        />
+      </div>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="handleAdd">确定</el-button>
+        <el-button @click="addDialogVisible = false">取消</el-button>
+      </span>
     </el-dialog>
   </el-card>
 </template>
@@ -159,6 +165,7 @@ export default {
         name: '',
         icon: '',
         path: '',
+        iframe: '',
         affix: 0,
         hidden: 0,
         Nocache: 0,
@@ -233,12 +240,16 @@ export default {
       }).catch(error => {
         this.$message.error({ message: error })
       })
+    },
+    handleAdd() {
+      this.$refs.refundFormData.saveOrUpdateMenu()
+      console.log('handleAdd')
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .icon-item {
   cursor: pointer;
   padding: 0.5rem 0;
@@ -246,4 +257,17 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.scrollable-content {
+  height:400px;
+  overflow: auto;
+}
+
+.dialog-footer {
+	position: sticky;
+	bottom: 10px;
+	text-align: right;
+	background-color: #fff;
+}
+
 </style>
