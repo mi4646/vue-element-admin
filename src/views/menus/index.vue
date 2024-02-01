@@ -31,7 +31,7 @@
     <!-- table表格 -->
     <el-table
       fixed
-      :data="menus"
+      :data="paginatedData"
       row-key="id"
       style="width: 100%"
       :tree-props="{ children: 'children' }"
@@ -143,6 +143,19 @@
         <el-button @click="addDialogVisible = false">取消</el-button>
       </span>
     </el-dialog>
+
+    <!-- 分页组件 -->
+    <el-pagination
+      class="pagination-container"
+      background
+      :current-page="page"
+      :page-size="size"
+      :total="menus.length"
+      :page-sizes="[5,10, 20]"
+      layout="total, sizes, prev, pager, next, jumper"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
   </el-card>
 </template>
 
@@ -154,6 +167,10 @@ export default {
   components: { EditTable },
   data() {
     return {
+      page: 1,
+      size: 5,
+      paginatedData: [],
+
       dialogTitle: '',
       keywords: '',
       addDialogVisible: false,
@@ -180,15 +197,36 @@ export default {
     this.listMenus()
   },
   methods: {
+  // 使用前端实现分页的计算数据,自行分页(slice)
+    nextPage() {
+      this.paginatedData = this.menus.slice(
+        (this.page - 1) * this.size,
+        this.page * this.size
+      )
+    },
+    // 当前分页数（第几页）
+    handleCurrentChange(val) {
+      this.page = val
+      this.nextPage()
+    },
+    // 每页列表数
+    handleSizeChange(val) {
+      this.size = val
+      this.page = 1
+      this.nextPage()
+    },
+    // 关闭弹窗
     handleClose() {
       this.addDialogVisible = false
       this.$refs.refundFormData.resetForm()
     },
-
+    // 获取菜单列表
     listMenus() {
       const params = { name: this.keywords }
       menusList(params).then((response) => {
         this.menus = response.data
+        // this.getTabelData()
+        this.nextPage()
       }).catch(error => {
         this.$message.error({ message: error })
       })
@@ -213,6 +251,7 @@ export default {
       }
       this.addDialogVisible = true
     },
+    // 提交表单
     changeDisable(menu) {
       menuUpdate(menu.id, menu).then((response) => {
         if (response.code === 0) {
@@ -241,9 +280,9 @@ export default {
         this.$message.error({ message: error })
       })
     },
+    // 新增菜单
     handleAdd() {
       this.$refs.refundFormData.saveOrUpdateMenu()
-      console.log('handleAdd')
     }
   }
 }
