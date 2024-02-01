@@ -5,18 +5,28 @@
         <router-view :key="key" />
       </keep-alive>
     </transition>
+    <iframe-router v-if="isIframe" :url="$route.meta.iframe" />
   </section>
 </template>
 
 <script>
+import IframeRouter from '@/components/IframeRouter/index'
+
 export default {
   name: 'AppMain',
+  components: {
+    IframeRouter
+  },
   computed: {
     cachedViews() {
       return this.$store.state.tagsView.cachedViews
     },
     key() {
       return this.$route.path
+    },
+    // 判断是否是内嵌的iframe页面
+    isIframe() {
+      return this.$route.meta.iframe || null
     }
   }
 }

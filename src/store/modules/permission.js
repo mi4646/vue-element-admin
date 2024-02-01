@@ -44,6 +44,7 @@ function convertRoutesData(data) {
             meta: {
               title: item.name,
               icon: item.icon,
+              iframe: item.iframe,
               noCache: !!item.Nocache
             }
           }
@@ -60,6 +61,7 @@ function convertRoutesData(data) {
         meta: {
           title: item.name,
           icon: item.icon,
+          iframe: item.iframe,
           affix: Boolean(item.affix),
           noCache: Boolean(item.noCache)
         },
@@ -78,6 +80,7 @@ function convertRoutesData(data) {
             meta: {
               title: child.name,
               icon: child.icon,
+              iframe: child.iframe,
               affix: Boolean(child.affix),
               noCache: Boolean(child.noCache)
             }
@@ -152,6 +155,7 @@ function generateRoutesData(mergedData, roles) {
   const combinedRoutes = accessedRoutes.concat(asyncRoutes)
   // 转换路由数据格式
   const routesData = convertRoutesData(combinedRoutes)
+  console.log(routesData, 'routesData')
   return routesData
 }
 

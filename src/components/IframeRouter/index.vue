@@ -3,22 +3,34 @@
     id="nestIframe"
     ref="iframe"
     :src="url"
-    frameborder="0"
-    scrolling="auto"
+    :frameborder="frameborder"
+    :scrolling="scrolling"
     class="content-iframe"
   />
+
 </template>
 
 <script>
 import { mapState } from 'vuex'
 
 export default {
-  name: 'Iframe',
-  data() {
-    return {
-      url: 'https://weekly.tw93.fun/'
-      // url: 'http://localhost:5173/#/'
+  name: 'IFrameComponent',
+  props: {
+    url: {
+      type: String,
+      default: ''
+    },
+    frameborder: {
+      type: Number,
+      default: 0
+    },
+    scrolling: {
+      type: String,
+      default: 'auto'
     }
+  },
+  data() {
+    return {}
   },
   computed: {
     ...mapState({
@@ -68,6 +80,7 @@ export default {
 <style scoped>
 .content-iframe {
   position:absolute;
+  /* height: calc(100% - 2.6875rem); */
   top:0px;
   left: 0px;
   right:0px;
